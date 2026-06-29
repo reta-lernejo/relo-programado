@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Romaj ciferoj per Prologo
+title: Romaj ciferoj per Prologo 2
 js:
     - tau-prolog
     - tau-prolog-util
@@ -22,8 +22,15 @@ roma_cifero('D',500).
 roma_cifero('M',1000).
 
 roma_nombro(Roma,Valoro) :- 
+    atom(Roma),!,
     atom_chars(Roma,Signoj),
     roma_sumo(Signoj,Valoro).
+
+%roma_nombro(Roma,Valoro) :- 
+%    integer(Valoro),!,
+%    roma_sumo(Signoj,Valoro),
+%    atom_chars(Roma,Signoj).
+
 
 roma_sumo([],0).
 roma_sumo([Cifero],Valoro) :- roma_cifero(Cifero,Valoro).
@@ -58,6 +65,8 @@ roma_sumo([_,_|_],_) :- throw(malvalida).
 
 respondo: <code id='respondo_1'></code>
 
+--- 
+
 
 ```prolog
 ?- roma_nombro('MXMIV',Valoro).
@@ -66,6 +75,38 @@ respondo: <code id='respondo_1'></code>
 
 respondo: <code id='respondo_2'></code>
 
+---
+
+```prolog
+?- roma_nombro('MMXXVI',2026).
+```
+{: #demando_3}
+
+respondo: <code id='respondo_3'></code>
+
+---
+
+Bedaŭrinde tiu realigo havas limigojn. Unue ĝi permesas nkaŭ nevalidajn nombrojn, 
+kiel ekzemple IXV.
+
+```prolog
+?- roma_nombro('IXV',A). 
+```
+{: #demando_4}
+
+respondo: <code id='respondo_4'></code>
+
+---
+
+Alia problemo estas, ke ĝi ne funkcias en la kontraŭa direkto, t.e. traduki araban nombron en roman:
+
+```prolog
+?- roma_nombro(R,3). % 1887
+```
+{: #demando_5}
+
+respondo: <code id='respondo_5'></code>
+
 <script>
 
     async function prologo() {
@@ -73,12 +114,13 @@ respondo: <code id='respondo_2'></code>
         console.log(programo);
 
         const seanco = await konsultu(pl,programo);
-        await demando_respondo(seanco,'demando_1','respondo_1',1);
+        await demando_respondo(seanco,'demando_1','respondo_1');
         await demando_respondo(seanco,'demando_2','respondo_2');
-        //await pridemandu(seanco,'demando_3','respondo_3');
-        //await pridemandu(seanco,'demando_4','respondo_4');
-        //await pridemandu(seanco,'demando_5','respondo_5');
+        await demando_respondo(seanco,'demando_3','respondo_3');
+        await demando_respondo(seanco,'demando_4','respondo_4');
     }
 
     prologo();
 </script>
+
+Por porpre solvi tiujn mankojn ni povas eluzi la eblecon difini gramatikon en Prologo.
