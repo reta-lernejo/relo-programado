@@ -30,6 +30,12 @@ layout: default
   {% endfor %}
 {% endif %}
 
+{% if page.pl %}
+  {% for pl_file in page.pl %}
+  <script src='{{ site.baseurl }}/assets/pl/{{ pl_file }}.pl' id='{{ pl_file | replace: "/", "__" }}' type="text/prolog"></script>
+  {% endfor %}
+{% endif %}
+
 {% if page.css %}
   {% for stylesheet in page.css %}
   <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/{{ stylesheet }}.css" type="text/css">

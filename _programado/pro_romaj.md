@@ -3,6 +3,9 @@ layout: page
 title: Romaj ciferoj per Prologo 1
 ---
 
+
+<script src="https://cdn.jsdelivr.net/npm/tau-prolog@0.3.2/modules/core.min.js"></script>
+
 * Enhavo
 {:toc}
 
@@ -85,7 +88,6 @@ Kiuj romaj ciferoj havas la valoron pli grandan ol 50?
 respondo: <code id='respondo_5'></code>
 
 
-<script src="https://cdn.jsdelivr.net/npm/tau-prolog@0.3.2/modules/core.min.js"></script>
 
 <script>
 

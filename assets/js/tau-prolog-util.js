@@ -6,22 +6,50 @@
  * @param {*} programo 
  * @returns seancon por posta pridemandado
  */
-function konsultu(prologo,programo) {
+function konsultu(programo,seanco = null) {
+    let snc = seanco? seanco : pl.create();
         
     return new Promise((resolve, reject) => {
-        const seanco = prologo.create();
-        seanco.consult(programo, {
-            success: () => resolve(seanco), // redonu la seancon por la sekva paŝo
-            error: (err) => reject(new Error(`erara programo: ${err}`))
+        snc.consult(programo, {
+            success: () => resolve(snc), // redonu la seancon por la sekva paŝo
+            error: (err) => {
+                console.error(`erara programo: ${err}`);
+                reject(new Error(`erara programo: ${err}`))
+            }
         });
     });
+}
+
+async function konsultu_plurajn(programoj,opc={},seanco=null) {
+    let snc = seanco? seanco : pl.create();
+
+    function _konsultu(prg) {
+        return new Promise((resolve, reject) => {
+            snc.consult(prg, Object.assign(opc,{
+                success: () => resolve(snc), // redonu la seancon por la sekva paŝo
+                error: (err) => {
+                    console.error(`erara programo: ${err}`);
+                    reject(new Error(`erara programo: ${err}`))
+                }
+            }));
+        });
+    }
+
+    for (p of programoj) {
+        await _konsultu(p);
+    }
+
+    return snc;
 }
 
 function demandu(seanco, demando) {
     return new Promise((resolve, reject) => {
         seanco.query(demando, {
             success: () => resolve(seanco), // redonu la seancon por la sekva paŝo
-            error: (err) => reject(new Error(`erara demando: ${err}`))
+            error: (err) => {
+                console.error(`erara demando: ${err}`);
+                reject(new Error(`erara demando: ${err}`))
+            }
         });
     });
 }
@@ -31,8 +59,14 @@ function sekva_respondo(seanco) {
         seanco.answer({
             success: (respondo) => resolve(respondo),
             fail: () => resolve(null), // ne (plu) troviĝas respondoj
-            error: (err) => reject(new Error(responderaro(err))),
-            limit: () => reject(new Error("tro longa kalkulado"))
+            error: (err) => {
+                console.error(`responderaro: ${responderaro(err)}`);
+                reject(new Error(responderaro(err)))
+            },
+            limit: () => {
+                console.error(`tro multaj rezonpaŝoj`);
+                reject(new Error("tro multaj rezonpaŝoj"))
+            }
         });
     });
 }
@@ -65,11 +99,11 @@ function responderaro(eraro) {
  */
 async function demando_respondo(seanco,id_demando,id_respondo,maks_respondoj=1) {
     try {
-        const demando = document.querySelector(`#${id_demando} code`)
-            .textContent
+        const demando = document.querySelector(`#${id_demando}`)
+            .innerText
             .replace(/^\s*\?\-/,'');
         // forigu evtl. antaŭajn respondojn
-        document.getElementById(id_respondo).textContent ='';
+        document.getElementById(id_respondo).textContent = '';
 
         await demandu(seanco, demando);
         //console.log("✓ Demando sukcese kompreniĝis.");
@@ -102,3 +136,82 @@ async function demando_respondo(seanco,id_demando,id_respondo,maks_respondoj=1) 
         document.getElementById(id_respondo).append('('+error.message+')');
     }
 }
+
+/***
+var pl;
+(function( pl ) {
+    // Name of the module
+    var name = "my_dom";
+    // Object with the set of predicates, indexed by indicators (name/arity)
+    var predicates = function() {
+        return {
+            // p/1
+            "js_dom/2": function(thread, point, atom) {
+
+                var js = atom.args[0], element = atom.args[1];
+                
+                if( !pl.type.is_variable( element ) ) {
+                    session.throw_error( pl.error.type( "HTMLObject", element, atom.indicator ) );    
+                }        
+    
+                if(js.value instanceof HTMLElement ||
+                   js.value instanceof SVGElement) {
+    
+                    var html = new pl.type.DOM( js.value );
+                    session.prepend( [
+                        new pl.type.State( 
+                            point.goal.replace( 
+                                new pl.type.Term( "=", [html, element] ) ), 
+                                point.substitution, 
+                                point 
+                        )
+                    ] );    
+                }
+                //    thread.success(point.replace(
+                //        new pl.type.State(
+                //            point.goal.replace(
+                //                new pl.type.Substitution({
+                //                    DOMObject: dom
+                //                })
+                //            )
+                //        )
+                //    ));
+            } // js_dom/2
+        } // return
+    }; // predicates
+    // List of predicates exported by the module
+    var exports = ["js_dom/2"];
+
+    var options = {
+        // List the dependencies of your module (ie. the 'lists' module)
+        dependencies: ['dom']
+    }
+
+    // DON'T EDIT
+    if( typeof module !== 'undefined' ) {
+        module.exports = function(tau_prolog) {
+            pl = tau_prolog;
+            new pl.type.Module( name, predicates(), exports, options );
+        };
+    } else {
+        new pl.type.Module( name, predicates(), exports, options );
+    }
+})( pl );
+**/
+
+// Registriere ein eigenes "spy"-Modul
+//var debugPredicates = {
+//    "spy/1": function(thread, point, atom) {
+//        var arg = atom.args[0];
+//        // Gibt den aktuellen Begriff formatiert in der Browser-Konsole aus
+//        console.log("-> PROLOG STEP:", arg.toString());
+//        
+//        // Prolog einfach normal weiterlaufen lassen
+//        thread.prepend([new pl.type.State(
+//            point.goal.replace(atom, null), 
+//            point.substitution, 
+//            point
+//        )]);
+//    }
+//};
+//new pl.type.Module("debug_helper", debugPredicates, ["spy/1"]);
