@@ -121,7 +121,7 @@ async function demando_respondo(seanco,id_demando,id_respondo,maks_respondoj=1) 
             if (respondo) {
                 document.getElementById(id_respondo).append(
                     (pl.format_answer(respondo)).replace(/^true/,'jes')
-                    +' ');
+                    +(maks_respondoj>1?'; ':''));
             } else {
                 console.log("Neniu solvo trovita (false).");
             }
@@ -129,7 +129,7 @@ async function demando_respondo(seanco,id_demando,id_respondo,maks_respondoj=1) 
         }
 
         // montru "ne." se neniu respondo troviĝis
-        if(!kiom) document.getElementById(id_respondo).append('ne.');
+        if(!kiom) document.getElementById(id_respondo).append('ne');
 
     } catch (error) {
         console.error("Ĝenerala eraro:", error.message);        
