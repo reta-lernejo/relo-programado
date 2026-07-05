@@ -111,11 +111,11 @@ function responderaro(eraro) {
  * @param {number} maksimumo de respondoj, apriore 1, se 0 t.e. ĉiuj
  */
 async function demando_respondo(seanco,demando,respondo,maks_respondoj=1) {
+    const demandElemento = (demando instanceof HTMLElement)? demando : document.getElementById(demando);
+    const respondElemento = (respondo instanceof HTMLElement)? respondo : document.getElementById(respondo);
     try {
-        const demandElemento = (demando instanceof HTMLElement)? demando : document.getElementById(demando);
-        const respondElemento = (respondo instanceof HTMLElement)? respondo : document.getElementById(respondo);
 
-        const demandkodo = demandElemento.innerText.replace(/^\s*\?\-/,'');
+        const demandkodo = demandElemento.innerText;
         // forigu evtl. antaŭajn respondojn
         respondElemento.textContent = '';
 

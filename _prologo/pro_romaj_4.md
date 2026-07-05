@@ -1,152 +1,154 @@
 ---
 layout: laborfolio
 title: Romaj ciferoj per Prologo 4
+next_ch: pro_romaj_5
 js:
     - tau-prolog
     - tau-prolog-util
 css:
-    - tau-prolog
+    - tau-prolog   
 ---
 
-* Enhavo
-{:toc}
+### Reguloj por romaj nombroj
 
-### Gramatikoj
+Ni nun lernis sufiĉe por provi difinon de romaj nombroj. Ni komencu per la trivialaj kazoj.
 
+#### Triviala kazo
 
-```prolog
-
-:- use_module(library(dom)).
-
-% 1..9
-i(1) --> "I".
-i(2) --> "II".
-i(3) --> "III".
-
-r1_9(N) --> i(N). % 1..3
-r1_9(4) --> "IV". 
-r1_9(5) --> "V".
-r1_9(N) --> "V", i(Ni), { N is 5+Ni }. % 6..8
-r1_9(9) --> "IX".
-
-% 1..99
-x(10) --> "X".
-x(20) --> "XX".
-x(30) --> "XXX".
-
-r1_39(NN) --> r1_9(NN). % 1..9
-r1_39(NN) --> x(NN).    % 10, 20, 30
-r1_39(NN) --> x(Nx), r1_9(N), { NN is Nx+N }.
-
-r1_99(NN) --> r1_39(NN). % 1..39
-r1_99(40) --> "XL".
-r1_99(NN) --> "XL", r1_9(N),   { NN is 40+N }.  % 41..49
-r1_99(50) --> "L".
-r1_99(NN) --> "L",  r1_39(N_), { NN is 50+N_ }. % 51..89
-r1_99(90) --> "XC".
-r1_99(NN) --> "XC", r1_9(N),   { NN is 90+N }.  % 91..99
-
-% 1..999
-c(100) --> "C".
-c(200) --> "CC".
-c(300) --> "CCC".
-
-r1_399(NNN) --> r1_99(NNN).
-r1_399(NNN) --> c(NNN).
-r1_399(NNN) --> c(Nc), r1_99(NN), { NNN is Nc+NN }.
-
-r1_999(NNN) --> r1_399(NNN).
-r1_999(400) --> "CD".
-r1_999(NNN) --> "CD", r1_99(NN),   { NNN is 400+NN }.  % 401..499
-r1_999(500) --> "D".
-r1_999(NNN) --> "D",  r1_399(NN_), { NNN is 500+NN_ }. % 501..899
-r1_999(900) --> "CM".
-r1_999(NNN) --> "CM", r1_99(NN),   { NNN is 900+NN }.  % 901..999
-
-% 1..3999
-m(1000) --> "M".
-m(2000) --> "MM".
-m(3000) --> "MMM".
-
-r1_3999(NNNN) --> r1_999(NNNN).
-r1_3999(NNNN) --> m(NNNN).
-r1_3999(NNNN) --> m(Nm), r1_999(NNN), { NNNN is Nm+NNN }.
-
-roma_nombro(Rom,Dec) :-
-    number(Dec),
-    phrase(r1_3999(Dec),RC),
-    atom_chars(Rom,RC).
-
-roma_nombro(Rom,Dec) :-
-    atomic(Rom),
-    atom_chars(Rom,RC),
-    phrase(r1_3999(Dec),RC).
-
-eligo_al(Id) :-
-    get_by_id(Id,Elemento),
-    open(Elemento,write,Fluo),
-    set_output(Fluo).
-
-nombru(De,Ghis) :-
-    between(De,Ghis,N),
-    roma_nombro(Roma,N),
-    write(Roma),write(','),fail.
-%nombru(_,_).    
-
-renombru(De,Ghis) :-
-    between(De,Ghis,N),
-    romia(N,Roma),
-    write(Roma),
-    write(' --> '),
-    roma_nombro(Roma,N1),
-    write(N1),
-    nl,fail.
-
-```
-{: #romaj_ciferoj}
-
-
----
+se ni ricevas malplenan liston, ni konsideru tion kiel nulo - laŭ valoro - la romanoj ne havis ciferon 'nul'.
+Se ni ricevas signoliston kun nur unu elemento, tio devas esti cifero. Do:
 
 
 ```prolog
-?- roma_nombro('MCMXCIV',Valoro).
+roma_cifero('I',1).
+roma_cifero('V',5).
+roma_cifero('X',10).
+roma_cifero('L',50).
+roma_cifero('C',100).
+roma_cifero('D',500).
+roma_cifero('M',1000).
+
+roma_nombro([],0).
+roma_nombro([Cifero],Valoro) :- roma_cifero(Cifero,Valoro).
 ```
-{: #demando_1}
+{:.programo contenteditable="true"}
 
-respondo: <code id='respondo_1'></code>
+#### Adicia regulo
 
---- 
+Se ni ricevas signoliston kun pli ol unu elemento, ni rigardos la unuajn du. Se la dua cifero
+estas egala aŭ pli malgranda ol la unua ni adicias ĝin al la nombro, kiun ni 
+ricevos el la cetero de la signolisto, t.e. dua ĝis lasta elemento:
+
+```prolog
+roma_nombro([C1,C2|Resto],Valoro) :-
+    roma_cifero(C1,V1),
+    roma_cifero(C2,V2),
+    V1>=V2,!,
+    roma_nombro([C2|Resto],RestValoro),
+    Valoro is V1 + RestValoro.
+```
+{:.programo contenteditable="true"}
+
+Vi vidas, ke eblas disanalizi la liston jam en la regulkapo: `roma_nombro([C1,C2|Resto],Valoro) :- ...`
+estas konciza maniero anstataŭ `roma_nombro(Signoj,Valoro) :- Signoj = [C1,C2|Resto], ...`, tio ŝparas unu linion,
+sed ankaŭ jam en la kapo montras, kiam la regulo estas aplikebla: la signaro devas havi almenaŭ du elementojn.
+
+#### Subtraha regulo
+
+Alia kazo estas, se malgranda cifero aperas antaŭ unu el 'X','C', 'M', tiam oni subtrahas ĝin. 
+(Ni testos tion per `member/2`, kiu kontrolas, ĉu elemento troviĝas en listo. Ĝi
+troviĝas en aparta modulo `lists`, kiun ni inkluzvas do.)
+Tamen, ne arbitraj ciferoj povas aperi en tiel inversigita ordo: la maldekstra devas esti 
+kvinono aŭ dekono de la dekstra:
 
 
 ```prolog
-?- roma_nombro(R,1887).
+:- use_module(library(lists)).
+
+roma_nombro([C1,C2|Resto],Valoro) :-
+    roma_cifero(C1,V1),
+    roma_cifero(C2,V2),
+    member(C2,"XCM"),
+    (V2 is V1 * 5; V2 is V1 * 10),!,
+    roma_nombro([C2|Resto],RestValoro),
+    Valoro is RestValoro - V1.
+
+% kiam la signaro havas almenaŭ du elementojn, kiuj
+% tamen ne plenumas la du antaŭajn alternativojn (adicia kaj subtraha), 
+% la nombro devas est malvalida.
+roma_nombro([_,_|_],_) :- throw(malvalida).
+
 ```
-{: #demando_2}
+{:.programo contenteditable="true"}
 
-respondo: <code id='respondo_2'></code>
+Ni devos klarigi kelkajn aferojn, kiujn ni ankoraŭ ne vidis antaŭe:
 
----
+1. Ni nun skribis plurajn regulojn por la sama predikato `roma_nombro/2`. Ili estas 
+alternativoj. Do Prologo aplikos ilin unu post la alia, de supre malsupren ĝis unu veriĝos.
+Tiam ĝi redonos la rezulton kiel solvo.
 
-```prolog
-?- eligo_al(eligo_3),nombru(1,10).
-```
-{: #demando_3}
-eligo: <code id="eligo_3" style="display: flex; flex-direction: column-reverse; white-space: pre-wrap;"></code>
-respondo: <code id='respondo_3'></code>
+2. La adicia kaj subtraha alternativoj enhavas siavice termon `roma_nombro/2` por trovi la valoron
+de la restnombro (sen la unua cifero). Tiam prologo por tiu pli mallonga signaro rekomencos
+apliki la regulojn des supre malsupren: se la resto estas malplena la unua regulo aplikiĝus, sed 
+nu tio ne povas okazi, ĉar ni jam kontrolis, ke anakŭ estu dua elemento - do efektive ni 
+povus rezigni pri la nul-regulo. Ni bezonos ĝin nur, se tuj en la komenco iu demandos `roma_nombro("",V).`
+Sed ja kontroliĝos la pliaj reguloj: se la resto estas nur unuelemento - ĝi estos cifero kies valoron
+ni scias el niaj faktoj `roma_cifero/2`, se ĝi estas plurelementa ni denove provos apliki la adician aŭ 
+la sutrahan regulon, ĝis ni alvenos ĉe la fino de la listo aŭ ĉe malvalida kombino.
+
+3. Vi vidas, ke ni aldonis escepto-regulon por malvalideco, se ni alvenos tie, la signoj en la nombro
+ne plenumas la antaŭajn regulojn, do ĝi devas esti malvalida. Ja povas esti, ke la maldekstra cifero 
+estas pli malgranda ol la apuda dekstra, sed nek kvinono, nek dekono: "IV", "IX" estas 
+bonaj nombroj, sed "IC", "VM" estas nevalidaj laŭ roma nombrosistemo. 
+En tiu okazo ni alvenos al la lasta alternativo de nia regulo, kiu ĵetos escepton 'malvalida'.
+La esprimo [_,_|_], certigos ke la escepto-regulon ni aplikas nur al signaroj kun du aŭ pli da elementoj.
+
+4. Por ke la apliko de la esceptoregulo funkciu ĝuste, ni aldonis ankoraŭ
+du krisignojn malantaŭ la kondiĉoj de la du antaŭaj reguloj (adicia kaj subtraha). 
+La krisigno `!` nomiĝas *tranĉo*, ĝi funkcias kiel valvo: oni povas trairi ĝin de supre malsupren, sed ne inverse. 
+Kial ni do bezonos tiun valvon? Prologo provos trovi ne nur unu, sed ĉiujn eblajn solvojn ĝis ĝi ne plu trovas iujn.
+Do se ĝi ekzemple trovis solvon laŭ la adicia regulo, ĝi serĉos plian solvon kaj elprovos ĉiujn sekvajn regulojn 
+ankaŭ ĝis ĝi alvenos ĉe la esceptoregulo kaj tiam ĵetos kiel dua solvo 'malvalida' - kio ja ne estas prava.
+Do la `!` signos al Prologo: se vi jam alvenis ĉe la adicia (aŭ subtraha) regulo laŭ la donitaj kondiĉoj, ne
+plu serĉu malsupre aliajn alternativojn. Sen la `!` ni devus testi la inversajn kondiĉojn en la esceptoregulo mem, por 
+certigi ke la du unaj ciferoj plenumas nek la adician, nek la subtrahan regulojn.
+
+Vi povas ŝanĝi la kodon supre, ekzemple forigi la krisignojn por vidi, kiel ilia foresto efikas.
+
+{% include prolog-ekzerco.html query=
+  "roma_nombro(\"MDCCCLXXXVII\",Valoro)." %}
+
+Bedaŭrinde tiu realigo havas ankoraŭ limigojn. Unue ĝi permesas ankaŭ nevalidajn nombrojn, 
+kiel ekzemple "IXV". Laŭ la roma nobrosistemo oni ne rajtas adicia 9 kaj 5 al 14, sed devus skribi "XIV".
+
+{% include prolog-ekzerco.html query=
+  "roma_nombro(\"IXV\",Valoro)." %}
+
+Alia problemo estas, ke ĝi apenaŭ funkcias en la kontraŭa direkto, t.e. traduki araban nombron en roman.
+Ĝi inventas multajn malĝustajn nombrojn kaj krome, por ĉiu cifero en la nombro necesas 
+elprovi ĉiujn sep ciferojn. Do por jarnombro 1887, t.e. jam 7^13, do preskaŭ 
+10 miliardoj da eblaj kombionoj.
+
+{% include prolog-ekzerco.html query=
+  "roma_nombro(R,8),!." %}
+
+Por propre solvi tiujn mankojn ni povas eluzi la eblecon difini gramatikon en Prologo.
 
 <script>
 
-    async function prologo() {
-        const programo = document.querySelector('#romaj_ciferoj code').textContent;
-        console.log(programo);
-
-        const seanco = await konsultu(pl,programo);
-        await demando_respondo(seanco,'demando_1','respondo_1');
-        await demando_respondo(seanco,'demando_2','respondo_2');
-        await demando_respondo(seanco,'demando_3','respondo_3',999);
-        //await demando_respondo(seanco,'demando_4','respondo_4');
+    async function prologo(demando,respondo,maks_respondoj) {
+        let programo = '';
+        document.querySelectorAll('.programo code').forEach((c) => {
+            programo += c.innerText;
+        });
+        
+        const limo = 3000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
+        const seanco = pl.create(limo);
+        await konsultu(programo,seanco);
+        await demando_respondo(seanco,demando,respondo,maks_respondoj);
     }
 
-    prologo();
+    preparu_ekzercojn(prologo);
 </script>
+
+

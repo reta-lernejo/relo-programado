@@ -33,34 +33,34 @@ roma_cifero('M',1000).
 Poste ni povas pridemandi la donitajn faktojn pri romaj ciferoj laŭ diversaj manieroj. Ĉe tio ni uzas *variablojn*.
 Variabloj devas esti majusklaj (sen citiloj).
 
-1\. Kiom valoras la roma cifero 'C'? (kun variablo Valoro)
+1\. Kiom valoras la roma cifero `C`? (kun variablo `Valoro`)
 
-{% include prolog-ekzerco.html id="e1" query="roma_cifero('C',Valoro)." %}
+{% include prolog-ekzerco.html query="roma_cifero('C',Valoro)." %}
 
 2\. Kiu roma cifero havas la valoron kvindek?
 
-{% include prolog-ekzerco.html id="e2" query="roma_cifero(Roma,50)." %}
+{% include prolog-ekzerco.html query="roma_cifero(Roma,50)." %}
 
-3\. Ĉu la roma cifero 'D' havas la valoron mil?
+3\. Ĉu la roma cifero `D` havas la valoron mil?
 
-{% include prolog-ekzerco.html id="e3" query="roma_cifero('D',1000)." %}
+{% include prolog-ekzerco.html query="roma_cifero('D',1000)." %}
 
-*Tasko*: Ĉu vi povas ŝanĝi la supran demandon tiel, ke la respondo estos 'jes'?
+*Tasko*: Ĉu vi povas ŝanĝi la supran demandon tiel, ke la respondo estos `jes`?
 
 4\. Kiuj romaj ciferoj havas valoron pli grandan ol 50?
 
-{% include prolog-ekzerco.html id="e4" n="9" query="roma_cifero(Roma,Valoro), Valoro>50." %}
+{% include prolog-ekzerco.html n="9" query="roma_cifero(Roma,Valoro), Valoro>50." %}
 
 La komon legu kiel 'kaj'!
 
 5\. Kiuj romaj ciferoj havas valoron 50 aŭ 500?
 
-{% include prolog-ekzerco.html id="e5" n="9" query="roma_cifero(Roma,Valoro), (Valoro=50;Valoro=500)." %}
+{% include prolog-ekzerco.html n="9" query="roma_cifero(Roma,Valoro), (Valoro=50;Valoro=500)." %}
 
 La punktokomon legu kiel 'aŭ'!
 
 *Tasko*: Demandu pri ĉiuj romaj ciferoj, kies valoro estas cent aŭ pli malalta ol cent!
-(Laŭplaĉe vsi povas uzi punktokomon kiel 'aŭ', sed ankaŭ rilaton '=<')
+(Laŭplaĉe vsi povas uzi punktokomon kiel 'aŭ', sed ankaŭ rilaton `=<`)
 
 <script>
 

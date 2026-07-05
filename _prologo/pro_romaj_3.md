@@ -9,47 +9,10 @@ css:
     - tau-prolog   
 ---
 
-### Kombinoj, operatoroj kaj listoj
-
-Ni jam vidis kiel uzi datumtipojn *nombro* kaj *atomo*. Sed oni povas ilin kombini en esprimoj kiel 'k(e,5)'. 
-Tion oni kosekvence nomas *kombino*:
-
-{% include prolog-ekzerco.html id="e1" query=
- "Kombino_1 = k(e,5), Kombino_2 = +(1,2), 
-  Kombino_3 = roma_cifero('X',10)." %}
-
-Kombinoj aspektas iom kiel funkcioj aŭ esprimoj en aliaj programlingvoj, sed ili ne aŭtomete kalkuliĝas. 
-Uzataj kiel datumtipo, ili simple staras por si mem.
-
-Kelkajn specialajn kombinojn oni povas skribi alternative per operatoro kiel en aritmetiko. Interne ili transformiĝas al
-sia kombina formo. Ni elprovu tion per operatoro '+' kaj '=':
-
-{% include prolog-ekzerco.html id="e2" query=
- "Kombino_1 = +(1,2), Kombino_2 = 1+2, 
-  Egala = (Kombino_1 = Kombino_2)." %}
-
-Do, la egalsigno ne servas por aritmetika kalkulo, sed nur por egaligi du esprimojn. Sed ja ekzistas ankaŭ operatoro por aritmetiko: 'is':
-
-{% include prolog-ekzerco.html id="e2" query=
- "Sumo is +(1,2), Kombino = 1+2, 
-  Diferenco is Sumo - Kombino." %}
-
-'Sumo' kalkuliĝas tuj pro uzo de 'is', sed 'Kombino' kalkuliĝas nur kiam ni uzas ĝin por kalkuli 'Diferenco'n.
-
-Kombinoj kun '.' estas specialaj: oni konstruas per ĝi *listo*jn: la unua argumento estas la *kapo*, kaj la dua argumento estas la resto,
-kiu siavice povas esti listo. Ĉar tiu ingigo kondukus al multaj malfacile legeblaj krampoj oni pli pratike skribas
-listojn per angulaj krampoj. La fino der ĉiu listo estas la *malplena listo* []:
-
-{% include prolog-ekzerco.html id="e2" query=
- "Fino = [], Listo1 = .(1,[]), Listo1 = .(1,Fino), Listo1 = [1],
-  Listo123 = .(1,.(2,.(3,[]))), Listo123 = [1,2,3]." %}
-
-
-
-L = .(1,.(2,.(3,4)))
-
 ### Predikatoj, klaŭzoj, reguloj.
 
+Por adicii romajn ciferojn ni devas difini *regulo*jn kiel fari tion. Ni komencu tute
+simple:
 
 ```prolog
 roma_cifero('I',1).
@@ -60,106 +23,83 @@ roma_cifero('C',100).
 roma_cifero('D',500).
 roma_cifero('M',1000).
 
-roma_nombro(Roma,Valoro) :- 
-    atom(Roma),!,
-    atom_chars(Roma,Signoj),
-    roma_sumo(Signoj,Valoro).
-
-%roma_nombro(Roma,Valoro) :- 
-%    integer(Valoro),!,
-%    roma_sumo(Signoj,Valoro),
-%    atom_chars(Roma,Signoj).
-
-
-roma_sumo([],0).
-roma_sumo([Cifero],Valoro) :- roma_cifero(Cifero,Valoro).
-
-roma_sumo([Granda,Malgranda|Resto],Valoro) :-
-    roma_cifero(Malgranda,MgVal),
-    roma_cifero(Granda,GrVal),
-    GrVal>=MgVal,!,
-    roma_sumo([Malgranda|Resto],RestValoro),
-    Valoro is GrVal + RestValoro.
-
-roma_sumo([Malgranda,Granda|Resto],Valoro) :-
-    roma_cifero(Malgranda,MgVal),
-    roma_cifero(Granda,GrVal),
-    (GrVal is MgVal * 5; GrVal is MgVal * 10),!,
-    roma_sumo([Granda|Resto],RestValoro),
-    Valoro is - MgVal + RestValoro.
-
-roma_sumo([_,_|_],_) :- throw(malvalida).
-
+roma_sumo(C1,C2,Sumo) :-
+    roma_cifero(C1,V1),
+    roma_cifero(C2,V2),
+    VS is V1 + V2,
+    roma_cifero(Sumo,VS).
 ```
 {: #romaj_ciferoj contenteditable="true"}
 
+Do, kion faras la regulo `roma_sumo`? Ĝi eltrovas la valorojn de la du donitaj ciferoj,
+adicias ilin kaj trovas roman ciferon, kies valoro egalas al la sumo. Nu, tio funkcias nur esceptokaze, 
+ĉar la sumo kutime ne hazarde respondas al alia cifero. Jen elprovu:
 
----
+{% include prolog-ekzerco.html query=
+ "roma_sumo('V','V',Sumo1)." %}
 
+Antaŭ plibonigi tion, ni lernu ankoraŭ kelkajn terminojn: La nomojn de la kombinoj per kiujn ni donas faktojn kaj
+regulojn, nomiĝas *predikato*j. Ili konsistigas rilaton inter siaj *argumento*j: La predikato `roma_cifero` difinas 
+rilatojn inter la ciferoj I, V, X,... kaj iliaj valoroj (skribitaj kiel arabaj nombroj). La predikato `roma_sumo` 
+difinas rilaton inter du ciferoj kaj tria cifero, kiu estas ilia sumo. 
 
-```prolog
-roma_nombro('MCMXCIV',Valoro).
-```
-{:.demando #demando_1 contenteditable="true"}
-[respondu]
-{: .butonoj #resp_1}
-<code id='respondo_1'></code>
+Ĉar la nombro de argumentoj tiel gravas, por
+distinig samnomajn predikatojn kun diversa nombro de argumentoj oni konvencie indikas tiujn: `roma_cifero/2`,
+`roma_sumo/3`.
 
---- 
+preczigu...:
+Ambaŭ, faktoj kaj reguloj estas *klaŭzo*j. Regula klaŭzo havas *kapo*n kaj *korpo*n. La klaŭzo veriĝas, se troviĝas solvo de 
+(instanciigo de la variabloj), tia ke kapo kaj korpo egaliĝas (*unuiĝas*).
 
+Fakto estas speciala klaŭzo, kiu konsistas nur el la kapo. La korpon oni ne skribas, sed implicas ke ĝi ĉiam estas `true.` (vera).
 
-```prolog
-roma_nombro('MXMIV',Valoro).
-```
-{:.demando #demando_2 contenteditable="true"}
-[respondu]
-{: .butonoj #resp_2}
-<code id='respondo_2'></code>
+### Rilato inter klaŭzoj de Prologo kaj datumbazoj
 
----
+Se vi estas familiara kun datumbazoj, vi eble jam rimarkis, 
+ke *fakto* estas ekvivalenta al horizontalo en *tabelo*.
 
-```prolog
-roma_nombro('MMXXVI',2026).
-```
-{:.demando #demando_3 contenteditable="true"}
-[respondu]
-{: .butonoj #resp_3}
-<code id='respondo_3'></code>
+**roma_cifero**
 
----
+|roma|val|
+|-- |--  |
+|'I'|   1|
+|'V'|   5|
+|'X'|  10|
+|'L'|  50|
+|'C'| 100|
+|'D'| 500|
+|'M'|1000|
 
-Bedaŭrinde tiu realigo havas limigojn. Unue ĝi permesas ankaŭ nevalidajn nombrojn, 
-kiel ekzemple IXV.
-
-```prolog
-roma_nombro('IXV',A). 
-```
-{:.demando #demando_4 contenteditable="true"}
-[respondu]
-{: .butonoj #resp_4}
-<code id='respondo_4'></code>
-
----
-
-Alia problemo estas, ke ĝi ne funkcias en la kontraŭa direkto, t.e. traduki araban nombron en roman:
+Demando al Prolog-programo kaj demando al datumbazo estas certagrade ekvivalentaj.
+Kaj *regulo* estas iom analoga al *rigardo* en datumbazo:
 
 ```prolog
-roma_nombro(R,3). % 1887
+roma_sumo(C1,C2,Sumo) :-
+    roma_cifero(C1,V1),
+    roma_cifero(C2,V2),
+    VS is V1 + V2,
+    roma_cifero(Sumo,VS).
 ```
-{:.demando #demando_5 contenteditable="true"}
-[respondu]
-{: .butonoj #resp_5}
-<code id='respondo_5'></code>
 
-Por propre solvi tiujn mankojn ni povas eluzi la eblecon difini gramatikon en Prologo.
+En SQL oni skribus ekzemple tiel:
+
+```sql
+CREATE VIEW roma_sumo AS
+  SELECT r1.roma as C1, r2.roma as C2, sum.roma AS Sumo 
+  FROM roma_cifero r1, roma_cifero r2, roma_cifero sum 
+  WHERE sum.val = r1.val + r2.val;
+```
+
+Do anstataŭ `,` (kaj) en Prologo, en datumbazo oni uzas kunigon (angle: *join*). Tamen, ĉar Prologo estas plenkapabla programlingvo, 
+ja reguloj estas multe pli esprimkapablaj ol SQL-komandoj, kiuj rapide longiĝas, komplikiĝas kaj tiam estas nur malfacile,
+tempopostule senerarigeblaj.
+
 
 <script>
 
     async function prologo(demando,respondo,maks_respondoj) {
-        //const programo = document.querySelector('#romaj_ciferoj code').innerText;
-        // console.log(programo);
-        const programo = '';
-
+        const programo = document.querySelector('#romaj_ciferoj code').innerText;
+        
         const seanco = await konsultu(programo);
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
     }

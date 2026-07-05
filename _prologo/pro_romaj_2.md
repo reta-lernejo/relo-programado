@@ -10,13 +10,13 @@ css:
     - tau-prolog    
 ---
 
-### Kombinoj kaj operatoroj
+### Termoj, kombinoj kaj operatoroj
 
-Antaŭ trakti romajn nombrojn, t.e. kunmetitajn el ciferoj, per Prologo, ni devas iom profundigi nian scion pri datumtipoj.
-Ni jam vidis kiel uzi datumtipojn *nombro* kaj *atomo*. Sed oni povas ilin kombini en esprimoj kiel 'k(e,5)'. 
+Antaŭ trakti romajn nombrojn, t.e. kunmetitajn el ciferoj, per Prologo, ni devas iom profundigi nian scion pri *termo*j*.
+Ni jam vidis kiel uzi termojn (datumtipojn) *nombro* kaj *atomo*. Sed oni povas ilin kombini en esprimoj kiel `k(e,5)`. 
 Tion oni kosekvence nomas *kombino*:
 
-{% include prolog-ekzerco.html id="e1" query=
+{% include prolog-ekzerco.html query=
  "Kombino_1 = k(e,5), Kombino_2 = +(1,2), 
   Kombino_3 = roma_cifero('X',10)." %}
 
@@ -24,14 +24,14 @@ Kombinoj aspektas iom kiel funkcioj aŭ esprimoj en aliaj programlingvoj, sed il
 Uzataj kiel datumtipo, ili simple reprezentas sin mem - kvazaŭ formulo.
 
 Kelkajn specialajn kombinojn oni povas skribi alternative per operatoro kiel en aritmetiko. Interne ili transformiĝas al
-sia kombina formo. Ni elprovu tion per operatoro '+' kaj '=':
+sia kombina formo. Ni elprovu tion per operatoro `+` kaj `=`:
 
-{% include prolog-ekzerco.html id="e2" query=
+{% include prolog-ekzerco.html query=
  "Kombino = +(1,2), Kombino = A+B." %}
 
-Do, la egalsigno ne servas por aritmetika kalkulo, sed nur por egaligi du esprimojn. Sed ja ekzistas ankaŭ operatoro por aritmetiko: 'is':
+Do, la egalsigno ne servas por aritmetika kalkulo, sed nur por egaligi du esprimojn. Sed ja ekzistas ankaŭ operatoro por aritmetiko:`is`:
 
-{% include prolog-ekzerco.html id="e3" query=
+{% include prolog-ekzerco.html query=
  "Sumo is +(1,2), Kombino = 1+2, 
   Diferenco is Sumo - Kombino." %}
 
@@ -39,24 +39,33 @@ Do, la egalsigno ne servas por aritmetika kalkulo, sed nur por egaligi du esprim
 
 ### Listoj
 
-Kombinoj kun '.' estas specialaj: oni konstruas per ĝi *listo*jn: la unua argumento estas la *kapo*, kaj la dua argumento estas la resto,
+Kombinoj kun punkto `.` estas specialaj: oni konstruas per ĝi *listo*jn: 
+la unua argumento estas la *kapo*, kaj la dua argumento estas la resto,
 kiu siavice povas esti listo. Ĉar tiu ingigo kondukus al multaj malfacile legeblaj krampoj oni pli pratike skribas
-listojn per angulaj krampoj. La fino der ĉiu listo estas la *malplena listo* []:
+listojn per angulaj krampoj. La fino der ĉiu listo estas la *malplena listo* `[]`:
 
-{% include prolog-ekzerco.html id="e4" query=
+{% include prolog-ekzerco.html query=
  "Fino = [], Listo1 = .(1,[]), Listo1 = .(1,Fino), Listo1 = [1],
   Listo123 = .(1,.(2,.(3,[]))), Listo123 = [1,2,3]." %}
 
 Por analizi signarojn, kiel romaj nombroj, ni traktos ilin kiel listoj de signoj. Se ni havas roman nombron kiel atomo ni povas tiel transformi ĝin en liston de signoj:
 
-{% include prolog-ekzerco.html id="e5" query=
+{% include prolog-ekzerco.html query=
  "Nombro = 'MMXXVI', atom_chars(Nombro,Signoj)." %}
 
 Sed ekzistas eĉ pli eleganta maniero: se oni uzas duoblajn citilojn vorto aŭ teksto estas aŭtomate trakta kiel
 signolisto.
 
-{% include prolog-ekzerco.html id="e6" query=
+{% include prolog-ekzerco.html query=
  "Signoj = \"MMXXVI\"." %}
+
+Liston oni povas ĉiam apartigi en kapon kaj reston per vertikala streko `|`. La unua, resp. duan kaj trian elementon do oni ricevas tiel:
+
+{% include prolog-ekzerco.html query=
+ "Signoj = \"MMXXVI\", Signoj = [Unua|Resto], 
+  Signoj = [_,Dua,Tria|Ceteraj]." %}
+
+La substreko `_` uziĝas kiel ĵokera variablo, kiam oni devas meti ion en konkretan pozicion de kombino, kies konkretan valoron oni nek scias, nek bezonas scii.
 
 <script>
 
