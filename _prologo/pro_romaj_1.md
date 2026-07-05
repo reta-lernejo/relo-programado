@@ -1,8 +1,9 @@
 ---
 layout: laborfolio
 title: Romaj ciferoj per Prologo 1
+chapter: "1. faktoj, demandoj"
+next_ch: pro_romaj_2
 js:
-    #- folio-0c
     - tau-prolog
     - tau-prolog-util
 css:
@@ -50,12 +51,16 @@ Variabloj devas esti majusklaj (sen citiloj).
 
 {% include prolog-ekzerco.html id="e4" n="9" query="roma_cifero(Roma,Valoro), Valoro>50." %}
 
+La komon legu kiel 'kaj'!
+
 5\. Kiuj romaj ciferoj havas valoron 50 aŭ 500?
 
 {% include prolog-ekzerco.html id="e5" n="9" query="roma_cifero(Roma,Valoro), (Valoro=50;Valoro=500)." %}
 
+La punktokomon legu kiel 'aŭ'!
+
 *Tasko*: Demandu pri ĉiuj romaj ciferoj, kies valoro estas cent aŭ pli malalta ol cent!
-(Vi povas uzi punktokomon kiel 'aŭ', sed ankaŭ rilaton '=<')
+(Laŭplaĉe vsi povas uzi punktokomon kiel 'aŭ', sed ankaŭ rilaton '=<')
 
 <script>
 

@@ -43,7 +43,7 @@ minima:
 # kosmo | tero | vivo | laboro
 
 collections:
-  programado:
+  prologo:
     output: true
   kov:
     output: true

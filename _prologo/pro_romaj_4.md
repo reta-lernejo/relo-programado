@@ -1,9 +1,11 @@
 ---
 layout: laborfolio
-title: Romaj ciferoj per Prologo 3
+title: Romaj ciferoj per Prologo 4
 js:
     - tau-prolog
     - tau-prolog-util
+css:
+    - tau-prolog
 ---
 
 * Enhavo
