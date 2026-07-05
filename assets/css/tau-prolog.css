@@ -1,0 +1,12 @@
+
+.prolog-ekzerco {
+    border: 2px dotted cornflowerblue;
+    margin: 1em;
+    padding: 1em;
+}
+.demando code::before {
+    content: "?-"
+}
+.respondo button {
+    margin-right: .5em;
+}

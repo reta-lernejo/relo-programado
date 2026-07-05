@@ -1,5 +1,18 @@
 /** helpfunkcioj por pli konforta uzo de tau-prolog */
 
+function preparu_ekzercojn(prologo) {
+
+    document.querySelectorAll(".prolog-ekzerco button").forEach(butono => {
+        butono.addEventListener("click", () => {
+            const ekzemplo = butono.closest(".prolog-ekzerco");
+            const demando = ekzemplo.querySelector(".demando");
+            const respondo = ekzemplo.querySelector(".respondo code");
+            const maks_respondoj = respondo.dataset.maksRspnd;
+            prologo(demando,respondo,maks_respondoj);
+        });
+    });
+}
+
 /**
  * Ŝargas programon (faktoj kaj predikatoj), donitan kiel signaro, plej komforte kiel plurlinia
  * uzante klinitajn citilojn `...`
@@ -93,34 +106,35 @@ function responderaro(eraro) {
  * kaj eltrovas ĉiujn respondojn ĝis donita maksimumo kaj adlonas ilin
  * en HTML-elemento donita per sia id
  * @param {*} seanco la seanco kun la ŝargita programo
- * @param {*} id_demando HTML-elemento kun la demando
- * @param {*} id_respondo HTML-elemento kun la respondo
+ * @param {*} demando HTML-elemento (aŭ ties id) kun la demando
+ * @param {*} respondo HTML-elemento (aŭ ties id) kun la respondo
  * @param {number} maksimumo de respondoj, apriore 1, se 0 t.e. ĉiuj
  */
-async function demando_respondo(seanco,id_demando,id_respondo,maks_respondoj=1) {
+async function demando_respondo(seanco,demando,respondo,maks_respondoj=1) {
     try {
-        const demando = document.querySelector(`#${id_demando}`)
-            .innerText
-            .replace(/^\s*\?\-/,'');
-        // forigu evtl. antaŭajn respondojn
-        document.getElementById(id_respondo).textContent = '';
+        const demandElemento = (demando instanceof HTMLElement)? demando : document.getElementById(demando);
+        const respondElemento = (respondo instanceof HTMLElement)? respondo : document.getElementById(respondo);
 
-        await demandu(seanco, demando);
+        const demandkodo = demandElemento.innerText.replace(/^\s*\?\-/,'');
+        // forigu evtl. antaŭajn respondojn
+        respondElemento.textContent = '';
+
+        await demandu(seanco, demandkodo);
         //console.log("✓ Demando sukcese kompreniĝis.");
-        console.log('demando: '+demando)
+        console.log('demando: '+demandkodo)
 
         // ricevu unua respondon
         //let respondo = await sekva_respondo(seanco);
         let kiom = 0;
 
-        let respondo;
-        while( (respondo = await sekva_respondo(seanco)) 
+        let respondkodo;
+        while( (respondkodo = await sekva_respondo(seanco)) 
             && (kiom < maks_respondoj || maks_respondoj == 0) ) {
             kiom += 1;
 
-            if (respondo) {
-                document.getElementById(id_respondo).append(
-                    (pl.format_answer(respondo)).replace(/^true/,'jes')
+            if (respondkodo) {
+                respondElemento.append(
+                    (pl.format_answer(respondkodo)).replace(/^true/,'jes')
                     +(maks_respondoj>1?'; ':''));
             } else {
                 console.log("Neniu solvo trovita (false).");
@@ -129,11 +143,11 @@ async function demando_respondo(seanco,id_demando,id_respondo,maks_respondoj=1) 
         }
 
         // montru "ne." se neniu respondo troviĝis
-        if(!kiom) document.getElementById(id_respondo).append('ne');
+        if(!kiom) respondElemento.append('ne');
 
     } catch (error) {
         console.error("Ĝenerala eraro:", error.message);        
-        document.getElementById(id_respondo).append('('+error.message+')');
+        respondElemento.append('('+error.message+')');
     }
 }
 

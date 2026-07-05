@@ -2,21 +2,12 @@
 layout: laborfolio
 title: Romaj ciferoj per Prologo 1
 js:
-    - folio-0c
+    #- folio-0c
     - tau-prolog
     - tau-prolog-util
+css:
+    - tau-prolog    
 ---
-
-<style>
-    hr {
-        border: none;
-        border-top: 2px dotted cornflowerblue;
-        margin-bottom: 1ex;
-    }
-    .demando code::before {
-        content: "?-"
-    }
-</style>
 
 ### Faktoj kaj atomoj
 
@@ -41,84 +32,40 @@ roma_cifero('M',1000).
 Poste ni povas pridemandi la donitajn faktojn pri romaj ciferoj laŭ diversaj manieroj. Ĉe tio ni uzas *variablojn*.
 Variabloj devas esti majusklaj (sen citiloj).
 
----
+1\. Kiom valoras la roma cifero 'C'? (kun variablo Valoro)
 
-1\. Kion valoras la roma cifero 'C'? (kun variablo Valoro)
-
-```prolog
-roma_cifero('C',Valoro).
-```
-{:.demando #demando_1 contenteditable="true"}
-[respondu]
-{: .butonoj #resp_1}
-<code id='respondo_1'></code>
-
-
----
+{% include prolog-ekzerco.html id="e1" query="roma_cifero('C',Valoro)." %}
 
 2\. Kiu roma cifero havas la valoron kvindek?
 
-```prolog
-roma_cifero(Roma,50).
-```
-{:.demando #demando_2 contenteditable="true"}
-[respondu]
-{: .butonoj #resp_2}
-<code id='respondo_2'></code>
-
----
+{% include prolog-ekzerco.html id="e2" query="roma_cifero(Roma,50)." %}
 
 3\. Ĉu la roma cifero 'D' havas la valoron mil?
 
-```prolog
-roma_cifero('D',1000).
-```
-{:.demando #demando_3 contenteditable="true"}
-[respondu]
-{: .butonoj #resp_3}
-<code id='respondo_3'></code>
+{% include prolog-ekzerco.html id="e3" query="roma_cifero('D',1000)." %}
 
----
+*Tasko*: Ĉu vi povas ŝanĝi la supran demandon tiel, ke la respondo estos 'jes'?
 
-4\. Ĉu la roma cifero 'D' havas la valoron kvincent?
+4\. Kiuj romaj ciferoj havas valoron pli grandan ol 50?
 
-```prolog
-roma_cifero('D',500).
-```
-{:.demando #demando_4 contenteditable="true"}
-[respondu]
-{: .butonoj #resp_4}
-<code id='respondo_4'></code>
+{% include prolog-ekzerco.html id="e4" n="9" query="roma_cifero(Roma,Valoro), Valoro>50." %}
 
----
+5\. Kiuj romaj ciferoj havas valoron 50 aŭ 500?
 
-5\. Kiuj romaj ciferoj havas la valoron pli grandan ol 50?
+{% include prolog-ekzerco.html id="e5" n="9" query="roma_cifero(Roma,Valoro), (Valoro=50;Valoro=500)." %}
 
-```prolog
-roma_cifero(Roma,Valoro), Valoro>50.
-```
-{:.demando #demando_5 contenteditable="true"}
-[respondu]
-{:.demando .butonoj #resp_5}
-<code id='respondo_5'></code>
+*Tasko*: Demandu pri ĉiuj romaj ciferoj, kies valoro estas cent aŭ pli malalta ol cent!
+(Vi povas uzi punktokomon kiel 'aŭ', sed ankaŭ rilaton '=<')
 
 <script>
 
-
-    butone((tasko) => {
-        console.log(tasko);
-
-        const nro = tasko.split('_')[1];
-        const maks_respondoj = nro==5? 9:1;
-        prologo('demando_'+nro,'respondo_'+nro,maks_respondoj);
-    });
-
-    async function prologo(id_demando,id_respondo,maks_respondoj) {
+    async function prologo(demando,respondo,maks_respondoj) {
         const programo = document.querySelector('#romaj_ciferoj code').innerText;
-        // console.log(programo);
 
         const seanco = await konsultu(programo);
-        await demando_respondo(seanco,id_demando,id_respondo,maks_respondoj);
+        await demando_respondo(seanco,demando,respondo,maks_respondoj);
     }
+
+    preparu_ekzercojn(prologo);
 
 </script>
