@@ -7,7 +7,7 @@ function preparu_ekzercojn(prologo) {
             const ekzemplo = butono.closest(".prolog-ekzerco");
             const demando = ekzemplo.querySelector(".demando");
             const respondo = ekzemplo.querySelector(".respondo code");
-            const maks_respondoj = respondo.dataset.maksRspnd;
+            const maks_respondoj = respondo.dataset.maksRspnd || 1;
             prologo(demando,respondo,maks_respondoj);
         });
     });
@@ -128,8 +128,9 @@ async function demando_respondo(seanco,demando,respondo,maks_respondoj=1) {
         let kiom = 0;
 
         let respondkodo;
-        while( (respondkodo = await sekva_respondo(seanco)) 
-            && (kiom < maks_respondoj || maks_respondoj == 0) ) {
+        while ( (kiom < maks_respondoj || maks_respondoj == 0) 
+            &&  (respondkodo = await sekva_respondo(seanco)) ) {
+
             kiom += 1;
 
             if (respondkodo) {

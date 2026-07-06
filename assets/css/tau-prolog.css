@@ -7,6 +7,9 @@
 .demando code::before {
     content: "?-"
 }
+.respondo code {
+  overflow-wrap: break-word;
+}
 .respondo button {
     margin-right: .5em;
 }
