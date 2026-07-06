@@ -36,7 +36,7 @@ adicias ilin kaj trovas roman ciferon, kies valoro egalas al la sumo. Nu, tio fu
 ĉar la sumo kutime ne hazarde respondas al alia cifero. Jen elprovu:
 
 {% include prolog-ekzerco.html query=
- "roma_sumo('V','V',Sumo1)." %}
+ "roma_sumo('V','V',Sumo)." %}
 
 Antaŭ plibonigi tion, ni lernu ankoraŭ kelkajn terminojn: La nomojn de la kombinoj per kiujn ni donas faktojn kaj
 regulojn, nomiĝas *predikato*j. Ili konsistigas rilaton inter siaj *argumento*j: La predikato `roma_cifero` difinas 

@@ -74,8 +74,8 @@ roma_nombro([C1,C2|Resto],Valoro) :-
     Valoro is RestValoro - V1.
 
 % kiam la signaro havas almenaŭ du elementojn, kiuj
-% tamen ne plenumas la du antaŭajn alternativojn (adicia kaj subtraha), 
-% la nombro devas est malvalida.
+% tamen ne plenumas la du antaŭajn regulojn (adicia aŭ subtraha), 
+% la nombro do devas esti malvalida.
 roma_nombro([_,_|_],_) :- throw(malvalida).
 
 ```

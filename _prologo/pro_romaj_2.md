@@ -53,7 +53,7 @@ Por analizi signarojn, kiel romaj nombroj, ni traktos ilin kiel listoj de signoj
 {% include prolog-ekzerco.html query=
  "Nombro = 'MMXXVI', atom_chars(Nombro,Signoj)." %}
 
-Sed ekzistas eĉ pli eleganta maniero: se oni uzas duoblajn citilojn vorto aŭ teksto estas aŭtomate trakta kiel
+Sed ekzistas eĉ pli eleganta maniero: se oni uzas duoblajn citilojn vorto aŭ teksto estas aŭtomate traktata kiel
 signolisto.
 
 {% include prolog-ekzerco.html query=
