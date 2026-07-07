@@ -91,52 +91,46 @@ r1_3999(NNNN) --> m(Nm), r1_999(NNN), { NNNN is Nm+NNN }.
 ```prolog
 roma_nombro(Roma,Valoro) :-
     number(Valoro),
-    phrase(r1_3999(Valoro),Roma).
+    phrase(r1_3999(Valoro),RL),
+    atom_chars(Roma,RL).
 
 roma_nombro(Roma,Valoro) :-
     is_list(Roma),
     phrase(r1_3999(Valoro),Roma).
+
+tempo(Celo,T) :- 
+  get_time(T0),
+  call(Celo),
+  get_time(T1),!,
+  T is T1-T0.    
 ```
 {:.programo contenteditable="true"}
 
 
 
-
----
-
-
 {% include prolog-ekzerco.html query=
-  "roma_nombro(\"MCMXCIV\",Valoro)." %}
+  "tempo(roma_nombro(\"MCMXCIV\",Valoro),Tempo)." %}
 
 {% include prolog-ekzerco.html query=
   "roma_nombro(\"IXV\",Valoro)." %}  
 
 {% include prolog-ekzerco.html query=
-  "roma_nombro(Roma,1887)." %}
+  "tempo(roma_nombro(Roma,1887),Tempo)." %}
 
 {% include prolog-ekzerco.html query=
   "roma_nombro(Roma,8)." %}
 
 ```prolog
-:- use_module(library(lists)).
-
-nombru99(N,N,[Roma]) :-
-    phrase(r1_99(N),Roma).
-
-nombru99(De,Ghis,[Roma|Ceteraj]) :-
+nombru(De,Ghis,Roma) :-
     between(De,Ghis,N),
-    phrase(r1_99(N),Roma),
-    De_1 is De + 1,
-    nombru99(De_1,Ghis,Ceteraj).
+    phrase(r1_999(N),RL),
+    atom_chars(Roma,RL).
 
-nombru99A(De,Ghis,Romaj) :-  
-    nombru99(De,Ghis,Listoj), 
-    maplist(atom_chars,Romaj,Listoj).  
 ```
 {:.programo contenteditable="true"}  
 
-{% include prolog-ekzerco.html query=
-  "nombru99A(77,99,Romaj)." %}
+{% include prolog-ekzerco.html n=1000 query=
+  "tempo(findall(R,nombru(777,999,R),Romaj),Tempo)." %}
 
 
 
@@ -148,10 +142,12 @@ nombru99A(De,Ghis,Romaj) :-
             programo += c.innerText;
         });
         
-        const limo = 20000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
+        const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
         const seanco = pl.create(limo);
         await konsultu(programo,seanco);
-        await demando_respondo(seanco,demando,respondo,maks_respondoj);
+        const penseroj = await demando_respondo(seanco,demando,respondo,maks_respondoj);        
+        console.log("penseroj: "+penseroj);
+        informo(respondo,`penseroj: ${penseroj}/${limo}`);
     }
 
     preparu_ekzercojn(prologo);
