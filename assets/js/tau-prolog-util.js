@@ -153,10 +153,20 @@ async function demando_respondo(seanco,demando,respondo,maks_respondoj=1) {
     }
 }
 
-function tau_info(respondo,informo) {
+// PLIBONIGU: kunigu doni respondon kaj informojn
+// same kiel malplenigi
+async function tau_info(respondo,informo) {
     const respondElemento = (respondo instanceof HTMLElement)? 
         respondo : document.getElementById(respondo);
     const info = respondElemento.parentElement.querySelector(".informo");
+
+    if (!informo) {
+        // malplenigu respondon kaj informon
+        respondElemento.textContent = '';
+        info.textContent = '';
+        // aktualigu antaŭ kalkuli
+        await new Promise(resolve => setTimeout(resolve, 0));
+    }
     if (info) {
         info.innerHTML = informo;
     }

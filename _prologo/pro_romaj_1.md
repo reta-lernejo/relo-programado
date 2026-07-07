@@ -63,12 +63,24 @@ La punktokomon legu kiel 'aŭ'!
 (Laŭplaĉe vsi povas uzi punktokomon kiel 'aŭ', sed ankaŭ rilaton `=<`)
 
 <script>
+    const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
+
+    function informo(seanco,respondo) {
+      const thread = seanco.thread;
+      const msg = 
+        `${thread.cpu_time}ms, ` +
+        `${thread.total_steps} penseroj`;
+      tau_info(respondo,msg);
+    };
 
     async function prologo(demando,respondo,maks_respondoj) {
         const programo = document.querySelector('#romaj_ciferoj code').innerText;
 
         const seanco = await konsultu(programo);
+
+        tau_info(respondo,'');
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
+        informo(seanco,respondo);
     }
 
     preparu_ekzercojn(prologo);

@@ -68,6 +68,15 @@ Liston oni povas ĉiam apartigi en kapon kaj reston per vertikala streko `|`. La
 La substreko `_` uziĝas kiel ĵokera variablo, kiam oni devas meti ion en konkretan pozicion de kombino, kies konkretan valoron oni nek scias, nek bezonas scii.
 
 <script>
+    const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
+
+    function informo(seanco,respondo) {
+      const thread = seanco.thread;
+      const msg = 
+        `${thread.cpu_time}ms, ` +
+        `${thread.total_steps} penseroj`;
+      tau_info(respondo,msg);
+    };
 
     async function prologo(demando,respondo,maks_respondoj) {
         //const programo = document.querySelector('#romaj_ciferoj code').innerText;
@@ -75,7 +84,9 @@ La substreko `_` uziĝas kiel ĵokera variablo, kiam oni devas meti ion en konkr
         const programo = '';
 
         const seanco = await konsultu(programo);
+        tau_info(respondo,'');
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
+        informo(seanco,respondo);
     }
 
     preparu_ekzercojn(prologo);

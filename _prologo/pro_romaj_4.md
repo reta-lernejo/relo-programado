@@ -126,15 +126,29 @@ kiel ekzemple "IXV". Laŭ la roma nobrosistemo oni ne rajtas adicia 9 kaj 5 al 1
 
 Alia problemo estas, ke ĝi apenaŭ funkcias en la kontraŭa direkto, t.e. traduki araban nombron en roman.
 Ĝi inventas multajn malĝustajn nombrojn kaj krome, por ĉiu cifero en la nombro necesas 
-elprovi ĉiujn sep ciferojn. Do por jarnombro 1887, t.e. jam 7^13, do preskaŭ 
+elprovi ĝis sep ciferojn. Do por jarnombro 1887, t.e. maksimume jam 7^13, do preskaŭ 
 10 miliardoj da eblaj kombionoj.
 
 {% include prolog-ekzerco.html query=
-  "roma_nombro(R,8),!." %}
+  "roma_nombro(R,8)." %}
+
+{% include prolog-ekzerco.html query=
+  "roma_nombro(R,1887)." %}
+
 
 Por propre solvi tiujn mankojn ni povas eluzi la eblecon difini gramatikon en Prologo.
 
 <script>
+
+    const limo = 10000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
+
+    function informo(seanco,respondo) {
+      const thread = seanco.thread;
+      const msg = 
+        `${thread.cpu_time}ms, ` +
+        `${thread.total_steps} penseroj`;
+      tau_info(respondo,msg);
+    };
 
     async function prologo(demando,respondo,maks_respondoj) {
         let programo = '';
@@ -142,10 +156,12 @@ Por propre solvi tiujn mankojn ni povas eluzi la eblecon difini gramatikon en Pr
             programo += c.innerText;
         });
         
-        const limo = 3000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
         const seanco = pl.create(limo);
         await konsultu(programo,seanco);
+
+        await tau_info(respondo,null);
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
+        informo(seanco,respondo);
     }
 
     preparu_ekzercojn(prologo);
