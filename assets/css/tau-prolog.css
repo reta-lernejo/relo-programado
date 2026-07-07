@@ -13,3 +13,9 @@
 .respondo button {
     margin-right: .5em;
 }
+.informo {
+    font-style: italic;
+    color: #777;
+    font-size: 90%;
+    margin-left: .5em;
+}

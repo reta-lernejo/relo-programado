@@ -77,8 +77,8 @@ function sekva_respondo(seanco) {
                 reject(new Error(responderaro(err)))
             },
             limit: () => {
-                console.error(`tro multaj rezonpaŝoj`);
-                reject(new Error("tro multaj rezonpaŝoj"))
+                console.error(`tro multaj penseroj`);
+                reject(new Error("tro multaj penseroj"))
             }
         });
     });
@@ -113,6 +113,7 @@ function responderaro(eraro) {
 async function demando_respondo(seanco,demando,respondo,maks_respondoj=1) {
     const demandElemento = (demando instanceof HTMLElement)? demando : document.getElementById(demando);
     const respondElemento = (respondo instanceof HTMLElement)? respondo : document.getElementById(respondo);
+
     try {
 
         const demandkodo = demandElemento.innerText;
@@ -146,9 +147,22 @@ async function demando_respondo(seanco,demando,respondo,maks_respondoj=1) {
         // montru "ne." se neniu respondo troviĝis
         if(!kiom) respondElemento.append('ne');
 
+        
+        return (seanco.thread.total_steps);
+
     } catch (error) {
         console.error("Ĝenerala eraro:", error.message);        
         respondElemento.append('('+error.message+')');
+        return (seanco.thread.total_steps);
+    }
+}
+
+function informo(respondo,informo) {
+    const respondElemento = (respondo instanceof HTMLElement)? 
+        respondo : document.getElementById(respondo);
+    const info = respondElemento.parentElement.querySelector(".informo");
+    if (info) {
+        info.textContent = informo;
     }
 }
 
