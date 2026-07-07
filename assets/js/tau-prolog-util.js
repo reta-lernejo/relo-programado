@@ -147,22 +147,18 @@ async function demando_respondo(seanco,demando,respondo,maks_respondoj=1) {
         // montru "ne." se neniu respondo troviĝis
         if(!kiom) respondElemento.append('ne');
 
-        
-        return (seanco.thread.total_steps);
-
     } catch (error) {
         console.error("Ĝenerala eraro:", error.message);        
         respondElemento.append('('+error.message+')');
-        return (seanco.thread.total_steps);
     }
 }
 
-function informo(respondo,informo) {
+function tau_info(respondo,informo) {
     const respondElemento = (respondo instanceof HTMLElement)? 
         respondo : document.getElementById(respondo);
     const info = respondElemento.parentElement.querySelector(".informo");
     if (info) {
-        info.textContent = informo;
+        info.innerHTML = informo;
     }
 }
 

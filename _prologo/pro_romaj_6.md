@@ -8,10 +8,7 @@ css:
     - tau-prolog
 ---
 
-* Enhavo
-{:toc}
-
-### Gramatikoj
+### Rapidigo
 
 
 ```prolog
@@ -63,12 +60,6 @@ roma_nombro(Roma,Dec) :-
     phrase(dec_roma(Dec),Ciferoj),
     atom_chars(Roma,Ciferoj).
 
-tempo(Celo,T) :- 
-  get_time(T0),
-  call(Celo),
-  get_time(T1),!,
-  T is T1-T0.    
-
 ```
 {:.programo contenteditable="true"}
 
@@ -76,13 +67,13 @@ tempo(Celo,T) :-
 
 
 {% include prolog-ekzerco.html n=3 query=
-  "tempo(roma_nombro(\"MCMXCIV\",Valoro),Tempo)." %}
+  "roma_nombro(\"MCMXCIV\",Valoro)." %}
 
 {% include prolog-ekzerco.html query=
   "roma_nombro(\"IXV\",Valoro)." %}  
 
 {% include prolog-ekzerco.html query=
-  "tempo(roma_nombro(Roma,1887),Tempo)." %}
+  "roma_nombro(Roma,1887)." %}
 
 {% include prolog-ekzerco.html query=
   "roma_nombro(Roma,8)." %}
@@ -95,25 +86,35 @@ nombru(De,Ghis,Roma) :-
 {:.programo contenteditable="true"}  
 
 {% include prolog-ekzerco.html n=1000 query=
-  "tempo(findall(R,nombru(777,999,R),Romaj),Tempo)." %}
+  "nombru(777,999,R)." %}
 
 
 
 <script>
+
+    const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
+
+    function informo(seanco,respondo) {
+      const thread = seanco.thread;
+      const msg = 
+        `${thread.cpu_time}ms, ` +
+        `${thread.total_steps} penseroj`;
+      tau_info(respondo,msg);
+    };
 
     async function prologo(demando,respondo,maks_respondoj) {
         let programo = '';
         document.querySelectorAll('.programo code').forEach((c) => {
             programo += c.innerText;
         });
-        
-        const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
+
         const seanco = pl.create(limo);
+        tau_info(respondo,'');
         await konsultu(programo,seanco);
         const penseroj = await demando_respondo(seanco,demando,respondo,maks_respondoj);
         console.log("penseroj: "+penseroj);
-        informo(respondo,`penseroj: ${penseroj}/${limo}`);
-    }
+        informo(seanco,respondo);
+    };
 
     preparu_ekzercojn(prologo);
 </script>
