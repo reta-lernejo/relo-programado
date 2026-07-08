@@ -1,4 +1,26 @@
 
+.programo {
+    display: flex;
+    font-family: monospace;
+}
+.programo pre {
+    padding-left: 4px;
+}
+.lininombroj {
+    width: 3em;
+    text-align: right;
+    font-family: monospace;
+    font-size: 15px;
+    padding: 10px 2px;
+    color: #777;
+    user-select: none;
+}
+.programo .code {
+    white-space: pre;
+    outline: none;
+    flex: 1;
+}
+
 .prolog-ekzerco {
     border: 2px dotted cornflowerblue;
     margin: 1em;

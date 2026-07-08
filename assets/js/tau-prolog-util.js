@@ -13,6 +13,22 @@ function preparu_ekzercojn(prologo) {
     });
 }
 
+function preparu_programojn() {
+    document.querySelectorAll(".programo").forEach(programo => {
+        const kodo = programo.querySelector("code");
+        kodo.parentElement.setAttribute("contenteditable",true);
+
+        const lininombroj = document.createElement("div");
+        lininombroj.classList.add("lininombroj");
+
+        const ln = kodo.innerText.split("\n").length;
+        lininombroj.innerHTML = Array.from({ length: ln }, (_, i) => i + 1).join("<br>");
+
+        programo.prepend(lininombroj);
+    });
+}
+
+
 /**
  * Ŝargas programon (faktoj kaj predikatoj), donitan kiel signaro, plej komforte kiel plurlinia
  * uzante klinitajn citilojn `...`

@@ -26,7 +26,7 @@ roma_cifero('C',100).
 roma_cifero('D',500).
 roma_cifero('M',1000).
 ```
-{: #romaj_ciferoj contenteditable="true"}
+{:.programo #romaj_ciferoj}
 
 ### Demandoj kaj variabloj
 
@@ -83,6 +83,7 @@ La punktokomon legu kiel 'aŭ'!
         informo(seanco,respondo);
     }
 
+    preparu_programojn();
     preparu_ekzercojn(prologo);
 
 </script>

@@ -61,7 +61,7 @@ roma_nombro(Roma,Dec) :-
     atom_chars(Roma,Ciferoj).
 
 ```
-{:.programo contenteditable="true"}
+{:.programo}
 
 ---
 
@@ -83,7 +83,7 @@ nombru(De,Ghis,Roma) :-
     between(De,Ghis,N),
     roma_nombro(Roma,N).
 ```
-{:.programo contenteditable="true"}  
+{:.programo}  
 
 {% include prolog-ekzerco.html n=1000 query=
   "nombru(777,999,R)." %}
@@ -116,5 +116,6 @@ nombru(De,Ghis,Roma) :-
         informo(seanco,respondo);
     };
 
+    preparu_programojn();
     preparu_ekzercojn(prologo);
 </script>

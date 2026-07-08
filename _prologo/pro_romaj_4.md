@@ -31,7 +31,7 @@ roma_cifero('M',1000).
 roma_nombro([],0).
 roma_nombro([Cifero],Valoro) :- roma_cifero(Cifero,Valoro).
 ```
-{:.programo contenteditable="true"}
+{:.programo}
 
 #### Adicia regulo
 
@@ -47,7 +47,7 @@ roma_nombro([C1,C2|Resto],Valoro) :-
     roma_nombro([C2|Resto],RestValoro),
     Valoro is V1 + RestValoro.
 ```
-{:.programo contenteditable="true"}
+{:.programo}
 
 Vi vidas, ke eblas disanalizi la liston jam en la regulkapo: `roma_nombro([C1,C2|Resto],Valoro) :- ...`
 estas konciza maniero anstataŭ `roma_nombro(Signoj,Valoro) :- Signoj = [C1,C2|Resto], ...`, tio ŝparas unu linion,
@@ -77,9 +77,8 @@ roma_nombro([C1,C2|Resto],Valoro) :-
 % tamen ne plenumas la du antaŭajn regulojn (adicia aŭ subtraha), 
 % la nombro do devas esti malvalida.
 roma_nombro([_,_|_],_) :- throw(malvalida).
-
 ```
-{:.programo contenteditable="true"}
+{:.programo}
 
 Ni devos klarigi kelkajn aferojn, kiujn ni ankoraŭ ne vidis antaŭe:
 
@@ -164,6 +163,7 @@ Por propre solvi tiujn mankojn ni povas eluzi la eblecon difini gramatikon en Pr
         informo(seanco,respondo);
     }
 
+    preparu_programojn();
     preparu_ekzercojn(prologo);
 </script>
 

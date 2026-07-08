@@ -23,7 +23,7 @@ r1_9(5) --> "V".
 r1_9(N) --> "V", i(Ni), { N is 5+Ni }. % 6..8
 r1_9(9) --> "IX".
 ```
-{:.programo contenteditable="true"}
+{:.programo}
 
 ```prolog
 % 1..39
@@ -35,7 +35,7 @@ r1_39(NN) --> r1_9(NN). % 1..9
 r1_39(NN) --> x(NN).    % 10, 20, 30
 r1_39(NN) --> x(Nx), r1_9(N), { NN is Nx+N }.
 ```
-{:.programo contenteditable="true"}
+{:.programo}
 
 ```prolog
 % 1..99
@@ -47,7 +47,7 @@ r1_99(NN) --> "L",  r1_39(N_), { NN is 50+N_ }. % 51..89
 r1_99(90) --> "XC".
 r1_99(NN) --> "XC", r1_9(N),   { NN is 90+N }.  % 91..99
 ```
-{:.programo contenteditable="true"}
+{:.programo}
 
 ```prolog
 % 1..999
@@ -59,7 +59,7 @@ r1_399(NNN) --> r1_99(NNN).
 r1_399(NNN) --> c(NNN).
 r1_399(NNN) --> c(Nc), r1_99(NN), { NNN is Nc+NN }.
 ```
-{:.programo contenteditable="true"}
+{:.programo}
 
 ```prolog
 % 1..999
@@ -71,7 +71,7 @@ r1_999(NNN) --> "D",  r1_399(NN_), { NNN is 500+NN_ }. % 501..899
 r1_999(900) --> "CM".
 r1_999(NNN) --> "CM", r1_99(NN),   { NNN is 900+NN }.  % 901..999
 ```
-{:.programo contenteditable="true"}
+{:.programo}
 
 ```prolog
 % 1..3999
@@ -83,7 +83,7 @@ r1_3999(NNNN) --> r1_999(NNNN).
 r1_3999(NNNN) --> m(NNNN).
 r1_3999(NNNN) --> m(Nm), r1_999(NNN), { NNNN is Nm+NNN }.
 ```
-{:.programo contenteditable="true"}
+{:.programo}
 
 ```prolog
 roma_nombro(Roma,Valoro) :-
@@ -96,7 +96,7 @@ roma_nombro(Roma,Valoro) :-
     phrase(r1_3999(Valoro),Roma).
 
 ```
-{:.programo contenteditable="true"}
+{:.programo}
 
 
 
@@ -119,7 +119,7 @@ nombru(De,Ghis,Roma) :-
     atom_chars(Roma,RL).
 
 ```
-{:.programo contenteditable="true"}  
+{:.programo}  
 
 {% include prolog-ekzerco.html n=1000 query=
   "nombru(777,999,R)." %}
@@ -151,5 +151,6 @@ nombru(De,Ghis,Roma) :-
         informo(seanco,respondo);
     };
 
+    preparu_programojn();
     preparu_ekzercojn(prologo);
 </script>

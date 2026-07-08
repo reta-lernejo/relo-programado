@@ -29,7 +29,7 @@ roma_sumo(C1,C2,Sumo) :-
     VS is V1 + V2,
     roma_cifero(Sumo,VS).
 ```
-{: #romaj_ciferoj contenteditable="true"}
+{:.programo #romaj_ciferoj}
 
 Do, kion faras la regulo `roma_sumo`? Ĝi eltrovas la valorojn de la du donitaj ciferoj,
 adicias ilin kaj trovas roman ciferon, kies valoro egalas al la sumo. Nu, tio funkcias nur esceptokaze, 
@@ -117,6 +117,7 @@ tempopostule senerarigeblaj.
         informo(seanco,respondo);
     }
 
+    preparu_programojn();
     preparu_ekzercojn(prologo);
 </script>
 
