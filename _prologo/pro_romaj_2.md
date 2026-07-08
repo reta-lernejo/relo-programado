@@ -84,7 +84,6 @@ La substreko `_` uziĝas kiel ĵokera variablo, kiam oni devas meti ion en konkr
         const programo = '';
 
         const seanco = await konsultu(programo);
-        tau_info(respondo,'');
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
         informo(seanco,respondo);
     }

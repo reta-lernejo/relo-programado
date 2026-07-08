@@ -109,10 +109,8 @@ nombru(De,Ghis,Roma) :-
         });
 
         const seanco = pl.create(limo);
-        tau_info(respondo,'');
         await konsultu(programo,seanco);
-        const penseroj = await demando_respondo(seanco,demando,respondo,maks_respondoj);
-        console.log("penseroj: "+penseroj);
+        await demando_respondo(seanco,demando,respondo,maks_respondoj);
         informo(seanco,respondo);
     };
 

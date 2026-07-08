@@ -157,8 +157,6 @@ Por propre solvi tiujn mankojn ni povas eluzi la eblecon difini gramatikon en Pr
         
         const seanco = pl.create(limo);
         await konsultu(programo,seanco);
-
-        await tau_info(respondo,null);
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
         informo(seanco,respondo);
     }
@@ -166,5 +164,4 @@ Por propre solvi tiujn mankojn ni povas eluzi la eblecon difini gramatikon en Pr
     preparu_programojn();
     preparu_ekzercojn(prologo);
 </script>
-
 

@@ -138,7 +138,9 @@ async function demando_respondo(seanco,demando,respondo,maks_respondoj=1) {
 
         await demandu(seanco, demandkodo);
         //console.log("✓ Demando sukcese kompreniĝis.");
-        console.log('demando: '+demandkodo)
+        console.log('demando: '+demandkodo);
+
+        await malplenigu_respondon(respondElemento);
 
         // ricevu unua respondon
         //let respondo = await sekva_respondo(seanco);
@@ -169,6 +171,17 @@ async function demando_respondo(seanco,demando,respondo,maks_respondoj=1) {
     }
 }
 
+async function malplenigu_respondon(respondo) {
+    const respondElemento = (respondo instanceof HTMLElement)? 
+        respondo : document.getElementById(respondo);
+    const info = respondElemento.parentElement.querySelector(".informo");
+    // malplenigu respondon kaj informon
+    respondElemento.textContent = '';
+    info.textContent = '';
+    // aktualigu antaŭ kalkuli
+    await new Promise(resolve => setTimeout(resolve, 0));
+}
+
 // PLIBONIGU: kunigu doni respondon kaj informojn
 // same kiel malplenigi
 async function tau_info(respondo,informo) {
@@ -176,13 +189,6 @@ async function tau_info(respondo,informo) {
         respondo : document.getElementById(respondo);
     const info = respondElemento.parentElement.querySelector(".informo");
 
-    if (!informo) {
-        // malplenigu respondon kaj informon
-        respondElemento.textContent = '';
-        info.textContent = '';
-        // aktualigu antaŭ kalkuli
-        await new Promise(resolve => setTimeout(resolve, 0));
-    }
     if (info) {
         info.innerHTML = informo;
     }

@@ -77,8 +77,6 @@ La punktokomon legu kiel 'aŭ'!
         const programo = document.querySelector('#romaj_ciferoj code').innerText;
 
         const seanco = await konsultu(programo);
-
-        tau_info(respondo,'');
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
         informo(seanco,respondo);
     }
