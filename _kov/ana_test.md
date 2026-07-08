@@ -2,46 +2,15 @@
 layout: laborfolio
 title: Vortanalizo
 js:
-    - tau-prolog
-    - tau-prolog-util
+  - tau-prolog
+  - tau-prolog-util
+css:
+  - tau-prolog    
 pl:
-    - gra/gramatiko
-    - gra/vorto_gra
-    - gra/regul_trf    
+  - gra/gramatiko
+  - gra/vorto_gra
+  - gra/regul_trf    
 ---
-
-<!--
-
-// aldoni lininumerojn:
-
-<div class="editor">
-    <div class="gutter"></div>
-    <div class="code" contenteditable="true"></div>
-</div>
-
-.editor {
-    display: flex;
-    font-family: monospace;
-}
-
-.gutter {
-    width: 3em;
-    text-align: right;
-    padding-right: .5em;
-    color: #888;
-    user-select: none;
-}
-
-.code {
-    white-space: pre;
-    outline: none;
-    flex: 1;
-}
-
-const lines = editor.innerText.split("\n").length;
-gutter.innerHTML = Array.from({ length: lines }, (_, i) => i + 1).join("<br>");
-
--->
 
 programo:
 ```prolog
@@ -67,7 +36,10 @@ debug(Topic,Fs,Args) :-
 
 :- op( 1120, xfx, '<=' ). % disigas regulo-kapon, de regulesprimo
 
-term_expansion( '<='(RuleHead, RuleBody) , RuleTranslated ) :-
+:- op( 920, fy, '*' ). % uzu linikomence por ellasi celon (linion ĝis komo) dum senerarigo
+*_.
+
+term_expansion( <=(RuleHead, RuleBody) , RuleTranslated ) :-
   % debug(gra_prep,'%# ~q ...',[RuleHead]), % error(instantiation_error,fabricate_var_name/3)
   catch((
     rule_head(RuleHead,Vrt,Rez,Depth,PredHead),!,
@@ -160,48 +132,36 @@ v(ek,intj,'*').
 vorto(v,Spc) <= v(_,Spc,_).    
 
 ```
-{: #programo contenteditable="true"}
+{:.programo}
 
+{% include prolog-ekzerco.html n=10 query=
+  "vorto(v,Spc,V,al,_)." %}
 
-demando ?- 
-```prolog
-% demando:...
-vorto(v,Spc,V,al,_).
-```
-{: #demando contenteditable="true"}
-
-
-<button id="rulu">Rulu</button>
-
-<div id="respondo"></div>
 
 <script>
 
-    async function moduloj() {
-        //const programoj = ['gra__regul_trf','gra__vorto_gra','gra__gramatiko'].map((id) =>{
-        const programoj = ['gra__regul_trf'].map((id) =>{
-            const script = document.getElementById(id);
-            return script.src
+    const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
+
+    function informo(seanco,respondo) {
+      const thread = seanco.thread;
+      const msg = 
+        `${thread.cpu_time}ms, ` +
+        `${thread.total_steps} penseroj`;
+      tau_info(respondo,msg);
+    };
+
+    async function prologo(demando,respondo,maks_respondoj) {
+        let programo = '';
+        document.querySelectorAll('.programo code').forEach((c) => {
+            programo += c.innerText;
         });
-        console.log(programoj);
 
-        const seanco = await konsultu_plurajn(programoj,{url: true, term_expansion: true});
-        return seanco;
-    }
+        const seanco = pl.create(limo);
+        await konsultu(programo,seanco);
+        await demando_respondo(seanco,demando,respondo,maks_respondoj);
+        informo(seanco,respondo);
+    };
 
-    async function programo(seanco) {
-        const programo = document.getElementById('programo').innerText;
-        // console.log(programo);
-
-        seanco = await konsultu(programo,seanco);
-        console.log(seanco.rules['vorto/5']);
-        await demando_respondo(seanco,'demando','respondo');
-    }
-
-    //prologo();
-    (async function () {
-        //let seanco = await moduloj();
-        let seanco = pl.create();
-        document.getElementById('rulu').addEventListener("click",() => programo(seanco));
-    })();
+    preparu_programojn();
+    preparu_ekzercojn(prologo);
 </script>
