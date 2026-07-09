@@ -43,7 +43,7 @@ function preparu_programojn() {
  * @param {*} programo 
  * @returns seancon por posta pridemandado
  */
-function konsultu(programo,seanco = null) {
+function konsultu(programo,respondo,seanco = null) {
     let snc = seanco? seanco : pl.create();
         
     return new Promise((resolve, reject) => {
@@ -51,12 +51,14 @@ function konsultu(programo,seanco = null) {
             success: () => resolve(snc), // redonu la seancon por la sekva paŝo
             error: (err) => {
                 console.error(`erara programo: ${err}`);
+                tau_info(respondo,responderaro(err));
                 reject(new Error(`erara programo: ${err}`))
             }
         });
     });
 }
 
+/*
 async function konsultu_plurajn(programoj,opc={},seanco=null) {
     let snc = seanco? seanco : pl.create();
 
@@ -78,6 +80,7 @@ async function konsultu_plurajn(programoj,opc={},seanco=null) {
 
     return snc;
 }
+*/
 
 function demandu(seanco, demando) {
     return new Promise((resolve, reject) => {
