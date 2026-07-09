@@ -156,7 +156,7 @@ Por propre solvi tiujn mankojn ni povas eluzi la eblecon difini gramatikon en Pr
         });
         
         const seanco = pl.create(limo);
-        await konsultu(programo,seanco);
+        await konsultu(programo,srespondoeanco);
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
         informo(seanco,respondo);
     }

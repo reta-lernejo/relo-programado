@@ -83,7 +83,7 @@ La substreko `_` uziĝas kiel ĵokera variablo, kiam oni devas meti ion en konkr
         // console.log(programo);
         const programo = '';
 
-        const seanco = await konsultu(programo);
+        const seanco = await konsultu(programo,respondo);
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
         informo(seanco,respondo);
     }

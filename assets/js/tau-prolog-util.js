@@ -13,13 +13,39 @@ function preparu_ekzercojn(prologo) {
     });
 }
 
-function nombru_liniojn(programElemento,start) {
+function lininombroj(programElemento,start) {
     const kodo = programElemento.querySelector("code");
-    const lininombroj = programElemento.querySelector(".lininombroj");
+    const ln_pre = programElemento.querySelector(".lininombroj");
 
-    const ln = kodo.innerText.split("\n").length;
-    lininombroj.innerHTML = Array.from({ length: ln  -1 }, (_, i) => start + i + 1).join("<br>");
+    const ln = kodo.innerText.match(/\n/g).length
+    ln_pre.innerText = Array.from(
+        { length: ln }, 
+        (_, i) => start + i + 1
+    ).join("\n");
     return start + ln;
+}
+
+function renombrado(programElemento) {
+    const lr = /\n/g;
+    const sr = /^(\d)+\n/;
+    // ni komparas la lininombrojn en la programkodo
+    // kun la nombritaj linioj
+    const kodo = programElemento.querySelector("code").innerText;
+    const nombroj = programElemento.querySelector(".lininombroj").innerText;
+
+    console.log(`kodo: ${kodo.match(lr).length};  nmbr: ${nombroj.match(lr).length}`)
+
+    if (kodo.match(lr).length != (nombroj.match(lr).length)) {
+        // se ili diferencas ni devas renombrigi la programelementon
+        // kaj anakaŭ ĉiujn pli postajn en la paĝo, ĉar ni traktas ilin
+        // ĉiuj kune kiel programo
+        let lpos = parseInt(nombroj.match(sr)[1], 10) - 1;
+        lpos = lininombroj(programElemento,lpos);
+
+        programElemento.parentElement.querySelectorAll(":scope ~ .programo").forEach((prg) => {
+            lpos = lininombroj(prg,lpos);
+        });
+    }
 }
 
 function preparu_programojn() {
@@ -28,11 +54,19 @@ function preparu_programojn() {
         const kodo = programo.querySelector("code");
         kodo.parentElement.setAttribute("contenteditable",true);
 
-        const lininombroj = document.createElement("div");
-        lininombroj.classList.add("lininombroj");
+        const ln_div = document.createElement("div");
+        const ln_pre = document.createElement("pre");        
+        ln_pre.classList.add("lininombroj");
+        ln_div.append(ln_pre)
 
-        programo.prepend(lininombroj);
-        lpos = nombru_liniojn(programo,lpos);
+        programo.prepend(ln_pre);
+        lpos = lininombroj(programo,lpos);
+
+        kodo.parentElement.addEventListener("input", (event) => {
+            const pre = event.currentTarget;
+            const prg = pre.closest(".programo");
+            renombrado(prg);
+        });
     });
 }
 

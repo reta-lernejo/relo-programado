@@ -110,7 +110,7 @@ tempopostule senerarigeblaj.
     async function prologo(demando,respondo,maks_respondoj) {
         const programo = document.querySelector('#romaj_ciferoj code').innerText;
         
-        const seanco = await konsultu(programo);
+        const seanco = await konsultu(programo,respondo);
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
         informo(seanco,respondo);
     }

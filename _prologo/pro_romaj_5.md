@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Romaj ciferoj per Prologo 4
+title: Romaj ciferoj per Prologo 5
 js:
     - tau-prolog
     - tau-prolog-util
@@ -144,7 +144,7 @@ nombru(De,Ghis,Roma) :-
         });
 
         const seanco = pl.create(limo);
-        await konsultu(programo,seanco);
+        await konsultu(programo,respondo,seanco);
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
         informo(seanco,respondo);
     };

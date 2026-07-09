@@ -78,6 +78,12 @@ roma_nombro(Roma,Dec) :-
 {% include prolog-ekzerco.html query=
   "roma_nombro(Roma,8)." %}
 
+Malĝusta roma nombro, tamern analiziĝas:
+
+{% include prolog-ekzerco.html n=10 query=
+  'roma_nombro("VXI",Dec).' %}
+
+
 ```prolog
 nombru(De,Ghis,Roma) :-
     between(De,Ghis,N),
@@ -109,7 +115,7 @@ nombru(De,Ghis,Roma) :-
         });
 
         const seanco = pl.create(limo);
-        await konsultu(programo,seanco);
+        await konsultu(programo,respondo,seanco);
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
         informo(seanco,respondo);
     };
