@@ -13,7 +13,17 @@ function preparu_ekzercojn(prologo) {
     });
 }
 
+function nombru_liniojn(programElemento,start) {
+    const kodo = programElemento.querySelector("code");
+    const lininombroj = programElemento.querySelector(".lininombroj");
+
+    const ln = kodo.innerText.split("\n").length;
+    lininombroj.innerHTML = Array.from({ length: ln  -1 }, (_, i) => start + i + 1).join("<br>");
+    return start + ln;
+}
+
 function preparu_programojn() {
+    let lpos = 0;
     document.querySelectorAll(".programo").forEach(programo => {
         const kodo = programo.querySelector("code");
         kodo.parentElement.setAttribute("contenteditable",true);
@@ -21,10 +31,8 @@ function preparu_programojn() {
         const lininombroj = document.createElement("div");
         lininombroj.classList.add("lininombroj");
 
-        const ln = kodo.innerText.split("\n").length;
-        lininombroj.innerHTML = Array.from({ length: ln }, (_, i) => i + 1).join("<br>");
-
         programo.prepend(lininombroj);
+        lpos = nombru_liniojn(programo,lpos);
     });
 }
 

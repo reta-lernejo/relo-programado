@@ -3,6 +3,9 @@
     display: flex;
     font-family: monospace;
 }
+.programo .highlight {
+    margin-bottom: 0;
+}
 .programo pre {
     padding-left: 4px;
 }
