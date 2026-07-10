@@ -78,7 +78,7 @@ roma_nombro(Roma,Dec) :-
 {% include prolog-ekzerco.html query=
   "roma_nombro(Roma,8)." %}
 
-Malĝusta roma nombro, tamern analiziĝas:
+Malĝusta roma nombro, tamen analiziĝas:
 
 {% include prolog-ekzerco.html n=10 query=
   'roma_nombro("VXI",Dec).' %}
@@ -111,7 +111,7 @@ nombru(De,Ghis,Roma) :-
     async function prologo(demando,respondo,maks_respondoj) {
         let programo = '';
         document.querySelectorAll('.programo code').forEach((c) => {
-            programo += c.innerText;
+            programo += c.parentElement.innerText;
         });
 
         const seanco = pl.create(limo);

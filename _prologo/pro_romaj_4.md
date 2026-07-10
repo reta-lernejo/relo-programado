@@ -152,11 +152,11 @@ Por propre solvi tiujn mankojn ni povas eluzi la eblecon difini gramatikon en Pr
     async function prologo(demando,respondo,maks_respondoj) {
         let programo = '';
         document.querySelectorAll('.programo code').forEach((c) => {
-            programo += c.innerText;
+            programo += c.parentElement.innerText;
         });
         
         const seanco = pl.create(limo);
-        await konsultu(programo,srespondoeanco);
+        await konsultu(programo,respondo,seanco);
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
         informo(seanco,respondo);
     }

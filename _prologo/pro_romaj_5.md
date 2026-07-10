@@ -1,6 +1,7 @@
 ---
 layout: laborfolio
 title: Romaj ciferoj per Prologo 5
+next_ch: pro_romaj_6
 js:
     - tau-prolog
     - tau-prolog-util
@@ -10,6 +11,7 @@ css:
 
 ### Gramatikoj
 
+Gramatikoj, pli precize Difinit-Klaŭzaj Gramatikoj...
 
 ```prolog
 % 1..9
@@ -140,7 +142,7 @@ nombru(De,Ghis,Roma) :-
     async function prologo(demando,respondo,maks_respondoj) {
         let programo = '';
         document.querySelectorAll('.programo code').forEach((c) => {
-            programo += c.innerText;
+            programo += c.parentElement.innerText;
         });
 
         const seanco = pl.create(limo);

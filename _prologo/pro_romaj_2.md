@@ -67,6 +67,35 @@ Liston oni povas ĉiam apartigi en kapon kaj reston per vertikala streko `|`. La
 
 La substreko `_` uziĝas kiel ĵokera variablo, kiam oni devas meti ion en konkretan pozicion de kombino, kies konkretan valoron oni nek scias, nek bezonas scii.
 
+La longecon de listo oni ricevas per la predikato `length/2`. Se oni donas la longecon kiel nombro, oni 
+ricevas liston kun tiu longeco.
+
+```prolog
+:- use_module(library(lists)).
+```
+{:.programo}
+
+{% include prolog-ekzerco.html query=
+ "length(Listo,3), maplist(=(*),Listo)." %}
+
+Tiel ni ĵetu tri kubojn:
+
+```prolog
+:- use_module(library(random)).
+```
+{:.programo}
+
+{% include prolog-ekzerco.html query=
+ "length(Listo,3), maplist(random_between(1,6),Listo)." %}
+
+<!-- tio cikliĝas tro longe, kial?
+
+Oni same povas krei listojn de diversaj longecoj ĝis 4-elementan tiel:
+
+{ % include prolog-ekzerco.html n=10 query=
+ "length(Listo,L), L<5." % }
+-->
+
 <script>
     const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
 
@@ -81,7 +110,11 @@ La substreko `_` uziĝas kiel ĵokera variablo, kiam oni devas meti ion en konkr
     async function prologo(demando,respondo,maks_respondoj) {
         //const programo = document.querySelector('#romaj_ciferoj code').innerText;
         // console.log(programo);
-        const programo = '';
+        let programo = '';
+        document.querySelectorAll('.programo code').forEach((c) => {
+            programo += c.innerText;
+        });
+
 
         const seanco = await konsultu(programo,respondo);
         await demando_respondo(seanco,demando,respondo,maks_respondoj);
