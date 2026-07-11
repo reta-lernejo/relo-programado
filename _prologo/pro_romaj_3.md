@@ -4,7 +4,7 @@ title: Romaj ciferoj per Prologo 3
 next_ch: pro_romaj_4
 js:
     - tau-prolog
-    - tau-prolog-util
+    - taupl-util-0b
 css:
     - tau-prolog   
 ---
@@ -35,7 +35,7 @@ Do, kion faras la regulo `roma_sumo`? Ĝi eltrovas la valorojn de la du donitaj 
 adicias ilin kaj trovas roman ciferon, kies valoro egalas al la sumo. Nu, tio funkcias nur esceptokaze, 
 ĉar la sumo kutime ne hazarde respondas al alia cifero. Jen elprovu:
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
  "roma_sumo('V','V',Sumo)." %}
 
 Antaŭ plibonigi tion, ni lernu ankoraŭ kelkajn terminojn: La nomojn de la kombinoj per kiujn ni donas faktojn kaj
@@ -94,29 +94,10 @@ Do anstataŭ `,` (kaj) en Prologo, en datumbazo oni uzas kunigon (angle: *join*)
 ja reguloj estas multe pli esprimkapablaj ol SQL-komandoj, kiuj rapide longiĝas, komplikiĝas kaj tiam estas nur malfacile,
 tempopostule senerarigeblaj.
 
-
 <script>
-
-    const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
-
-    function informo(seanco,respondo) {
-      const thread = seanco.thread;
-      const msg = 
-        `${thread.cpu_time}ms, ` +
-        `${thread.total_steps} penseroj`;
-      tau_info(respondo,msg);
-    };
-
-    async function prologo(demando,respondo,maks_respondoj) {
-        const programo = document.querySelector('#romaj_ciferoj code').innerText;
-        
-        const seanco = await konsultu(programo,respondo);
-        await demando_respondo(seanco,demando,respondo,maks_respondoj);
-        informo(seanco,respondo);
-    }
-
+    const limo = 10000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
     preparu_programojn();
-    preparu_ekzercojn(prologo);
+    preparu_demandojn(() => {
+        return document.querySelector('#romaj_ciferoj code').innerText;
+    }, limo);
 </script>
-
-

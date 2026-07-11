@@ -5,7 +5,7 @@ chapter: "2. kombinoj, listoj"
 next_ch: pro_romaj_3
 js:
     - tau-prolog
-    - tau-prolog-util
+    - taupl-util-0b
 css:
     - tau-prolog    
 ---
@@ -16,7 +16,7 @@ Antaŭ trakti romajn nombrojn, t.e. kunmetitajn el ciferoj, per Prologo, ni deva
 Ni jam vidis kiel uzi termojn (datumtipojn) *nombro* kaj *atomo*. Sed oni povas ilin kombini en esprimoj kiel `k(e,5)`. 
 Tion oni kosekvence nomas *kombino*:
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
  "Kombino_1 = k(e,5), Kombino_2 = +(1,2), 
   Kombino_3 = roma_cifero('X',10)." %}
 
@@ -26,12 +26,12 @@ Uzataj kiel datumtipo, ili simple reprezentas sin mem - kvazaŭ formulo.
 Kelkajn specialajn kombinojn oni povas skribi alternative per operatoro kiel en aritmetiko. Interne ili transformiĝas al
 sia kombina formo. Ni elprovu tion per operatoro `+` kaj `=`:
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
  "Kombino = +(1,2), Kombino = A+B." %}
 
 Do, la egalsigno ne servas por aritmetika kalkulo, sed nur por egaligi du esprimojn. Sed ja ekzistas ankaŭ operatoro por aritmetiko:`is`:
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
  "Sumo is +(1,2), Kombino = 1+2, 
   Diferenco is Sumo - Kombino." %}
 
@@ -44,24 +44,24 @@ la unua argumento estas la *kapo*, kaj la dua argumento estas la resto,
 kiu siavice povas esti listo. Ĉar tiu ingigo kondukus al multaj malfacile legeblaj krampoj oni pli pratike skribas
 listojn per angulaj krampoj. La fino der ĉiu listo estas la *malplena listo* `[]`:
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
  "Fino = [], Listo1 = .(1,[]), Listo1 = .(1,Fino), Listo1 = [1],
   Listo123 = .(1,.(2,.(3,[]))), Listo123 = [1,2,3]." %}
 
 Por analizi signarojn, kiel romaj nombroj, ni traktos ilin kiel listoj de signoj. Se ni havas roman nombron kiel atomo ni povas tiel transformi ĝin en liston de signoj:
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
  "Nombro = 'MMXXVI', atom_chars(Nombro,Signoj)." %}
 
 Sed ekzistas eĉ pli eleganta maniero: se oni uzas duoblajn citilojn vorto aŭ teksto estas aŭtomate traktata kiel
 signolisto.
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
  "Signoj = \"MMXXVI\"." %}
 
 Liston oni povas ĉiam apartigi en kapon kaj reston per vertikala streko `|`. La unua, resp. duan kaj trian elementon do oni ricevas tiel:
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
  "Signoj = \"MMXXVI\", Signoj = [Unua|Resto], 
   Signoj = [_,Dua,Tria|Ceteraj]." %}
 
@@ -76,53 +76,35 @@ listero, ekzemple egaligante ilin al steleto `*`.
 ```
 {:.programo}
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
  "length(Listo,3), maplist(=(*),Listo)." %}
 
-Sed ni tielo ankaŭ povus ĵeti kvazaŭ tri ludkubojn:
+Sed ni tiel ankaŭ povus ĵeti kvazaŭ tri ludkubojn:
 
 ```prolog
 :- use_module(library(random)).
 ```
 {:.programo}
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
  "length(Listo,3), maplist(random_between(1,6),Listo)." %}
 
 <!-- tio cikliĝas tro longe, kial?
 
 Oni same povas krei listojn de diversaj longecoj ĝis 4-elementan tiel:
 
-{ % include prolog-ekzerco.html n=10 query=
+{ % include pl-demando.html n=10 query=
  "length(Listo,L), L<5." % }
 -->
 
 <script>
-    const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
-
-    function informo(seanco,respondo) {
-      const thread = seanco.thread;
-      const msg = 
-        `${thread.cpu_time}ms, ` +
-        `${thread.total_steps} penseroj`;
-      tau_info(respondo,msg);
-    };
-
-    async function prologo(demando,respondo,maks_respondoj) {
-        //const programo = document.querySelector('#romaj_ciferoj code').innerText;
-        // console.log(programo);
+    const limo = 10000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
+    preparu_programojn();
+    preparu_demandojn(() => {
         let programo = '';
         document.querySelectorAll('.programo code').forEach((c) => {
             programo += c.innerText;
         });
-
-
-        const seanco = await konsultu(programo,respondo);
-        await demando_respondo(seanco,demando,respondo,maks_respondoj);
-        informo(seanco,respondo);
-    }
-
-    preparu_ekzercojn(prologo);
+        return programo;
+    }, limo);
 </script>
-
-

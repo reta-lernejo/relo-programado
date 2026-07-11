@@ -4,7 +4,7 @@ title: Romaj ciferoj per Prologo 4
 next_ch: pro_romaj_5
 js:
     - tau-prolog
-    - tau-prolog-util
+    - taupl-util-0b
 css:
     - tau-prolog   
 ---
@@ -114,13 +114,13 @@ certigi ke la du unaj ciferoj plenumas nek la adician, nek la subtrahan regulojn
 
 Vi povas ŝanĝi la kodon supre, ekzemple forigi la krisignojn por vidi, kiel ilia foresto efikas.
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "roma_nombro(\"MDCCCLXXXVII\",Valoro)." %}
 
 Bedaŭrinde tiu realigo havas ankoraŭ limigojn. Unue ĝi permesas ankaŭ nevalidajn nombrojn, 
 kiel ekzemple "IXV". Laŭ la roma nobrosistemo oni ne rajtas adicia 9 kaj 5 al 14, sed devus skribi "XIV".
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "roma_nombro(\"IXV\",Valoro)." %}
 
 Alia problemo estas, ke ĝi apenaŭ funkcias en la kontraŭa direkto, t.e. traduki araban nombron en roman.
@@ -128,40 +128,24 @@ Alia problemo estas, ke ĝi apenaŭ funkcias en la kontraŭa direkto, t.e. tradu
 elprovi ĝis sep ciferojn. Do por jarnombro 1887, t.e. maksimume jam 7^13, do preskaŭ 
 10 miliardoj da eblaj kombionoj.
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "roma_nombro(R,8)." %}
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "roma_nombro(R,1887)." %}
 
 
 Por propre solvi tiujn mankojn ni povas eluzi la eblecon difini gramatikon en Prologo.
 
 <script>
-
     const limo = 10000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
-
-    function informo(seanco,respondo) {
-      const thread = seanco.thread;
-      const msg = 
-        `${thread.cpu_time}ms, ` +
-        `${thread.total_steps} penseroj`;
-      tau_info(respondo,msg);
-    };
-
-    async function prologo(demando,respondo,maks_respondoj) {
+    preparu_programojn();
+    preparu_demandojn(() => {
         let programo = '';
         document.querySelectorAll('.programo code').forEach((c) => {
-            programo += c.parentElement.innerText;
+            programo += c.innerText;
         });
-        
-        const seanco = pl.create(limo);
-        await konsultu(programo,respondo,seanco);
-        await demando_respondo(seanco,demando,respondo,maks_respondoj);
-        informo(seanco,respondo);
-    }
-
-    preparu_programojn();
-    preparu_ekzercojn(prologo);
+        return programo;
+    }, limo);
 </script>
 

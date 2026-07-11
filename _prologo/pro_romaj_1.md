@@ -5,7 +5,7 @@ chapter: "1. faktoj, demandoj"
 next_ch: pro_romaj_2
 js:
     - tau-prolog
-    - tau-prolog-util
+    - taupl-util-0b
 css:
     - tau-prolog    
 ---
@@ -35,27 +35,27 @@ Variabloj devas esti majusklaj (sen citiloj).
 
 1\. Kiom valoras la roma cifero `C`? (kun variablo `Valoro`)
 
-{% include prolog-ekzerco.html query="roma_cifero('C',Valoro)." %}
+{% include pl-demando.html query="roma_cifero('C',Valoro)." %}
 
 2\. Kiu roma cifero havas la valoron kvindek?
 
-{% include prolog-ekzerco.html query="roma_cifero(Roma,50)." %}
+{% include pl-demando.html query="roma_cifero(Roma,50)." %}
 
 3\. Ĉu la roma cifero `D` havas la valoron mil?
 
-{% include prolog-ekzerco.html query="roma_cifero('D',1000)." %}
+{% include pl-demando.html query="roma_cifero('D',1000)." %}
 
 *Tasko*: Ĉu vi povas ŝanĝi la supran demandon tiel, ke la respondo estos `jes`?
 
 4\. Kiuj romaj ciferoj havas valoron pli grandan ol 50?
 
-{% include prolog-ekzerco.html n="9" query="roma_cifero(Roma,Valoro), Valoro>50." %}
+{% include pl-demando.html n="9" query="roma_cifero(Roma,Valoro), Valoro>50." %}
 
 La komon legu kiel 'kaj'!
 
 5\. Kiuj romaj ciferoj havas valoron 50 aŭ 500?
 
-{% include prolog-ekzerco.html n="9" query="roma_cifero(Roma,Valoro), (Valoro=50;Valoro=500)." %}
+{% include pl-demando.html n="9" query="roma_cifero(Roma,Valoro), (Valoro=50;Valoro=500)." %}
 
 La punktokomon legu kiel 'aŭ'!
 
@@ -63,25 +63,9 @@ La punktokomon legu kiel 'aŭ'!
 (Laŭplaĉe vsi povas uzi punktokomon kiel 'aŭ', sed ankaŭ rilaton `=<`)
 
 <script>
-    const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
-
-    function informo(seanco,respondo) {
-      const thread = seanco.thread;
-      const msg = 
-        `${thread.cpu_time}ms, ` +
-        `${thread.total_steps} penseroj`;
-      tau_info(respondo,msg);
-    };
-
-    async function prologo(demando,respondo,maks_respondoj) {
-        const programo = document.querySelector('#romaj_ciferoj code').innerText;
-
-        const seanco = await konsultu(programo,respondo);
-        await demando_respondo(seanco,demando,respondo,maks_respondoj);
-        informo(seanco,respondo);
-    }
-
+    const limo = 10000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
     preparu_programojn();
-    preparu_ekzercojn(prologo);
-
+    preparu_demandojn(() => {
+        return document.querySelector('#romaj_ciferoj code').innerText
+    }, limo);
 </script>

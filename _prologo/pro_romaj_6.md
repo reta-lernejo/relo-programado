@@ -1,9 +1,9 @@
 ---
 layout: laborfolio
-title: Romaj ciferoj per Prologo 4
+title: Romaj ciferoj per Prologo 6
 js:
     - tau-prolog
-    - tau-prolog-util
+    - taupl-util-0b
 css:
     - tau-prolog
 ---
@@ -52,7 +52,7 @@ sumo([V|Vj],S) :-
 ```
 {:.programo}
 
-{% include prolog-ekzerco.html n=3 query=
+{% include pl-demando.html query=
   "phrase(roma_dec(Valoroj),\"MCMXCIV\"), sumo(Valoroj,Sumo)." %}
 
 Nun ni ankoraŭ bezonas regulon por la alia direkto: kiam ni volas
@@ -76,7 +76,7 @@ dec_roma(Dec) --> { Dec > 0 },
 {:.programo}
 
 
-{% include prolog-ekzerco.html n=3 query=
+{% include pl-demando.html query=
   "phrase(dec_roma(1887),Ciferoj), atom_chars(Roma,Ciferoj)." %}
 
 
@@ -102,21 +102,21 @@ roma_nombro(Roma,Dec) :-
 
 ---
 
-{% include prolog-ekzerco.html n=3 query=
+{% include pl-demando.html query=
   "roma_nombro(\"MCMXCIV\",Valoro)." %}
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "roma_nombro(\"IXV\",Valoro)." %}  
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "roma_nombro(Roma,1887)." %}
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "roma_nombro(Roma,8)." %}
 
 Sed ve, malĝusta roma nombro tamen akceptiĝas:
 
-{% include prolog-ekzerco.html n=10 query=
+{% include pl-demando.html query=
   'roma_nombro("VXI",Dec).' %}
 
 Se ni ne volos akcepti tion, ni simple povus aldoni
@@ -144,7 +144,7 @@ strikta_roma_nombro(Roma,Dec) :-
 Kiel tasko mi lasos al vi kompletigi la predikaton strikta_roma_nombro,
 tiel, ke ĝi ne plu permesas nevalidan ciferordon.
 
-{% include prolog-ekzerco.html n=10 query=
+{% include pl-demando.html query=
   'strikta_roma_nombro("VXI",Dec).' %}
 
 Fine, ni nun povas nombri per romaj ciferoj. Eble vi volas
@@ -158,34 +158,17 @@ nombru(De,Ghis,Roma) :-
 ```
 {:.programo}  
 
-{% include prolog-ekzerco.html n=1000 query=
+{% include pl-demando.html n=3999 query=
   "nombru(1,99,R)." %}
 
-
 <script>
-
     const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
-
-    function informo(seanco,respondo) {
-      const thread = seanco.thread;
-      const msg = 
-        `${thread.cpu_time}ms, ` +
-        `${thread.total_steps} penseroj`;
-      tau_info(respondo,msg);
-    };
-
-    async function prologo(demando,respondo,maks_respondoj) {
+    preparu_programojn();
+    preparu_demandojn(() => {
         let programo = '';
         document.querySelectorAll('.programo code').forEach((c) => {
-            programo += c.parentElement.innerText;
+            programo += c.innerText;
         });
-
-        const seanco = pl.create(limo);
-        await konsultu(programo,respondo,seanco);
-        await demando_respondo(seanco,demando,respondo,maks_respondoj);
-        informo(seanco,respondo);
-    };
-
-    preparu_programojn();
-    preparu_ekzercojn(prologo);
+        return programo;
+    }, limo);
 </script>
