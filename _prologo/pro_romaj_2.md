@@ -68,7 +68,8 @@ Liston oni povas ĉiam apartigi en kapon kaj reston per vertikala streko `|`. La
 La substreko `_` uziĝas kiel ĵokera variablo, kiam oni devas meti ion en konkretan pozicion de kombino, kies konkretan valoron oni nek scias, nek bezonas scii.
 
 La longecon de listo oni ricevas per la predikato `length/2`. Se oni donas la longecon kiel nombro, oni 
-ricevas liston kun tiu longeco.
+ricevas ŝablonan liston kun tiom da variablaj elementoj. Per `maplist` ni povas apliki predikaton al ĉiu
+listero, ekzemple egaligante ilin al steleto `*`.
 
 ```prolog
 :- use_module(library(lists)).
@@ -78,7 +79,7 @@ ricevas liston kun tiu longeco.
 {% include prolog-ekzerco.html query=
  "length(Listo,3), maplist(=(*),Listo)." %}
 
-Tiel ni ĵetu tri kubojn:
+Sed ni tielo ankaŭ povus ĵeti kvazaŭ tri ludkubojn:
 
 ```prolog
 :- use_module(library(random)).

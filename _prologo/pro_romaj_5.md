@@ -11,122 +11,50 @@ css:
 
 ### Gramatikoj
 
-Gramatikoj, pli precize Difinit-Klaŭzaj Gramatikoj...
+Gramatikoj konsistas el predikatoj por analizi signarojn (pli ĝenerale listojn).
+Oni uzas la operatoron `-->` por apartigi la kapon kaj la korpon de regulo. La kapo nomas 
+elementon de la gramatiko kaj la korpo listigas signarojn kaj aliajn elementojn de la gramtiko.
+
+Ni komencu per iom naiva gramatiko pri romaj nombroj: nombroj povas esti cifero aŭ cifero komence
+sekvata de nombro. La ciferoj estas la konataj I, V, X ktp.
 
 ```prolog
-% 1..9
-i(1) --> "I".
-i(2) --> "II".
-i(3) --> "III".
+nombro --> cifero.
+nombro --> cifero, nombro.
 
-r1_9(N) --> i(N). % 1..3
-r1_9(4) --> "IV". 
-r1_9(5) --> "V".
-r1_9(N) --> "V", i(Ni), { N is 5+Ni }. % 6..8
-r1_9(9) --> "IX".
+cifero --> "I".
+cifero --> "V".
+cifero --> "X".
+cifero --> "L".
+cifero --> "C".
+cifero --> "X".
+cifero --> "M".
 ```
 {:.programo}
 
-```prolog
-% 1..39
-x(10) --> "X".
-x(20) --> "XX".
-x(30) --> "XXX".
-
-r1_39(NN) --> r1_9(NN). % 1..9
-r1_39(NN) --> x(NN).    % 10, 20, 30
-r1_39(NN) --> x(Nx), r1_9(N), { NN is Nx+N }.
-```
-{:.programo}
-
-```prolog
-% 1..99
-r1_99(NN) --> r1_39(NN). % 1..39
-r1_99(40) --> "XL".
-r1_99(NN) --> "XL", r1_9(N),   { NN is 40+N }.  % 41..49
-r1_99(50) --> "L".
-r1_99(NN) --> "L",  r1_39(N_), { NN is 50+N_ }. % 51..89
-r1_99(90) --> "XC".
-r1_99(NN) --> "XC", r1_9(N),   { NN is 90+N }.  % 91..99
-```
-{:.programo}
-
-```prolog
-% 1..999
-c(100) --> "C".
-c(200) --> "CC".
-c(300) --> "CCC".
-
-r1_399(NNN) --> r1_99(NNN).
-r1_399(NNN) --> c(NNN).
-r1_399(NNN) --> c(Nc), r1_99(NN), { NNN is Nc+NN }.
-```
-{:.programo}
-
-```prolog
-% 1..999
-r1_999(NNN) --> r1_399(NNN).
-r1_999(400) --> "CD".
-r1_999(NNN) --> "CD", r1_99(NN),   { NNN is 400+NN }.  % 401..499
-r1_999(500) --> "D".
-r1_999(NNN) --> "D",  r1_399(NN_), { NNN is 500+NN_ }. % 501..899
-r1_999(900) --> "CM".
-r1_999(NNN) --> "CM", r1_99(NN),   { NNN is 900+NN }.  % 901..999
-```
-{:.programo}
-
-```prolog
-% 1..3999
-m(1000) --> "M".
-m(2000) --> "MM".
-m(3000) --> "MMM".
-
-r1_3999(NNNN) --> r1_999(NNNN).
-r1_3999(NNNN) --> m(NNNN).
-r1_3999(NNNN) --> m(Nm), r1_999(NNN), { NNNN is Nm+NNN }.
-```
-{:.programo}
-
-```prolog
-roma_nombro(Roma,Valoro) :-
-    number(Valoro),
-    phrase(r1_3999(Valoro),RL),
-    atom_chars(Roma,RL).
-
-roma_nombro(Roma,Valoro) :-
-    is_list(Roma),
-    phrase(r1_3999(Valoro),Roma).
-
-```
-{:.programo}
-
-
+Por apliki gramatikon al signaro oni uzas `phrase/2`, kies unua argumento estas
+(la centra) elemento de la gramatiko (en nia kazo `nombro`) kaj la dua argumento estas
+la analizenda signaro.
 
 {% include prolog-ekzerco.html query=
-  "roma_nombro(\"MCMXCIV\",Valoro)." %}
+  "phrase(nombro,\"MCMXCIV\")." %}
+
+Se ni donas signaron kun nevalida signo, la analizo malsukcesas.
 
 {% include prolog-ekzerco.html query=
-  "roma_nombro(\"IXV\",Valoro)." %}  
+  "phrase(nombro,\"VICO\")." %}  
+
+Nia gramatiko ja estas ankoraŭ tro naiva, ĉar ĝi ne konsideras la ordon de la ciferoj:
 
 {% include prolog-ekzerco.html query=
-  "roma_nombro(Roma,1887)." %}
+  "phrase(nombro,\"VICI\")." %}
 
-{% include prolog-ekzerco.html query=
-  "roma_nombro(Roma,8)." %}
+La gramatiko povas ankaŭ krei signarojn validajn laŭ ĝi:
 
-```prolog
-nombru(De,Ghis,Roma) :-
-    between(De,Ghis,N),
-    phrase(r1_999(N),RL),
-    atom_chars(Roma,RL).
+{% include prolog-ekzerco.html n=10 query=
+  "phrase(nombro,L), atom_chars(R,L)." %}
 
-```
-{:.programo}  
-
-{% include prolog-ekzerco.html n=1000 query=
-  "nombru(777,999,R)." %}
-
-
+Nu, tiel la gramatiko ankoraŭ ne estas tute utila. En la sekva lekcio ni etendos ĝin do.
 
 <script>
     const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
