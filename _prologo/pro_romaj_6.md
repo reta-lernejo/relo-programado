@@ -165,6 +165,10 @@ Se vi volas kolekti ĉiujn nombrojn anstataŭ trovi ilin unu post la alia. Vi at
 {% include pl-demando.html query=
   "findall(R,nombru(1,99,R),Romaj)." %}
 
+Cetere, se vi volas plu elprovi tie ĉi la eblecojn de Prologo, vi povas rigardi en la
+[referenco-paĝo de τ-Prologo](https://tau-prolog.org/documentation) pri diversaj uzeblaj predikatoj.
+
+
 <script>
     const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
     preparu_programojn();

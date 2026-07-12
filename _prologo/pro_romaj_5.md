@@ -15,7 +15,7 @@ Gramatikoj konsistas el predikatoj por analizi signarojn (pli ĝenerale listojn)
 Oni uzas la operatoron `-->` por apartigi la kapon kaj la korpon de regulo. La kapo nomas 
 elementon de la gramatiko kaj la korpo listigas signarojn kaj aliajn elementojn de la gramtiko.
 
-Ni komencu per iom naiva gramatiko pri romaj nombroj: nombroj povas esti cifero aŭ cifero komence
+Ni komencu per iom naiva gramatiko pri romaj nombroj: nombroj povas esti unuopa cifero aŭ cifero 
 sekvata de nombro. La ciferoj estas la konataj I, V, X ktp.
 
 ```prolog

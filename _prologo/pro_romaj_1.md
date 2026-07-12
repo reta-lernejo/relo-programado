@@ -21,6 +21,9 @@ Se alie, vi jam spertas pri datumbazoj, kaj scias kiel modeli laŭ tabeloj, riga
 al via datumbazo, tiam vi jam bone scias pensadon laŭ *rilatoj*. La demandlingvoj de datumbazoj kiel ekzemple
 SQL ja estas *deklaraj*. Tio tre helpos al vi en Prologo. Ni detaligos tion ankoraŭ en la tria lekcio.
 
+Por la interagaj ekzemploj en tiu ĉi kurseto ni uzas [τ-Prologon](https://tau-prolog.org/), 
+realigitan en Javoskripto kaj funkcianta do plene en via retumilo.
+
 ### Faktoj kaj atomoj
 
 Ni unue difinu la romajn ciferojn kiel *faktoj*, 
