@@ -13,7 +13,7 @@ css:
 ### Termoj, kombinoj kaj operatoroj
 
 Antaŭ trakti romajn nombrojn, t.e. kunmetitajn el ciferoj, per Prologo, ni devas iom profundigi nian scion pri *termo*j.
-Ni jam vidis kiel uzi termojn (datumtipojn) *nombro* kaj *atomo*. Sed oni povas ilin kombini en esprimoj kiel `k(e,5)`. 
+Ni jam vidis kiel uzi termojn (datumtipojn) *nombro* kaj *atomo*. Oni povas ilin kombini en esprimoj kiel `k(e,5)`. 
 Tion oni kosekvence nomas *kombino*:
 
 {% include pl-demando.html query=
@@ -35,7 +35,7 @@ Do, la egalsigno ne servas por aritmetika kalkulo, sed nur por egaligi du esprim
  "Sumo is +(1,2), Kombino = 1+2, 
   Diferenco is Sumo - Kombino." %}
 
-'Sumo' kalkuliĝas tuj pro uzo de 'is', sed 'Kombino' kalkuliĝas nur kiam ni uzas ĝin por kalkuli 'Diferenco'n.
+`Sumo` kalkuliĝas tuj pro uzo de `is`, sed `Kombino` kalkuliĝas nur kiam ni uzas ĝin por kalkuli `Diferenco`n.
 
 ### Listoj
 
@@ -45,27 +45,30 @@ kiu siavice povas esti listo. Ĉar tiu ingigo kondukus al multaj malfacile legeb
 listojn per angulaj krampoj. La fino der ĉiu listo estas la *malplena listo* `[]`:
 
 {% include pl-demando.html query=
- "Fino = [], Listo1 = .(1,[]), Listo1 = .(1,Fino), Listo1 = [1],
-  Listo123 = .(1,.(2,.(3,[]))), Listo123 = [1,2,3]." %}
+ "Fino = [], Listo1 = .(1,[]), Listo1 = .(1,Fino),
+  Listo123 = .(1,.(2,.(3,[])))." %}
 
-Por analizi signarojn, kiel romaj nombroj, ni traktos ilin kiel listoj de signoj. Se ni havas roman nombron kiel atomo ni povas tiel transformi ĝin en liston de signoj:
+Por analizi signarojn, kiel romajn nombrojn, ni traktos ilin kiel listoj de signoj. Se ni havas roman nombron en formo 
+atomo ni povas tiel transformi ĝin en liston de signoj:
 
 {% include pl-demando.html query=
  "Nombro = 'MMXXVI', atom_chars(Nombro,Signoj)." %}
 
-Sed ekzistas eĉ pli eleganta maniero: se oni uzas duoblajn citilojn vorto aŭ teksto estas aŭtomate traktata kiel
+Sed ekzistas eĉ pli eleganta maniero: uzante duoblajn citilojn, vorto aŭ teksto estas aŭtomate traktata kiel
 signolisto.
 
 {% include pl-demando.html query=
  "Signoj = \"MMXXVI\"." %}
 
-Liston oni povas ĉiam apartigi en kapon kaj reston per vertikala streko `|`. La unua, resp. duan kaj trian elementon do oni ricevas tiel:
+Liston oni povas ĉiam apartigi en kapon kaj reston per vertikala streko `|`. La unuan, resp. duan 
+kaj trian elementon oni ricevas do tiel:
 
 {% include pl-demando.html query=
- "Signoj = \"MMXXVI\", Signoj = [Unua|Resto], 
+ "Signoj = \"MCXXVI\", Signoj = [Unua|Resto], 
   Signoj = [_,Dua,Tria|Ceteraj]." %}
 
-La substreko `_` uziĝas kiel ĵokera variablo, kiam oni devas meti ion en konkretan pozicion de kombino, kies konkretan valoron oni nek scias, nek bezonas scii.
+La substreko `_` uziĝas kiel ĵokera variablo, kiam oni devas meti ion en certan pozicion de kombino, 
+kies konkretan valoron oni nek scias, nek bezonas scii.
 
 La longecon de listo oni ricevas per la predikato `length/2`. Se oni donas la longecon kiel nombro, oni 
 ricevas ŝablonan liston kun tiom da variablaj elementoj. Per `maplist` ni povas apliki predikaton al ĉiu
@@ -77,7 +80,7 @@ listero, ekzemple egaligante ilin al steleto `*`.
 {:.programo}
 
 {% include pl-demando.html query=
- "length(Listo,3), maplist(=(*),Listo)." %}
+ "length([1,2,3,4,5],L), length(Steloj,3), maplist(=(*),Steloj)." %}
 
 Sed ni tiel ankaŭ povus ĵeti kvazaŭ tri ludkubojn:
 
@@ -87,7 +90,7 @@ Sed ni tiel ankaŭ povus ĵeti kvazaŭ tri ludkubojn:
 {:.programo}
 
 {% include pl-demando.html query=
- "length(Listo,3), maplist(random_between(1,6),Listo)." %}
+ "length(Kuboj,3), maplist(random_between(1,6),Kuboj)." %}
 
 <!-- tio cikliĝas tro longe, kial?
 
