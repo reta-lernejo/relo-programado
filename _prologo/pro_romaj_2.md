@@ -12,7 +12,7 @@ css:
 
 ### Termoj, kombinoj kaj operatoroj
 
-Antaŭ trakti romajn nombrojn, t.e. kunmetitajn el ciferoj, per Prologo, ni devas iom profundigi nian scion pri *termo*j*.
+Antaŭ trakti romajn nombrojn, t.e. kunmetitajn el ciferoj, per Prologo, ni devas iom profundigi nian scion pri *termo*j.
 Ni jam vidis kiel uzi termojn (datumtipojn) *nombro* kaj *atomo*. Sed oni povas ilin kombini en esprimoj kiel `k(e,5)`. 
 Tion oni kosekvence nomas *kombino*:
 

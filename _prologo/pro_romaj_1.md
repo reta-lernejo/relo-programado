@@ -14,7 +14,7 @@ css:
 
 Se vi ankoraŭ ne spertiĝis pri la programlingvo Prologo, sed ja pri aliaj programlingvoj imperativaj 
 aŭ funkcia, vi estu avertita: Prologo funkcias laŭ sufiĉe aliaj principoj. Vi devas lerni pensadon 
-ne laŭ paŝoj de algorimo, sed laŭ partoj de la problemo. La programparadigmon de Prologo oni nomas *deklara* 
+ne laŭ paŝoj de algoritmo, sed laŭ partoj de la problemo. La programparadigmon de Prologo oni nomas *deklara* 
 aŭ *logika*. Oni ankaŭ parolas pri programlingvo de la *kvina generacio*.
 
 Se alie, vi jam spertas pri datumbazoj, kaj scias kiel modeli laŭ tabeloj, rigardoj kaj formuli demandojn
@@ -77,7 +77,7 @@ Ni ŝanĝis ilin por tiu ĉi kurso al `jes` kaj `ne`.
 
 
 *Tasko*: Demandu pri ĉiuj romaj ciferoj, kies valoro estas cent aŭ pli malalta ol cent!
-(Laŭplaĉe vsi povas uzi punktokomon kiel 'aŭ', sed ankaŭ rilaton `=<`)
+(Laŭplaĉe vi povas uzi punktokomon kiel 'aŭ', sed ankaŭ rilaton `=<`)
 
 <script>
     const limo = 10000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
