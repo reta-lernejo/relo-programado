@@ -27,6 +27,14 @@
     flex: 1;
 }
 
+button {
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    height: 24px;
+    border-style: outset;
+    border-radius: 4px;
+}
 .prolog-demando {
     border: 2px dotted cornflowerblue;
     margin: 1em;
