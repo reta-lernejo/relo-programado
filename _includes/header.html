@@ -4,10 +4,11 @@
       {%- assign default_paths = site.pages | map: "path" -%}
       {%- assign page_paths = site.header_pages | default: default_paths -%}
       {%- assign titles_size = site.pages | map: 'title' | join: '' | size -%}
-      <a class="site-title" rel="toc" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+      <a class="site-title" rel="toc" href="{{ "/" }}">{{ "Reta lernejo" | escape }}</a>
+      <a class="site-title" rel="toc" href="{{ "/" | relative_url }}">&nbsp;&#xb7; {{ site.title | escape }}</a>
 
       {%- if page.collection -%}
-      <a class="site-title" rel="start" href="{{ "./" }}">&nbsp;&#xb7; {{ page.collection | escape }}</a>
+      <a class="site-title" rel="start" href="{{ "./" }}">&nbsp;&#xb7; {{ site.data.collections[page.collection].title | escape }}</a>
       {%- endif -%}
 
       {%- if titles_size > 0 -%}
