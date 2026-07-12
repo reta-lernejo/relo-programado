@@ -29,7 +29,7 @@ roma_sumo(C1,C2,Sumo) :-
     VS is V1 + V2,
     roma_cifero(Sumo,VS).
 ```
-{:.programo #romaj_ciferoj}
+{:.programo}
 
 Do, kion faras la regulo `roma_sumo`? Ĝi eltrovas la valorojn de la du donitaj ciferoj,
 adicias ilin kaj trovas roman ciferon, kies valoro egalas al la sumo. Nu, tio funkcias nur esceptokaze, 
@@ -59,6 +59,40 @@ kelkaj povas resti liberaj kaj ligiĝi dum la pruvo pri la korpo).
 - Se la klaŭzo estas fakto, la celo estas tuj pruvita, ĉar la ellasita korpo impliciĝas kiel `true.` (t.e. vera).
 - Se la klaŭzo estas regulo, tiam Prologo devas ankoraŭ pruvi ĉiujn celojn en la korpo de la regulo (kun la samaj variablaj 
   ligoj). La regulo sukcesas nur se ĉiuj korpaj celoj sukcesas.
+
+
+```prolog
+
+% la sumo de du ciferoj
+% rezultas en alia cifero
+roma_sumo_2(C1,C2,Sumo) :-
+    roma_cifero(C1,V1),
+    roma_cifero(C2,V2),
+    VS is V1 + V2,
+    roma_cifero(Sumo,VS).
+
+% la unua cifero estas pli
+% granda aŭ egala al la dua
+roma_sumo_2(C1,C2,[C1,C2]) :-
+    roma_cifero(C1,V1),
+    roma_cifero(C2,V2),
+    VS is V1 + V2,
+    % ne ekzistas cifero de la sumo
+    \+ roma_cifero(Sumo,VS),
+    V1 >= V2.  
+
+% la unua cifero estas malpli
+% granda ol la dua
+% via tasko!
+
+```
+{:.programo}  
+
+{% include pl-demando.html query=
+ "roma_sumo_2('X','I',Sumo)." %}
+
+Ĉu vi kuraĝas aldoni trian regulon al la predikato `roma_sumo_2/3` por la kazo kiam
+la unua nombro estas pli malgranda ol la unua?
 
 ### Rilato inter klaŭzoj de Prologo kaj datumbazoj
 
@@ -104,7 +138,11 @@ tempopostule senerarigeblaj.
 <script>
     const limo = 10000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
     preparu_programojn();
-    preparu_demandojn(() => {
-        return document.querySelector('#romaj_ciferoj code').innerText;
+    preparu_demandojn(() => {        
+        let programo = '';
+        document.querySelectorAll('.programo code').forEach((c) => {
+            programo += c.innerText;
+        });
+        return programo;
     }, limo);
 </script>

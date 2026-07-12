@@ -15,7 +15,7 @@ Ni nun lernis sufiĉe por provi difinon de romaj nombroj. Ni komencu per la triv
 
 #### Triviala kazo
 
-se ni ricevas malplenan liston, ni konsideru tion kiel nulo - laŭ valoro - la romanoj ne havis ciferon 'nul'.
+Se ni ricevas malplenan liston, ni konsideru tion kiel nulo - laŭ valoro - la romanoj ne havis ciferon 'nul'.
 Se ni ricevas signoliston kun nur unu elemento, tio devas esti cifero. Do:
 
 
