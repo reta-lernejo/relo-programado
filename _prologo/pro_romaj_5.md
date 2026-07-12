@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Romaj ciferoj per Prologo 5
+title: Romaj ciferoj per Prologo 5 - gramatiko
 next_ch: pro_romaj_6
 js:
     - tau-prolog

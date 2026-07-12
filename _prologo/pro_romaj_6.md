@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Romaj ciferoj per Prologo 6
+title: Romaj ciferoj per Prologo 6 - sintezo
 js:
     - tau-prolog
     - taupl-util-0b
@@ -100,7 +100,6 @@ roma_nombro(Roma,Dec) :-
 ```
 {:.programo}
 
----
 
 {% include pl-demando.html query=
   "roma_nombro(\"MCMXCIV\",Valoro)." %}
@@ -160,6 +159,11 @@ nombru(De,Ghis,Roma) :-
 
 {% include pl-demando.html n=3999 query=
   "nombru(1,99,R)." %}
+
+Se vi volas kolekti ĉiujn nombrojn anstataŭ trovi ilin unu post la alia. Vi atingos tion jene:
+
+{% include pl-demando.html query=
+  "findall(R,nombru(1,99,R),Romaj)." %}
 
 <script>
     const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)

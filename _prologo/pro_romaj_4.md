@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Romaj ciferoj per Prologo 4
+title: Romaj ciferoj per Prologo 4 - reguloj
 next_ch: pro_romaj_5
 js:
     - tau-prolog
@@ -131,9 +131,12 @@ elprovi ĝis sep ciferojn. Do por jarnombro 1887, t.e. maksimume jam 7^13, do pr
 {% include pl-demando.html query=
   "roma_nombro(R,8)." %}
 
+Do ne miru pri longa pensado:
+
 {% include pl-demando.html query=
   "roma_nombro(R,1887)." %}
 
+(Sed ni ja limigis la nombron de penseroj por ne eterne atendi.)
 
 Por propre solvi tiujn mankojn ni povas eluzi la eblecon difini gramatikon en Prologo.
 

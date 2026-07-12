@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Romaj ciferoj per Prologo 3
+title: Romaj ciferoj per Prologo 3 - predikatoj
 next_ch: pro_romaj_4
 js:
     - tau-prolog
@@ -43,15 +43,22 @@ regulojn, nomiĝas *predikato*j. Ili konsistigas rilaton inter siaj *argumento*j
 rilatojn inter la ciferoj I, V, X,... kaj iliaj valoroj (skribitaj kiel arabaj nombroj). La predikato `roma_sumo` 
 difinas rilaton inter du ciferoj kaj tria cifero, kiu estas ilia sumo. 
 
-Ĉar la nombro de argumentoj tiel gravas, por
-distinig samnomajn predikatojn kun diversa nombro de argumentoj oni konvencie indikas tiujn: `roma_cifero/2`,
-`roma_sumo/3`.
+Ĉar la nombro de argumentoj gravas, por distingi samnomajn predikatojn kun diversa nombro de argumentoj 
+oni konvencie indikas tiujn: `roma_cifero/2`, `roma_sumo/3`.
 
-preczigu...:
-Ambaŭ, faktoj kaj reguloj estas *klaŭzo*j. Regula klaŭzo havas *kapo*n kaj *korpo*n. La klaŭzo veriĝas, se troviĝas solvo de 
-(instanciigo de la variabloj), tia ke kapo kaj korpo egaliĝas (*unuiĝas*).
+*Celo* estas predikato, pri kies vereco Prologo trovu pruvon. La uzanto donas komencan celon kiel demandon. 
+Dum la pruvo, Prologo povas krei novajn celojn el la korpoj de reguloj, tiuj nomiĝas *subceloj*.
 
-Fakto estas speciala klaŭzo, kiu konsistas nur el la kapo. La korpon oni ne skribas, sed implicas ke ĝi ĉiam estas `true.` (vera).
+Faktoj kaj reguloj estas ambaŭ *klaŭzo*j. Fakto estas klaŭzo sen korpo, dum *regulo* konsistas el *kapo* 
+(la parto antaŭ `:-`) kaj *korpo*.
+
+Kiam Prologo provas pruvi celon, ĝi serĉas klaŭzon, kies kapo *unuiĝas* kun la aktuala celo. Se tia unuiĝo sukcesas,
+la koncernaj variabloj en la argumentoj de la kapo ligiĝas al la transdonitaj valoroj (t.e. ne nepre ĉiuj,
+kelkaj povas resti liberaj kaj ligiĝi dum la pruvo pri la korpo).
+
+- Se la klaŭzo estas fakto, la celo estas tuj pruvita, ĉar la ellasita korpo impliciĝas kiel `true.` (t.e. vera).
+- Se la klaŭzo estas regulo, tiam Prologo devas ankoraŭ pruvi ĉiujn celojn en la korpo de la regulo (kun la samaj variablaj 
+  ligoj). La regulo sukcesas nur se ĉiuj korpaj celoj sukcesas.
 
 ### Rilato inter klaŭzoj de Prologo kaj datumbazoj
 

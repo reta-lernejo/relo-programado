@@ -6,15 +6,18 @@
 .programo .highlight {
     margin-bottom: 0;
 }
+.programo>div.highlight {
+    background: none;
+}
 .programo pre {
     padding-left: 4px;
 }
 .lininombroj {
-    width: 3em;
+    width: 2em;
     text-align: right;
     font-family: monospace;
     font-size: 15px;
-    padding: 10px 2px;
+    padding: 8px 2px;
     color: #777;
     user-select: none;
 }
@@ -24,7 +27,7 @@
     flex: 1;
 }
 
-.prolog-ekzerco {
+.prolog-demando {
     border: 2px dotted cornflowerblue;
     margin: 1em;
     padding: 1em;
@@ -35,6 +38,12 @@
 .respondo code {
   overflow-wrap: break-word;
 }
+.respondo .kalkulante {
+    background: gray;
+}
+.respondo .kalkulante::before {    
+    content: "⧖";
+}
 .respondo button {
     margin-right: .5em;
 }
@@ -43,4 +52,7 @@
     color: #777;
     font-size: 90%;
     margin-left: .5em;
+}
+.kashita {
+    display: none;
 }
