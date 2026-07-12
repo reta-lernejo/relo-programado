@@ -12,7 +12,7 @@ css:
 ### Gramatikoj
 
 Gramatikoj konsistas el predikatoj por analizi signarojn (pli ĝenerale listojn).
-Oni uzas la operatoron `-->` por apartigi la kapon kaj la korpon de regulo. La kapo nomas 
+Oni uzas la operatoron `-->` por apartigi la kapon kaj la korpon de gramatika regulo. La kapo nomas 
 elementon de la gramatiko kaj la korpo listigas signarojn kaj aliajn elementojn de la gramtiko.
 
 Ni komencu per iom naiva gramatiko pri romaj nombroj: nombroj povas esti unuopa cifero aŭ cifero 
