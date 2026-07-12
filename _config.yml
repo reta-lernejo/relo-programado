@@ -43,11 +43,12 @@ minima:
 # kosmo | tero | vivo | laboro
 
 collections:
+  programado:
+    output: true
   prologo:
     output: true
   kov:
     output: true
-      .prologo.title
 
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to

@@ -3,6 +3,15 @@ layout: home
 title: Enhavo
 ---
 
+## Pri programado 
+{% assign pr = site.programado | sort: "title" %}
+{% for t in pr %}
+  {% if t.title %}
+* [{{ t.title | escape }}]({{ t.url | relative_url }})
+  {% endif %}  
+{% endfor %}
+
+
 ## Prologo
 
 {% assign pl = site.prologo | sort: "title" %}
