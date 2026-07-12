@@ -8,7 +8,11 @@ css:
     - tau-prolog
 ---
 
-### Rapidigo
+### Sorĉistina formulo el Faŭsto I
+
+    Johann Wolfgang Göthe
+
+Du mußt versteh’n! Aus Eins mach Zehn, Und Zwei laß geh’n, Und Drei mach gleich, So bist Du reich. Verlier die Vier! Aus Fünf und Sechs, So sagt die Hex’, Mach Sieben und Acht, So ist's vollbracht: Und Neun ist Eins, Und Zehn ist keins. Das ist das Hexen-Einmaleins!
 
 
 ```prolog
@@ -41,7 +45,7 @@ kombino([V|Vj],Nombroj) :-
 {:.programo}
 
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "magia_kvadrato_fausto(Q)." %}
 
 

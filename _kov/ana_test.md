@@ -134,7 +134,7 @@ vorto(v,Spc) <= v(_,Spc,_).
 ```
 {:.programo}
 
-{% include prolog-ekzerco.html n=10 query=
+{% include pl-demando.html n=10 query=
   "vorto(v,Spc,V,al,_)." %}
 
 

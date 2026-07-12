@@ -150,13 +150,13 @@ nombro(Nombro,N) :-
 {:.programo}  
 
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "nombro(N,346789)." %}
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "nombro(N,346789)." %}
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "nombro('cent tridek ok',N)." %}
 
 
@@ -179,12 +179,12 @@ nombru(De,Ghis) :-
 ```
 {:.programo}  
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "nombru(1,13)." %}
 
 inventi nombrojn: 
 
-{% include prolog-ekzerco.html query=
+{% include pl-demando.html query=
   "random_between(1,9999,N), phrase(n12(N),L,[]),atom_chars(X,L)." %}
 
 <script>
