@@ -1,6 +1,6 @@
 ---
 layout: home
-title: Prologo
+title: Programado
 ---
 
 {% assign pr = site.programado | sort: "title" %}
