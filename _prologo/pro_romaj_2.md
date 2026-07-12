@@ -4,7 +4,7 @@ title: Romaj ciferoj per Prologo 2 - termoj
 chapter: "2. kombinoj, listoj"
 next_ch: pro_romaj_3
 js:
-    - tau-prolog
+    - taupl.min
     - taupl-util-0b
 css:
     - tau-prolog    

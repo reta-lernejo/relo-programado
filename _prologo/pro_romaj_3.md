@@ -3,7 +3,7 @@ layout: laborfolio
 title: Romaj ciferoj per Prologo 3 - predikatoj
 next_ch: pro_romaj_4
 js:
-    - tau-prolog
+    - taupl.min
     - taupl-util-0b
 css:
     - tau-prolog   

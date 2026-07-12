@@ -3,7 +3,7 @@ layout: laborfolio
 title: Romaj ciferoj per Prologo 5 - gramatiko
 next_ch: pro_romaj_6
 js:
-    - tau-prolog
+    - taupl.min
     - taupl-util-0b
 css:
     - tau-prolog

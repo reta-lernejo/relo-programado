@@ -2,7 +2,7 @@
 layout: laborfolio
 title: Romaj ciferoj per Prologo 6 - sintezo
 js:
-    - tau-prolog
+    - taupl.min
     - taupl-util-0b
 css:
     - tau-prolog

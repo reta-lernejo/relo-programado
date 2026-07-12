@@ -4,7 +4,7 @@ title: Romaj ciferoj per Prologo 1 - faktoj
 chapter: "1. faktoj, demandoj"
 next_ch: pro_romaj_2
 js:
-    - tau-prolog
+    - taupl.min
     - taupl-util-0b
 css:
     - tau-prolog    
