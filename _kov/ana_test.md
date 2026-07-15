@@ -2,8 +2,8 @@
 layout: laborfolio
 title: Vortanalizo
 js:
-  - tau-prolog
-  - tau-prolog-util
+  - taupl.min
+  - taupl-util-0b
 css:
   - tau-prolog    
 pl:
@@ -137,31 +137,14 @@ vorto(v,Spc) <= v(_,Spc,_).
 {% include pl-demando.html n=10 query=
   "vorto(v,Spc,V,al,_)." %}
 
-
 <script>
-
     const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
-
-    function informo(seanco,respondo) {
-      const thread = seanco.thread;
-      const msg = 
-        `${thread.cpu_time}ms, ` +
-        `${thread.total_steps} penseroj`;
-      tau_info(respondo,msg);
-    };
-
-    async function prologo(demando,respondo,maks_respondoj) {
+    preparu_programojn();
+    preparu_demandojn(() => {
         let programo = '';
         document.querySelectorAll('.programo code').forEach((c) => {
             programo += c.innerText;
         });
-
-        const seanco = pl.create(limo);
-        await konsultu(programo,seanco);
-        await demando_respondo(seanco,demando,respondo,maks_respondoj);
-        informo(seanco,respondo);
-    };
-
-    preparu_programojn();
-    preparu_ekzercojn(prologo);
+        return programo;
+    }, limo);
 </script>

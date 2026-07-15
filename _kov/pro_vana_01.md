@@ -9,9 +9,9 @@ css:
     - tau-prolog
 ---
 
-### Vortareto
+## Vortareto
 
-Por krei esperantan vortanalizilon ni komencu per listo de finaĵoj kun iliaj vortspecoj.
+Post disanlizo de vortoj laŭ radikoj kaj finaĵoj, ni rigardu derivadon per sufiksoj.
 
 ```prolog
 % finaĵoj
@@ -36,11 +36,6 @@ f(e,adv).
 ```
 {:.programo}
 
-Ni aldonu radikareton. Kun
-la radikoj ni notu ankaŭ la vortspecon kaj la oficialecon.
-Ni traktos homojn kaj bestojn samspece, ĉar laŭ gramatika vidpunkto
-(aplikeblo de sufiksoj kiel 'ant', 'it', 'in' ktp. ili apenaŭ 
-diferencas).
 
 ```prolog
 % radikoj
@@ -107,10 +102,12 @@ komencu ĉe la fino. Tiucele ni uzas la predikaton
 ```prolog
 :- use_module(library(lists)).
 
-splito(Vorto,[Radiko,Fino],Spec,Ofc) :-
+vorto(Vorto,[Radiko,Fino],Spec,Ofc) :-
+    % splito
     between(1,3,Lf),
     sub_atom(Vorto,Lr,Lf,0,Fino), 
     sub_atom(Vorto,0,Lr,Lf,Radiko),
+    % kondiĉoj
     f(Fino,Spec),
     r(Radiko,_,Ofc).
 ```
