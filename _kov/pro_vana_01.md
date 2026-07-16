@@ -102,14 +102,14 @@ komencu ĉe la fino. Tiucele ni uzas la predikaton
 ```prolog
 :- use_module(library(lists)).
 
-vorto(Vorto,[Radiko,Fino],Spec,Ofc) :-
+vorto(Spec,Vorto,[Radiko,Fino]) :-
     % splito
     between(1,3,Lf),
     sub_atom(Vorto,Lr,Lf,0,Fino), 
     sub_atom(Vorto,0,Lr,Lf,Radiko),
     % kondiĉoj
     f(Fino,Spec),
-    r(Radiko,_,Ofc).
+    r(Radiko,_,_).
 ```
 {:.programo}
 
@@ -117,7 +117,7 @@ Provu ni, ĉu jam funkcias:
 
 {% include pl-demando.html n=99 query=
   'member(Vorto,[doktoroj,subite,kuracis,miajn,sanajn,bovojn]), 
-   splito(Vorto,Analizo,Spec,Ofc).' %}
+   vorto(Spec,Vorto,Analizo).' %}
 
 <script>
     const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)

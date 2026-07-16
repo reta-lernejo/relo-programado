@@ -41,7 +41,7 @@ button {
     margin: 1em;
     padding: 1em;
 }
-.demando code::before {
+.demando code:first-child::before {
     content: "?-"
 }
 .respondo code {
