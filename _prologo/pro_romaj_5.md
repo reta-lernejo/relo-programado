@@ -33,7 +33,7 @@ cifero --> "M".
 {:.programo}
 
 Por apliki gramatikon al signaro oni uzas `phrase/2`, kies unua argumento estas
-(la centra) elemento de la gramatiko (en nia kazo `nombro`) kaj la dua argumento estas
+(la precipa) elemento de la gramatiko (en nia kazo `nombro`) kaj la dua argumento estas
 la analizenda signaro.
 
 {% include pl-demando.html query=

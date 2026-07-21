@@ -118,8 +118,10 @@ async function trovu_respondon(seanco,respondo,maks_respondoj) {
         const respondkodo = await sekva_respondo(seanco);
         if (respondkodo) {
             respondo.append(
-                (pl.format_answer(respondkodo)).replace(/^true/,'jes')
-                +(maks_respondoj>1?'; ':''));
+                (pl.format_answer(respondkodo)).replace(/^true/,'jes'));
+            if (maks_respondoj>1) {
+                respondo.append(';',document.createElement('br'));
+            }
             return respondkodo;
         } else {
             console.log("Neniu solvo trovita (false).");

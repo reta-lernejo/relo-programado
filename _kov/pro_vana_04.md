@@ -45,9 +45,7 @@ en la kontraŭa direkto) al `vorto(r,Speco,Vorto,Analizo)`.
 term_expansion(
   <=(Kapo, Korpo),ReguloTradukita) :-
     regul_kapo(Kapo,Vorto,Analizo,KapoTradukita),
-    write(KapoTradukita),
     regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita),
-    write(KorpoTradukita),
     ReguloTradukita = (KapoTradukita :- KorpoTradukita).
 
 regul_kapo(Kapo,Vorto,Analizo,KapoTradukita) :-
@@ -75,39 +73,64 @@ regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
   Ref2 = f(Fino,Fs),
 
   KorpoTradukita = (
-    atom_concat(Radiko,Fino,Vorto),
+    between(1,3,Lf),
+    sub_atom(Vorto,Lr,Lf,0,Fino), 
+    sub_atom(Vorto,0,Lr,Lf,Radiko),    
     % kaj la radiko kaj la fino troviĝas en la vortaro
     (Ref1,Ref2)
   ).  
 
-
+v('vi',pron,*).
 v('se',subj,*).
 v('sed',konj,*).
 v('sen',prep,*).
 v('sep',nombr,*).
-v('ses',nombr,*).
-v('sub',prep,*).
-v('super',prep,*).
 v('sur',prep,*).
+v('al',prep,*).
 
 r(san,adj,'*').
+r(bon,adj,'*').
+
+f(ojn,subst).
+f(oj,subst).
+f(on,subst).
 f(o,subst).
+f('''',subst).
+f(ajn,adj).
+f(aj,adj).
+f(an,adj).
+f(a,adj).
+f(as,verb).
+f(is,verb).
+f(os,verb).
+f(us,verb).
+f(i,verb).
+f(u,verb).
+f(en,adv).
+f(e,adv).
 
 
 vorto(v,Spc) <= 
   v(_,Spc,_).
 
 vorto('rf',Spc) <= 
-  r(Rad,Rs,Ofc) / f(Fin,Fs).
+  r(Rad,_,Ofc) / f(Fin,Spc).
+
+term_atom(A,A) :- atomic(A).
+term_atom(F,A) :- 
+  F =.. [Op,T1,T2],
+  term_atom(T1,A1),
+  term_atom(T2,A2),
+  atomic_list_concat([A1,Op,A2],A).  
+
 
 ```
 {:.programo}
 
-{% include pl-demando.html n=99 query=
-  'listing(vorto/4).' %}
-
-{% include pl-demando.html n=99 query=
-  'vorto(Regulo,Spc,sano,Ana).' %}  
+{% include pl-demando.html n="99" query=
+  'member(Vorto,[bonan,sanon,al,vi]),
+   vorto(Regulo,Spc,Vorto,Ana), 
+   term_atom(Ana,Rezulto).' %}  
 
 
 <script>
