@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Vortanalizo 1 - termtransformo
+title: Vortanalizo 1 - termtransformo 2
 next_ch: pro_vana_2
 js:
     - taupl.min
@@ -9,8 +9,22 @@ css:
     - tau-prolog
 ---
 
-## Operatoroj kaj termtransormo
+## Termtransformo 2
 
+Ni realigu nun unue simplan gramatiketon el du reguloj:
+Vorto povas aŭ troviĝi en la vortaro de bazaj vortoj (prepozicioj, tabelvortoj, personaj pronomoj, 
+bazaj adverboj k.a.) aŭ kunmetiĝi el radiko kaj finaĵo. (La unua argumento ne estas nepre necesa, sed
+ni uzos ĝin por ekscii dum la analizo, kiu regulo aplikiĝis. Ĝe multaj reguloj tio povas esti
+tre utila por trovi erarojn kaj plibonigi la gramatikon.)
+
+```prolog
+vorto(v,Spc) <= 
+  v(_,Spc,_).
+
+vorto('rf',Spc) <= 
+  r(Rad,Rs,Ofc) / f(Fin,Fs).
+```  
+{:.ignoru}
 
 ```prolog
 % helpilo por sencimigi
@@ -18,91 +32,86 @@ css:
 ```
 {:.programo.kashita}
 
-Oni povus daŭrigi simile kiel ni jam faris por derivado de radikoj per sufiksoj kaj
-finaĵoj. Sed la reguloj estas iom malfacile legeblaj kaj oni rapide perus la superrigardon kun
-kreskanta gramatiko. Ni serĉas rimedon koncize noti vortforman regulon.
+En la regulkapo de regulo kiel `vorto(r,Speco) <= r(_,Speco,_)` ni aldonos du argmuentojn: la analizendan vorton
+kaj ties analizon. Tiucele ni apartigas la nomon de la regulo `vorto` de la listo de argumentoj per la
+prologa operatoro `=..`, poste ni alpendigas al la argumentlisto la du pliajn argumentojn kaj rekunmetas (denove uzante `=..`
+en la kontraŭa direkto) al `vorto(r,Speco,Vorto,Analizo)`.
 
 ```prolog
-vorto('Df',Spc) <= 
-  &rv_sen_fin(_,Vs) / f(_,Fs)
-  ~> (subspc(Vs,Fs),  % la finaĵo estu aplikebla al tiu vortspeco...
-       Spc=Vs 
-     ; Spc=Fs).
+:- use_module(library(lists)).
 
-% radiko 
-rv_sen_fin(r,Spc) <= 
-  r(_,Spc,_). 
-% radika vorto kun sufiksoj
-rv_sen_fin('Ds',Spc) <= 
-  &rv_sen_fin(_,Vs) / s(Suf,_,_) 
-  ~> drv_per_suf(Suf,Vs,Spc).
-
-```
-{:.ignoru}
-
-Ni bezonos tri apartajn signojn (operatorojn) por tio ĉi:
-
-| `<=` | (= konstituiĝas el) apartigas regulkapon de regulkorpo |
-| `&`  | referencas alian regulon |
-| `~>` | enkondukas post la ĉefa parto de la regulo aldonajn kondiĉojn en normala sintakso de Prologo |
-
-Ni unue difinu tiujn signojn kiel operatoroj. La unua argumento difinas la prioritaton kompare kun
-aliaj operatoroj. Ni devas certigi, ke `<=` ricevas pli malaltan prioritaton ol `~>`,
-sed ambaŭ havu prioritaton inter la aprioraj `:-` (1200) kaj `;` (1100) - ĉar ni ja volas miksi
-konvene nian vortforman sintakson kun ordinara Prologo. `&` havu tre altan prioritaton, t.e.
-aplikiĝu senpere al la posta termo, sed ja iom pli malaltan ol la list-operatoro `.` (100).
-
-La dua argumento esprimas kiel la operatoro `f` situu kompare kun siaj unu (fx) aŭ du (xfx) argumentoj.
-La argumentoj havas pli malaltan rangon ol la operatoro, sed kiam iu povas esti samranga oni uzas `y`.
-Do en la kazo `xfy` la unua argumento devas esti valorigita antaŭ la parto `fy` konsideriĝos.
-
-```prolog
 :- op( 1120, xfx, '<=' ).
-:- op( 1110, xfy, '~>' ).
-:- op( 150, fx, '&' ).
 
+term_expansion(
+  <=(Kapo, Korpo),ReguloTradukita) :-
+    regul_kapo(Kapo,Vorto,Analizo,KapoTradukita),
+    write(KapoTradukita),
+    regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita),
+    write(KorpoTradukita),
+    ReguloTradukita = (KapoTradukita :- KorpoTradukita).
+
+regul_kapo(Kapo,Vorto,Analizo,KapoTradukita) :-
+   Kapo =.. [Regulo|Regulargumentoj],
+   append(Regulargumentoj,[Vorto,Analizo],Argumentoj),
+   KapoTradukita =.. [Regulo|Argumentoj].
 ```
-{:.programo.kashita}
+{:.programo}
 
-Por transformi termojn - laŭ nia propra sintakso - Prologo ofertas predikaton `term_expansion/2`, kies
-unua argumento estas termo, kiu, se renkontata en la fontkodo, transformiĝos al la formo de la dua argumento.
-Do la unua argumento respondos al nia regulsintakso kaj la dua estos ordinara Prolog-predikato, kian
-ni en la antaŭaj lekcioj difinis por analizo de derivitaj vortoj. La korpo de `term_expansion` priskribas
-la transformon mem.
+Por la korpo ni konsideras la serĉon en la elementa vortlisto `v/3`
+kaj la kunmeton de radiko `r/3` kaj finaĵo `f/2`.
+
 
 ```prolog
-term_expansion( <=(Regulkapo, Regulkorpo), ReguloTradukita ) :-
-    regul_kapo(Regulkapo,Vrt,Rez,_,Predikatkapo),!,
-    regul_korpo(Regulkapo,Regulkorpo,Vrt,Rez,_,Predikatkorpo),
-    ReguloTradukita = (Predikatkapo :- Predikatkorpo).
 
-regul_kapo(Regulkapo,Vrt,Rez,_Depth_,Predikatkapo) :-
-   Regulkapo =.. [Regulnomo|Argumentoj],
-   append(Argumentoj,[Vrt,Rez,_Depth_],Argj),
-   Predikatkapo =.. [Regulnomo|Argj].
+regul_korpo(Kapo,Korpo,Vorto,Vorto,Korpo) :-
+  Korpo = v(Vorto,_,_).
 
-regul_korpo(Regulkapo,RuleExp,Vrt,Rez,_,Predikatkorpo) :-
-  % se ni ne havas postkondiĉon sufiĉas krei la "unuan parton"
-  rule_exp(Regulkapo,RuleExp,Vrt,Rez,_,Predikatkorpo).
+regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
+  % la regulesprimo estas kunmeto laŭ la skemo R1 / R2
+  Korpo =.. ['/',Ref1,Ref2],
+  Analizo =.. ['/',Radiko,Fino], 
 
-% la dekstra parto povas ankaŭ esti unuparta, simpla, ekz. vortarserĉo
-% aŭ forreferenco al subordigita regulo
-rule_exp(Regulkapo,RuleExp,Vrt,Rez,Depth,PredExp) :-
-  rule_ref(RuleExp,Vrt,Rez,Depth,PredikatoSimpla),
-  Regulkapo =.. [_,_Regulskemo|_],
-  PredExp = PredikatoSimpla.
+  Ref1 = r(Radiko,Rs,Os),
+  Ref2 = f(Fino,Fs),
 
-rule_ref(DictSearch,Vrt,Vrt,_,DictSearch) :-
-  DictSearch =.. [_,Vrt|_].
+  KorpoTradukita = (
+    atom_concat(Radiko,Fino,Vorto),
+    % kaj la radiko kaj la fino troviĝas en la vortaro
+    (Ref1,Ref2)
+  ).  
+
+
+v('se',subj,*).
+v('sed',konj,*).
+v('sen',prep,*).
+v('sep',nombr,*).
+v('ses',nombr,*).
+v('sub',prep,*).
+v('super',prep,*).
+v('sur',prep,*).
+
+r(san,adj,'*').
+f(o,subst).
+
+
+vorto(v,Spc) <= 
+  v(_,Spc,_).
+
+vorto('rf',Spc) <= 
+  r(Rad,Rs,Ofc) / f(Fin,Fs).
 
 ```
-{:.programo.kashita}
+{:.programo}
 
 {% include pl-demando.html n=99 query=
-  'vorto(Regul,Spc,satigantaj,Ana), term_atom(Ana,Rezulto).' %}
+  'listing(vorto/4).' %}
+
+{% include pl-demando.html n=99 query=
+  'vorto(Regulo,Spc,sano,Ana).' %}  
+
 
 <script>
-    const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
+    const limo = 10000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
     preparu_programojn();
     preparu_demandojn(() => {
         let programo = '';
