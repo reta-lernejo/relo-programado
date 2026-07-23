@@ -83,9 +83,7 @@ Nun ni devos ankoraŭ etendi niajn transformregulojn por la du novaj operatoroj.
 term_expansion(
   <=(Kapo, Korpo),ReguloTradukita) :-
     regul_kapo(Kapo,Vorto,Analizo,KapoTradukita),
-write_canonical(kapo(KapoTradukita)),
     regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita),
-write_canonical(korpo(KorpoTradukita)),  
     ReguloTradukita = (KapoTradukita :- KorpoTradukita).
 
 regul_kapo(Kapo,Vorto,Analizo,KapoTradukita) :-
@@ -95,34 +93,33 @@ regul_kapo(Kapo,Vorto,Analizo,KapoTradukita) :-
 
 
 % regulo kun postkondiĉo
-regul_korpo(Kapo,~>(Regulo,PostKond),Vorto,Analizo,KorpoTradukita) :-
+regul_korpo(Kapo,~>(Regulo,PostKond),
+  Vorto,Analizo,KorpoTradukita) :-
+
   % kreo de la unua parto
-  write_canonical(~>(Regulo,PostKond)),
   regul_korpo(Kapo,Regulo,Vorto,Analizo,PartoUnua),
-  % alpendigo de la postkondiĉo, kiu ja estas valida Prologo-kodo per "KAJ" = ","
+  % alpendigo de la postkondiĉo, kiu ja estas 
+  % valida Prologo-kodo per "KAJ" = ","
   % post la unua parto
   KorpoTradukita =.. [',',PartoUnua,PostKond].
+
 
 regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
   % la regulesprimo estas kunmeto laŭ la skemo R1 / R2
   Korpo =.. ['/',Ref1,Ref2],
   Analizo =.. ['/',Ana1,Ana2], 
 
-  write_canonical(Ref1/Ref2),
-
   regul_referenco(Ref1,Vrt1,Ana1,Ref1Tradukita),
-  write_canonical(ref1(Ref1Tradukita)),
   regul_referenco(Ref2,Vrt2,Ana2,Ref2Tradukita),
-  write_canonical(ref2(Ref2Tradukita)),
 
   % kreu splitilon por la Vorto en Vrt1 kaj Reston
   Kapo =.. [_,Regulskemo|_],  
-  splitilo(Regulskemo,Ref1,Ref2,Vorto,Vrt1,Resto,Splitilo),
+  splitilo(Regulskemo,Ref1,Ref2,Vorto,Vrt1,Vrt2,Splitilo),
 
   KorpoTradukita = (
     Splitilo,
     % Ref1 kaj Ref2 estas anlizeblaj
-    (Ref1,Ref2)
+    (Ref1Tradukita,Ref2Tradukita)
   ).  
 
 
@@ -145,11 +142,8 @@ Tiun ni simple anstataŭigas per si mem.
 
 ```prolog
 regul_referenco(&Regulreferenco,Vorto,Analizo,Regulvoko) :- !,
-  write_canonical(&(Regulreferenco)),
   Regulreferenco =.. [Regulnomo|Regulargumentoj],
-  write_canonical(nomo(Regulnomo)),
   append(Regulargumentoj,[Vorto,Analizo],Argumentoj),
-  write_canonical(arg(Argumentoj)),
   Regulvoko =.. [Regulnomo|Argumentoj].
 
 regul_referenco(Sercho,Vorto,Vorto,Sercho) :-
@@ -167,8 +161,12 @@ splitilo(Regulskemo,Ref1,Ref2,Vorto,Vrt1,Resto,Splitilo) :-
     sub_atom(Vorto,L1,L2,0,Resto), 
     sub_atom(Vorto,0,L1,L2,Vrt1)
   ).
+```
+{:.programo}
 
+Nia vortaro:
 
+```prolog
 v('vi',pron,*).
 v('se',subj,*).
 v('sed',konj,*).
@@ -218,7 +216,7 @@ s(ont,best,verb).
 s(at,best,tr).
 s(it,best,tr).
 s(ot,best,tr).
-s('aĉ',_,_).
+s('aĉ',Spc,Spc).
 s(ad,subst,verb). % substantivigo
 s(ad,_,verb). % ripetadi
 s('aĵ',subst,adj).
@@ -229,7 +227,7 @@ s(ar,subst,subst).
 s(ebl,adj,tr).
 s(ec,subst,adj).   % grandeco...
 s(ec,subst,subst). % membreco, kaoseco k.a.
-s(eg,_,_).
+s(eg,Spc,Spc).
 s(ej,subst,verb). % lernejo
 s(ej,subst,subst). % vinejo
 s(ej,subst,adj). % densejo, malsekejo
@@ -238,7 +236,7 @@ s(em,adj,adj). % dolĉema, purema
 s(end,adj,tr).
 s(er,subst,subst).
 s(estr,best,subst).
-s(et,_,_).
+s(et,Spc,Spc).
 s(id,best,best).
 s(ig,tr,subst).
 s(ig,tr,adj).
@@ -281,8 +279,12 @@ f(i,verb).
 f(u,verb).
 f(en,adv).
 f(e,adv).
+```
+{:.programo}
 
+Nia gramatiko:
 
+```prolog
 vorto(v,Spc) <= 
   v(_,Spc,_).
 
@@ -296,7 +298,9 @@ vorto('Df',Spc) <=
 rv_sen_fin(r,Spc) <= r(_,Spc,_). 
 
 % radika vorto + sufikso, ekz. san/ul
-rv_sen_fin('Ds',Spc) <= &rv_sen_fin(_,Vs) / s(Suf,_,_) ~> drv_per_suf(Suf,Vs,Spc).
+rv_sen_fin('Ds',Spc) <= 
+  &rv_sen_fin(_,Vs) / s(Suf,_,_) 
+  ~> drv_per_suf(Suf,Vs,Spc).
 
 drv_per_suf(Suf,Spc,Speco) :-
   s(Suf,Speco,De),
@@ -329,8 +333,9 @@ term_atom(F,A) :-
 ```
 {:.programo}
 
-{% include pl-demando.html n=99 query=
-  'vorto(Regul,Spc,satigantaj,Ana), term_atom(Ana,Rezulto).' %}
+{% include pl-demando.html query=
+  'vorto(Regul,Spc,satigantaj,Ana), 
+   term_atom(Ana,Rezulto).' %}
 
 <script>
     const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
