@@ -126,7 +126,7 @@ ni havu duan spegulan splitilon.
 
 ```prolog
 
-splitilo(Regulskemo,Ref1,Ref2,Vorto,Vrt1,Resto,Splitilo) :-
+splitilo(Regulskemo,Vorto,Vrt1,Resto,Splitilo) :-
   member(Regulskemo,['pv','pr','pD']),!,
   % prefikso pli mallonga ol la resto...
   Min = 2, Max = 7,
@@ -139,9 +139,8 @@ splitilo(Regulskemo,Ref1,Ref2,Vorto,Vrt1,Resto,Splitilo) :-
     sub_atom(Vorto,L1,L2,0,Resto)
   ).
 
-splitilo(Regulskemo,Ref1,Ref2,Vorto,Vrt1,Resto,Splitilo) :-
+splitilo(Regulskemo,Vorto,Vrt1,Resto,Splitilo) :-
   Min = 1, Max = 4,
-  % get_rule_min_max(Ref2,Min,Max),
 
   % komencu fortranĉi de malantaŭe
   % ja sufiksoj kaj finaĵoj normale estas mallongaj...
@@ -420,6 +419,12 @@ vorto(pv,Spc)
   <= p(mal,_) / v(_,Spc,_) 
   ~> (Spc='adv'; Spc='prep').
 
+vorto('Df',Spc) 
+  <= &rv_sen_fin(_,Vs) / f(_,Fs)
+  ~> (subspc(Vs,Fs),  % subspeco konserviĝas ...
+       Spc=Vs 
+     ; Spc=Fs).    
+
 % derivado per propra prefikso
 rv_sen_suf(pr,Spc) 
   <= p(_,De) / r(_,Spc,_) 
@@ -435,12 +440,6 @@ rv_sen_suf(pr,Al)
 rv_sen_suf(pD,Al) 
   <= p(_,Al,De) / &rv_sen_suf(_,Spc) 
   ~> subspc(Spc,De), subspc(De,verb).  
-
-vorto('Df',Spc) 
-  <= &rv_sen_fin(_,Vs) / f(_,Fs)
-  ~> (subspc(Vs,Fs),  % subspeco konserviĝas ...
-       Spc=Vs 
-     ; Spc=Fs).  
 
 % simpla radiko
 rv_sen_fin(r,Spc) <= r(_,Spc,_). 

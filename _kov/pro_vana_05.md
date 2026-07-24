@@ -113,7 +113,7 @@ regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
 
   % kreu splitilon por la Vorto en Vrt1 kaj Reston
   Kapo =.. [_,Regulskemo|_],  
-  splitilo(Regulskemo,Ref1,Ref2,Vorto,Vrt1,Vrt2,Splitilo),
+  splitilo(Regulskemo,Vorto,Vrt1,Vrt2,Splitilo),
 
   KorpoTradukita = (
     Splitilo,
@@ -149,9 +149,8 @@ regul_referenco(Sercho,Vorto,Vorto,Sercho) :-
   Sercho =.. [Predikato,Vorto|_],
   member(Predikato,[v,r,s,f]),!.
 
-splitilo(Regulskemo,Ref1,Ref2,Vorto,Vrt1,Resto,Splitilo) :-
+splitilo(Regulskemo,Vorto,Vrt1,Resto,Splitilo) :-
   Min = 1, Max = 4,
-  % get_rule_min_max(Ref2,Min,Max),
 
   % komencu fortranĉi de malantaŭe
   % ja sufiksoj kaj finaĵoj normale estas mallongaj...
