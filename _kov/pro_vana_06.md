@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Vortanalizo 5 - sufiksreguloj
+title: Vortanalizo 6 - prefikssreguloj
 next_ch: pro_vana_2
 js:
     - taupl.min
@@ -18,66 +18,48 @@ css:
 ```
 {:.programo.kashita}
 
-Ni nun aldonos regulon por derivado per sufiksoj al nia malgranda vortforma gramatiko.
-Ĉe tio ni bezonas du pliajn operatorojn: Per `&` ni referencas alian regulon, tie ĉi por memreferenco, 
-ĉar oni povas plurfoje apliki sufikson. La regulon ni nomas 'radik(hav)a vorto sen finaĵo', do `rv_sen_fin`.
-Krome ni volas aldoni postkondiĉojn, ekzemple ni devas certigi, ke la sufikso estas aplikebla al la koncerna
-vortspeco, ekzemple 'an', 'ing' k.a. aplikiĝas al substantivoj, 'ind', 'end, 'at', 'it', 'ot' 
-aplikiĝas al transitivaj verboj. Kaj ni devas scii, kiu vortspeco rezultas el la apliko, ekzmeple 'an', 'ist', 'ul'
-en (homo aŭ) besto. Tian postkondiĉon en ordinara Prologo ni enkondukas per `~>`. La kondiĉon kaj rezulton de 
-sufiksa apliko ni poste formulos en predikato `drv_per_suf/3`.
+Prefiksoj aplikiĝas en la antaŭa flanko de la radiko. Plej ofte ili
+aplikiĝas laŭlogike antaŭ la sufiksoj. Ni do volos aldoni regulojn tiajn:
 
 ```prolog
+% simplaj mal-vortoj (malfor, malantaŭ, maltro...)
+vorto(pv,Spc) 
+  <= p(mal,_) / v(_,Spc,_) 
+  ~> (Spc='adv'; Spc='prep').
 
-% simpla radiko 
-rv_sen_fin(r,Spc) <= r(_,Spc,_). 
+% derivado per propra prefikso
+rv_sen_suf(pr,Spc) 
+  <= p(_,De) / r(_,Spc,_) 
+  ~> subspc(Spc,De).
+rv_sen_suf(pD,Spc) 
+  <= p(_,De) / &rv_sen_suf(_,Spc) 
+  ~> subspc(Spc,De).
 
-% radika vorto kun sufiksoj
-rv_sen_fin('Ds',Spc) 
-  <= &rv_sen_fin(_,Vs) / s(Suf,_,_) 
-  ~> drv_per_suf(Suf,Vs,Spc).
-
+% derivado per prepozicioj uzataj prefikse ĉe verboj
+rv_sen_suf(pr,Al) 
+  <= p(_,Al,De) / r(_,Spc,_) 
+  ~> subspc(Spc,De), subspc(De,verb).
+rv_sen_suf(pD,Al) 
+  <= p(_,Al,De) / &rv_sen_suf(_,Spc) 
+  ~> subspc(Spc,De), subspc(De,verb).
 ```
 {:.ignoru}
 
-Ankaŭ al nia regulo por aldono de finaĵo ni aldonos postkondiĉon: ekzemple apliki finaĵon '-o'
-konservos ekzemple subspecon `best` (besto aŭ homo), ĉe aliaj vortspeco0j ĝi simple substantivigas.
-Simile '-i' konservas eventualan transitivecon.
+Ni do ankaŭ devos aldoni plian regulon por pluderivado de `rv_sen_suf`:
 
 ```prolog
-vorto('Df',Spc) 
-  <= &rv_sen_fin(_,Vs) / f(_,Fs)
-  ~> (subspc(Vs,Fs),  % subspeco konserviĝas ...
-       Spc=Vs 
-     ; Spc=Fs).
-
+rv_sen_fin('D',Spc) <= &rv_sen_suf(_,Spc).
 ```
 {:.ignoru}
 
-Do entute ni bezonos tri apartajn signojn (operatorojn) por nia gramatiko:
-
-| `<=` | (= konstituiĝas el) apartigas regulkapon de regulkorpo |
-| `&`  | referencas alian regulon |
-| `~>` | enkondukas post la ĉefa parto de la regulo aldonajn kondiĉojn en normala sintakso de Prologo |
-
-Ni devas certigi, ke `<=` ricevas pli malaltan prioritaton ol `~>`,
-sed ambaŭ havu prioritaton inter la aprioraj `:-` (1200) kaj `;` (1100) - ĉar ni ja volas miksi
-konvene nian vortforman sintakson kun ordinara Prologo. `&` havu tre altan prioritaton, t.e.
-aplikiĝu senpere al la posta termo, sed ja iom pli malaltan ol la list-operatoro `.` (100).
-Ĝi havas nur unu post-argumenton, do la skemo estas `fx`.
-
-```prolog
-:- op( 1120, xfx, '<=' ).
-:- op( 1110, xfx, '~>' ).
-:- op( 150, fx, '&' ).
-
-```
-{:.programo}
-
-Nun ni devos ankoraŭ etendi niajn transformregulojn por la du novaj operatoroj.
+Ni kunmetu ĉion ĝisnunan kaj la aldonajn regulojn.
 
 ```prolog
 :- use_module(library(lists)).
+
+:- op( 1120, xfx, '<=' ).
+:- op( 1110, xfx, '~>' ).
+:- op( 150, fx, '&' ).
 
 term_expansion(
   <=(Kapo, Korpo),ReguloTradukita) :-
@@ -126,20 +108,7 @@ regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
 % memreferenco aŭ referenco al subordigita regulo
 regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
   regul_referenco(Korpo,Vorto,Analizo,KorpoTradukita).  
-```
-{:.programo}
 
-
-Nun ni ankoraŭ devas difini kiel traduki regul-referencon al
-predikato kaj kiel krei konvenan splitilon.
-
-Se la regulo komenciĝas per `&` ĝi referencas alian regulon
-estigatan per `term_expansion`. Aliokaze ĝi estas vortaroserĉo, t.e.
-`v/3` (baza vorto), `r/3` (radiko), `s/3` (sufikso), `f/2` (finaĵo).
-Tiun ni simple anstataŭigas per si mem.
-
-
-```prolog
 regul_referenco(&Regulreferenco,Vorto,Analizo,Regulvoko) :- !,
   Regulreferenco =.. [Regulnomo|Regulargumentoj],
   append(Regulargumentoj,[Vorto,Analizo],Argumentoj),
@@ -148,6 +117,27 @@ regul_referenco(&Regulreferenco,Vorto,Analizo,Regulvoko) :- !,
 regul_referenco(Sercho,Vorto,Vorto,Sercho) :-
   Sercho =.. [Predikato,Vorto|_],
   member(Predikato,[v,r,s,f]),!.
+
+```
+{:.programo}
+
+Ĉar prefiksoj aplikiĝas anataŭe kaj estas kutime mallongaj kompare kun la radiko,
+ni havu duan spegulan splitilon.
+
+```prolog
+
+splitilo(Regulskemo,Ref1,Ref2,Vorto,Vrt1,Resto,Splitilo) :-
+  member(Regulskemo,['pv','pr','pD']),!,
+  % prefikso pli mallonga ol la resto...
+  Min = 2, Max = 7,
+  Splitilo = (
+    % maldekstra parto de la vorto (aŭ vortparto)
+    % havanta longecon L1, kiu estu inter Min kaj Max
+    between(Min,Max,L1),
+    sub_atom(Vorto,0,L1,L2,Vrt1),
+    % dekstra parto de la vorto (aŭ vortparto)
+    sub_atom(Vorto,L1,L2,0,Resto)
+  ).
 
 splitilo(Regulskemo,Ref1,Ref2,Vorto,Vrt1,Resto,Splitilo) :-
   Min = 1, Max = 4,
@@ -160,6 +150,7 @@ splitilo(Regulskemo,Ref1,Ref2,Vorto,Vrt1,Resto,Splitilo) :-
     sub_atom(Vorto,L1,L2,0,Resto), 
     sub_atom(Vorto,0,L1,L2,Vrt1)
   ).
+
 ```
 {:.programo}
 
@@ -208,6 +199,143 @@ r('fianĉ',best,*).
 r('edz',best,*).
 r('doktor',best,*).
 r('bov',best,*).
+
+
+%! p(?Prefikso,?DeSpeco).
+%
+% Prefiksoj
+% @arg Prefikso prefikso, ekz. bo
+% @arg DeSpeco radikspeco, al kiu ĝi estas aplikebla, ekz. parc
+%     (ordinaraj prefiskoj ne shanghas la vortspecon)
+% puraj prefiksoj,
+% prepozicioj kiel prefiksoj,
+% adverboj kiel prefiksoj
+
+p(bo,parc).
+p('ĉef',subst).
+p(dis,verb).
+p(ek,verb).
+p(eks,subst).
+p(fi,subst).
+p(ge,best).
+p(mal,_).
+p(mis,verb).
+p(pra,subst).
+p('pseŭdo',_).
+p(re,verb).
+
+% prepozicioj kiel prefiksoj
+% pri transitivigaj, prefikse uzataj prepozicioj vd. malsupre
+
+p(de,verb).
+p(ekster,adj). % eksterordinara
+p(ekster,subst). % eksterlando
+p(kun,verb).
+p(sub,subst).
+p(super,subst).
+
+% adverboj kiel prefiksoj
+
+p('ĉi',adj).
+p('ĉiam',adj). % ekz. ĉiamverda
+p(pli,adj).
+p(ne,adj).
+p(ne,subst).
+p(tiel,adj). %???
+
+p(nun,subst).
+p(mem,verb).
+p('kvazaŭ',_). % simile al pseŭdo
+p(tro,adj). % troabundeco
+
+
+%! p(?Prefikso,?AlSpeco,?DeSpeco)
+%
+% Prefikse uzataj prepozicioj kaj adverboj. 
+% * prepozicioj uzataj prefikse kun verboj,
+% * adverboj uzataj prefikse kun verboj
+%
+
+p(al,tr,verb). % ekz. aliri, alveni
+p('antaŭ',tr,verb). % antaŭvidi
+p(pri,tr,verb). % ekz. priskribi
+p(apud,tr,verb). % apudmeti
+p('ĉe',tr,verb). % ĉeesti
+p('ĉirkaŭ',tr,verb). % ĉirkaŭflugi
+p(el,tr,verb). % eliri
+p(en,tr,verb). % enhavi
+p('ĝis',tr,verb). % ĝisvivi
+p(inter,tr,verb). % interrompi
+p('kontraŭ',tr,verb). % kontraŭstari
+p(krom,tr,verb). % krompagi
+p('laŭ',tr,verb). % laŭiri
+p(per,tr,verb). % perforti, perlabori
+p(por,tr,verb). % porpeti
+p(post,tr,verb). % postpagi
+p(preter,tr,verb). % preteriri
+p(pri,tr,verb). % priparoli
+p(pro,tr,verb). % propeti
+p(sub,tr,verb). % subteni
+p(super,tr,verb). % superflugi
+p(sur,tr,verb). % surmeti
+p(tra,tr,verb). % trakuri
+p(trans,tr,verb). % transpagi 
+
+% adverboj uzataj prefikse kun verboj
+
+p(mem,adj,verb).
+p(plu,tr,verb).
+p(for,tr,verb).
+
+/**************
+ * la sekvaj fakte ne estas prefiksoj,
+ * sed uzataj en kunderivado (ekz. sen-dom-a, sed ne
+ * sen-dom-o; internacia, internacieco, sed ne internacio
+ * ...)  do eble forigu tie ĉi....
+ * prepozicioj kaj pronomoj... 
+**************/
+p('ambaŭ',adj,subst). % per ambaŭ manoj -> ambaŭmane
+p('ambaŭ',adj,verb). % tranĉi ambaŭ -> ambaŭtranĉe
+
+p(en,adj,subst).
+p(ekster,adj,subst).
+p(inter,adj,subst).
+p('antaŭ',adj,subst).
+p(apud,adj,subst).
+p('ĉe',adj,subst).
+p('ĉirkaŭ',adj,subst).
+
+p(dum,adj,subst).
+p(dum,adv,verb).
+
+p('kontraŭ',adj,subst).
+
+p('laŭ',adj,adv).
+p('laŭ',adj,adj).
+p('laŭ',adj,subst).
+
+p(pri,adj,subst).
+
+p(per,adv,subst).
+p(sen,adj,_).
+%p(sen,adj,subst).
+
+p(sub,adj,subst). 
+p(super,adj,adj).
+p(super,adj,adv).
+p(sur,adj,subst). 
+
+p(trans,adj,subst).
+
+p('ĉiu',adj,subst). % de ĉiu jaro -> ĉiujara
+p('tiu',adj,subst). % de tiu jaro -> tiujara
+p('kiu',adj,subst). % de kiu jaro -> kiujara
+p('neniu',adj,subst). % de neniu jaro -> neniujara
+
+p('ĉia',adj,subst). % de ĉia speco -> ĉiaspeca
+p('tia',adj,subst). % de tia speco -> tiaspeca
+p('kia',adj,subst). % de kia speco -> kiaspeca
+p('nenia',adj,subst). % de nenia speco -> neniaspeca
 
 s(ant,best,verb).
 s(int,best,verb).
@@ -284,7 +412,29 @@ f(e,adv).
 Nia gramatiko:
 
 ```prolog
-vorto(v,Spc) <= v(_,Spc,_).
+vorto(v,Spc) 
+  <= v(_,Spc,_).
+
+% simplaj mal-vortoj (malfor, malantaŭ, maltro...)
+vorto(pv,Spc) 
+  <= p(mal,_) / v(_,Spc,_) 
+  ~> (Spc='adv'; Spc='prep').
+
+% derivado per propra prefikso
+rv_sen_suf(pr,Spc) 
+  <= p(_,De) / r(_,Spc,_) 
+  ~> subspc(Spc,De).
+rv_sen_suf(pD,Spc) 
+  <= p(_,De) / &rv_sen_suf(_,Spc) 
+  ~> subspc(Spc,De).
+
+% derivado per prepozicioj uzataj prefikse ĉe verboj
+rv_sen_suf(pr,Al) 
+  <= p(_,Al,De) / r(_,Spc,_) 
+  ~> subspc(Spc,De), subspc(De,verb).
+rv_sen_suf(pD,Al) 
+  <= p(_,Al,De) / &rv_sen_suf(_,Spc) 
+  ~> subspc(Spc,De), subspc(De,verb).  
 
 vorto('Df',Spc) 
   <= &rv_sen_fin(_,Vs) / f(_,Fs)
@@ -294,6 +444,8 @@ vorto('Df',Spc)
 
 % simpla radiko
 rv_sen_fin(r,Spc) <= r(_,Spc,_). 
+% radiko kun prefikso(j)
+rv_sen_fin('D',Spc) <= &rv_sen_suf(_,Spc).
 
 % radika vorto + sufikso, ekz. san/ul
 rv_sen_fin('Ds',Spc) 
@@ -332,7 +484,7 @@ term_atom(F,A) :-
 {:.programo}
 
 {% include pl-demando.html query=
-  'vorto(Regul,Spc,satigantaj,Ana), 
+  'vorto(Regul,Spc,prakulturo,Ana),
    term_atom(Ana,Rezulto).' %}
 
 <script>
