@@ -11,6 +11,13 @@ css:
 
 ## Operatoroj kaj termtransormo
 
+<style>
+  div.programo {
+    max-height: 60ex;
+    overflow: scroll;
+  }
+</style>
+
 
 ```prolog
 % helpilo por sencimigi
@@ -63,8 +70,11 @@ Ni kunmetu ĉion ĝisnunan kaj la aldonajn regulojn.
 
 term_expansion(
   <=(Kapo, Korpo),ReguloTradukita) :-
+    write('>>>>>>>>>>>>>>>'),
     regul_kapo(Kapo,Vorto,Analizo,KapoTradukita),
+    write(kap(KapoTradukita)),
     regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita),
+    write(korp(KorpoTradukita)),
     ReguloTradukita = (KapoTradukita :- KorpoTradukita).
 
 regul_kapo(Kapo,Vorto,Analizo,KapoTradukita) :-
@@ -76,6 +86,8 @@ regul_kapo(Kapo,Vorto,Analizo,KapoTradukita) :-
 % regulo kun postkondiĉo
 regul_korpo(Kapo,~>(Regulo,PostKond),
   Vorto,Analizo,KorpoTradukita) :-
+
+  write(kond(PostKond)),
 
   % kreo de la unua parto
   regul_korpo(Kapo,Regulo,Vorto,Analizo,PartoUnua),
@@ -93,9 +105,12 @@ regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
   regul_referenco(Ref1,Vrt1,Ana1,Ref1Tradukita),
   regul_referenco(Ref2,Vrt2,Ana2,Ref2Tradukita),
 
+  write(r1t(Ref1Tradukita)),
+  write(r2t(Ref2Tradukita)),
+
   % kreu splitilon por la Vorto en Vrt1 kaj Reston
   Kapo =.. [_,Regulskemo|_],  
-  splitilo(Regulskemo,Ref1,Ref2,Vorto,Vrt1,Vrt2,Splitilo),
+  splitilo(Regulskemo,Vorto,Vrt1,Vrt2,Splitilo),
 
   KorpoTradukita = (
     Splitilo,
@@ -111,12 +126,14 @@ regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
 
 regul_referenco(&Regulreferenco,Vorto,Analizo,Regulvoko) :- !,
   Regulreferenco =.. [Regulnomo|Regulargumentoj],
+  write(ref(Regulnomo)),
   append(Regulargumentoj,[Vorto,Analizo],Argumentoj),
   Regulvoko =.. [Regulnomo|Argumentoj].
 
 regul_referenco(Sercho,Vorto,Vorto,Sercho) :-
   Sercho =.. [Predikato,Vorto|_],
-  member(Predikato,[v,r,s,f]),!.
+  write(srf(Predikato)),
+  member(Predikato,[v,r,p,s,f]),!.
 
 ```
 {:.programo}
@@ -417,13 +434,31 @@ vorto(v,Spc)
 % simplaj mal-vortoj (malfor, malantaŭ, maltro...)
 vorto(pv,Spc) 
   <= p(mal,_) / v(_,Spc,_) 
-  ~> (Spc='adv'; Spc='prep').
+  ~> write(mal),
+  (Spc='adv'; Spc='prep').
 
 vorto('Df',Spc) 
   <= &rv_sen_fin(_,Vs) / f(_,Fs)
   ~> (subspc(Vs,Fs),  % subspeco konserviĝas ...
        Spc=Vs 
      ; Spc=Fs).    
+
+% simpla radiko
+rv_sen_fin(r,Spc) <= r(_,Spc,_). 
+
+% radika vorto + sufikso, ekz. san/ul
+rv_sen_fin('Ds',Spc) 
+  <= &rv_sen_fin(_,Vs) / s(Suf,_,_) 
+  ~> drv_per_suf(Suf,Vs,Spc).
+
+% radiko kun prefikso(j), ekz-e mal/san, mal/san/ul
+rv_sen_fin('D',Spc) <= &rv_sen_suf(_,Spc).
+
+
+drv_per_suf(Suf,Spc,Speco) :-
+  s(Suf,Speco,De),
+  subspc(Spc,De).
+
 
 % derivado per propra prefikso
 rv_sen_suf(pr,Spc) 
@@ -441,19 +476,6 @@ rv_sen_suf(pD,Al)
   <= p(_,Al,De) / &rv_sen_suf(_,Spc) 
   ~> subspc(Spc,De), subspc(De,verb).  
 
-% simpla radiko
-rv_sen_fin(r,Spc) <= r(_,Spc,_). 
-% radiko kun prefikso(j)
-rv_sen_fin('D',Spc) <= &rv_sen_suf(_,Spc).
-
-% radika vorto + sufikso, ekz. san/ul
-rv_sen_fin('Ds',Spc) 
-  <= &rv_sen_fin(_,Vs) / s(Suf,_,_) 
-  ~> drv_per_suf(Suf,Vs,Spc).
-
-drv_per_suf(Suf,Spc,Speco) :-
-  s(Suf,Speco,De),
-  subspc(Spc,De).
 
 sub(X,X).
 % sub(X,Z) :- sub(X,Y), sub(Y,Z).
@@ -483,11 +505,16 @@ term_atom(F,A) :-
 {:.programo}
 
 {% include pl-demando.html query=
+  'vorto(Regul,Spc,malsanulejo,Ana),
+   term_atom(Ana,Rezulto).' %}
+
+{% include pl-demando.html query=
   'vorto(Regul,Spc,prakulturo,Ana),
    term_atom(Ana,Rezulto).' %}
 
+
 <script>
-    const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
+    const limo = 1000000;  // evitu eternan kuron
     preparu_programojn();
     preparu_demandojn(() => {
         let programo = '';
