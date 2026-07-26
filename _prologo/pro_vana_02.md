@@ -11,7 +11,7 @@ css:
 ---
 
 
-## Sufiksoj
+## Difino de sufiksoj
 
 Post disanalizo de vortoj laŭ radikoj kaj finaĵoj, ni rigardu derivadon per sufiksoj.
 
@@ -156,6 +156,8 @@ s(um,tr,_). % plenumi, brakumi, krucumi, lavumi ktp.
 ```
 {:.programo}
 
+## Derivado per sufiksoj
+
 Se ni volas certigi, ke sufikso aplikiĝu al la ĝusta vortspeco, ni devos konsideri, ke ekzemple, 
 sufikso aplikebla al verboj, pli konkrete estas ankaŭ aplikebla al transitivaj kaj netransitivaj verboj.
 Sufikso aplikebla al substantivoj ankaŭ estas aplikebla al bestoj kaj parencoj. Ni realigos tion per 
@@ -202,6 +204,8 @@ vortspecon post apliko de la sufikso (AlSpc).
     ec-verb,ec-adj,ec-subst,
     in-best,in-subst,in-adj]),
   drv_per_suf(Suf, RadSpc, AlSpc).' %}
+
+## Vortforma gramatiko kun sufiksoj
 
 Nun estas tempo, etendi nian vortforman gramatiketon je sufiksoj. Tiujn oni povas
 apliki ne nur al radiko, sed ankaŭ al derivaĵoj el radiko kaj unu aŭ pluraj sufiksoj,

@@ -16,7 +16,7 @@ title: Enhavo
 
 ## Prologo
 
-### PRologo per romaj ciferoj
+### Prologo per romaj ciferoj
 
 Interaga kurseto kun ekzercetoj 
 enkondukanta en la bazajn konceptojn de Prologo.
