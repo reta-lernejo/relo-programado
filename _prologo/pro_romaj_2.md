@@ -1,7 +1,7 @@
 ---
 layout: laborfolio
 title: 2.2 Romaj ciferoj - termoj
-chapter: "2. kombinoj, listoj"
+chapter: "2.2 kombinoj, listoj"
 next_ch: pro_romaj_3
 js:
     - taupl.min

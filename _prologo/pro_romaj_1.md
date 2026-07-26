@@ -1,7 +1,7 @@
 ---
 layout: laborfolio
 title: 2.1 Romaj ciferoj - faktoj
-chapter: "1. faktoj, demandoj"
+chapter: "2.1 faktoj, demandoj"
 next_ch: pro_romaj_2
 js:
     - taupl.min

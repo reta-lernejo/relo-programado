@@ -15,11 +15,13 @@ css:
 
 Post disanalizo de vortoj laŭ radikoj kaj finaĵoj, ni rigardu derivadon per sufiksoj.
 
+<!--
 ```prolog
 % helpiloj por sencimigi
 :- op(950, fy, *). *(_).
 ```
 {:.programo.kashita}
+-->
 
 Nian vortareton el la antaŭa leciono ni transprenas. (Malfaldu se vi volas revidi ĝin)
 
@@ -281,6 +283,8 @@ Provu ni, ĉu jam funkcias:
 {% include pl-demando.html query=
   'vorto(Regul,Spc,satigantaj,Ana), 
    term_atom(Ana,Rezulto).' %}
+
+En la sekva leciono ni vidos, kiel pli koncize formuli la regulojn de vortfarado.   
 
 <script>
   window.onload = () => {

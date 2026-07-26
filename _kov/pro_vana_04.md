@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Vortanalizo 1 - termtransformo 2
+title: 4.4 Vortanalizo - termtransformo 2
 next_ch: pro_vana_2
 js:
     - taupl.min
