@@ -1,0 +1,83 @@
+.programo {
+    display: flex;
+    font-family: monospace;
+}
+.programo .highlight {
+    margin-bottom: 0;
+}
+.programo>div.highlight {
+    background: none;
+}
+.programo pre {
+    padding-left: 4px;    
+}
+
+details.pl_kodo {
+    margin-bottom: 0.8ex;
+}
+
+.pl_kodo summary {
+    font-size: inherit;
+    background-color: #eef;
+    padding: 0.2em;
+    margin-bottom: 0;
+    border-top: 2px dotted violet;
+    width: 75%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.lininombroj {
+    width: 2em;
+    text-align: right;
+    font-family: monospace;
+    font-size: 15px;
+    padding: 8px 2px;
+    color: #777;
+    user-select: none;
+}
+.programo .code {
+    white-space: pre;
+    outline: none;
+    flex: 1;
+}
+
+button {
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    height: 24px;
+    color: black;
+    border-style: outset;
+    border-radius: 4px;
+}
+.prolog-demando {
+    border: 2px dotted cornflowerblue;
+    margin: 1em;
+    padding: 1em;
+}
+.demando pre::before {
+    content: "?-"
+}
+
+.respondo code {
+  overflow-wrap: break-word;
+}
+.respondo .kalkulante {
+    background: gray;
+}
+.respondo .kalkulante::before {    
+    content: "⧖";
+}
+.respondo button {
+    margin-right: .5em;
+}
+.informo {
+    font-style: italic;
+    color: #777;
+    font-size: 90%;
+    margin-left: .5em;
+}
+.kashita {
+    display: none;
+}
