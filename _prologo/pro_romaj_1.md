@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Romaj ciferoj per Prologo 1 - faktoj
+title: 2.1 Romaj ciferoj - faktoj
 chapter: "1. faktoj, demandoj"
 next_ch: pro_romaj_2
 js:

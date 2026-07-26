@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Romaj ciferoj per Prologo 3 - predikatoj
+title: 2.3 Romaj ciferoj - predikatoj
 next_ch: pro_romaj_4
 js:
     - taupl.min

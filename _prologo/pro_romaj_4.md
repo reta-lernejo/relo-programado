@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Romaj ciferoj per Prologo 4 - reguloj
+title: 2.4 Romaj ciferoj - reguloj
 next_ch: pro_romaj_5
 js:
     - taupl.min

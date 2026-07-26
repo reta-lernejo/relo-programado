@@ -156,14 +156,14 @@ s(um,tr,_). % plenumi, brakumi, krucumi, lavumi ktp.
 ```
 {:.programo}
 
-```prolog
-sub(X,X).
-% sub(X,Z) :- sub(X,Y), sub(Y,Z).
-sub(best,subst).
-sub(pers,best).
-sub(pers,subst).
+Se ni volas certigi, ke sufikso aplikiĝu al la ĝusta vortspeco, ni devos konsideri, ke ekzemple, 
+sufikso aplikebla al verboj, pli konkrete estas ankaŭ aplikebla al transitivaj kaj netransitivaj verboj.
+Sufikso aplikebla al substantivoj ankaŭ estas aplikebla al bestoj kaj parencoj. Ni realigos tion per 
+predikato `sub/2`. Ĉar estass tre malmultaj kazoj, ni rezignos pri transitiva difino.
 
-sub(parc,pers).
+```prolog
+sub(X,X). % ĉiu speco estas subspeco de si mem.
+sub(best,subst).
 sub(parc,best).
 sub(parc,subst).
 
@@ -171,17 +171,45 @@ sub(ntr,verb).
 sub(tr,verb).
 sub(perspron,pron).
 
+% ni ne bezonas konsideri diversajn kazojn,
+% do akceptas la unuan trafon definitive (`!`).
 subspc(S1,S2) :-
   sub(S1,S2), !.
+```
+{:.programo}
 
+Do ĉe derivado per sufikso ni faras du testojn: la sufikso ekzistas kaj la vortspeco
+de la radiko aŭ derivaĵo, al kiu ĝi aplikiĝas estus subspeco de la vortspeco, al kiu la
+sufikso estas aplikebla.
+
+```prolog
 % la regulo ricevas nur la vortspecon Spc de la maldektra vorto kaj la 
 % sufikson mem, kaj rigardas, ĉu ekzistas taŭga varianto kun la ĝusta
 % vortspeco aplikenda.
 drv_per_suf(Suf,Spc,Speco) :-
   s(Suf,Speco,De),
   subspc(Spc,De).
+```
+{:.programo}
+
+Ni faru teston por pli klara kompreno, kion ni ĵus difinis. El listo de kombinoj
+Sufikso-Vortspeco, ni elfiltros tiujn, kiuj estas permesataj. Ni ankaŭ ricevos la rezultantan
+vortspecon post apliko de la sufikso (AlSpc).
+
+{% include pl-demando.html n=99 query=
+  'member(Suf-RadSpc,[
+    it-tr,it-ntr,
+    ec-verb,ec-adj,ec-subst,
+    in-best,in-subst,in-adj]),
+  drv_per_suf(Suf, RadSpc, AlSpc).' %}
+
+Nun estas tempo, etendi nian vortforman gramatiketon je sufiksoj. Tiujn oni povas
+apliki ne nur al radiko, sed ankaŭ al derivaĵoj el radiko kaj unu aŭ pluraj sufiksoj,
+ekzemple sat/ig/ant. Ambaŭ kazojn ni difinos per du reguloj de predikato
+`rv_sen_fin/4`, t.e. radika vorto sen finaĵo. 
 
 
+```prolog
 % %# rv_sen_fin(r,_) ...
 rv_sen_fin(r, Spc, Vorto, Vorto^Ofc) :- r(Vorto, Spc, Ofc).
 
@@ -200,13 +228,17 @@ rv_sen_fin(rs, Spc, Vorto, Ana/Suf) :-
     % eblas apliki la sufikson al Vsp
     % ricevanta novan vortspecon Spc
     drv_per_suf(Suf, Vsp, Spc).
-
 ```
 {:.programo}
 
-
-{% include pl-demando.html n=99 query=
+{% include pl-demando.html query=
   'rv_sen_fin(Regul, Spc, satig, Ana).' %}
+
+Do, la analizo principe funkcias, sed estas iom malbele legebla. Ni difinu predikaton, kiu
+metos la operatoron `/` inter la argumentojn anstataŭ `/(a,b)`. La prologa operatoro
+`=..` helpas en tio transformante termon kiel `/(a,b)` al listo `[/,a,b]`, poste ni
+povas kunskribi ĉion en la dezirata ordo al atomo (signaro). La oficialecon ni alpendigas
+al la radiko per `^` - kvazaŭ eksponenton.
 
 ```prolog
   term_atom(A,A) :- atomic(A).
@@ -218,9 +250,12 @@ rv_sen_fin(rs, Spc, Vorto, Ana/Suf) :-
 ```    
 {:.programo}
 
+{% include pl-demando.html query=
+  'rv_sen_fin(Regul, Spc, satigant, Ana), 
+   term_atom(Ana,Rezulto).' %}
 
-{% include pl-demando.html n=99 query=
-  'rv_sen_fin(Regul, Spc, satigant, Ana), term_atom(Ana,Rezulto).' %}
+Fine ni realdonu la regulon por apliko de finaĵoj. Nun ni ne aplikos ilin plu
+al nudaj radikoj, sed al rezultoj de `rv_sen_fin`.  
 
 ```prolog
 :- use_module(library(lists)).
@@ -239,8 +274,9 @@ vorto(Regul,Spec,Vorto,VsfAna/Fino) :-
 
 Provu ni, ĉu jam funkcias:
 
-{% include pl-demando.html n=99 query=
-  'vorto(Regul,Spc,satigantaj,Ana), term_atom(Ana,Rezulto).' %}
+{% include pl-demando.html query=
+  'vorto(Regul,Spc,satigantaj,Ana), 
+   term_atom(Ana,Rezulto).' %}
 
 <script>
   window.onload = () => {
@@ -252,7 +288,7 @@ Provu ni, ĉu jam funkcias:
   preparu_demandojn(() => {
       let programo = '';
       document.querySelectorAll('.programo code').forEach((c) => {
-          programo += c.innerText;
+          programo += c.textContent;
       });
       return programo;
   }, limo);
