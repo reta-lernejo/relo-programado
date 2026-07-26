@@ -1,7 +1,7 @@
 ---
 layout: laborfolio
-title: Vortanalizo 1 - vortareto
-next_ch: pro_vana_2
+title: 4.1 Vortanalizo - vortareto
+next_ch: pro_vana_02
 js:
     - taupl.min
     - taupl-util-0b
@@ -11,10 +11,11 @@ css:
 
 ## Vortareto
 
-Post disanlizo de vortoj laŭ radikoj kaj finaĵoj, ni rigardu derivadon per sufiksoj.
+Por krei esperantan vortanalizilon ni komencu per listo de *finaĵoj* kun iliaj vortspecoj
+kiel faktoj `f/2`.
 
 ```prolog
-% finaĵoj
+
 % f(Finaĵo,Vortspeco).
 f(ojn,subst).
 f(oj,subst).
@@ -36,9 +37,13 @@ f(e,adv).
 ```
 {:.programo}
 
+Ni aldonu kelkajn *radikojn* kiel faktoj `r/3` kun siaj vorspeco kaj
+oficialeco. Ordinare, laŭ gramatika vidpunkto, ni ne distingas homojn de
+aliaj bestoj: *-in* aplikiĝas al homoj kiel al bestoj, ĉas*ant*o povas esti homo 
+kun pafilo aŭ tigro, grand*ul*o povas esti urso aŭ altkreska homo. Sed ni ja 
+distingos parencojn, ĉar iuj afiksoj (*bo-*), aplikiĝas nur al parencoj.
 
 ```prolog
-% radikoj
 % r(Radiko,Vortspeco,Oficialeco)
 r('vi',pron,*).
 r('tiu',pron,*).
@@ -83,16 +88,18 @@ transitivajn verbojn laŭ vortkomenco 'ku'.
 {% include pl-demando.html n=99 query=
   'r(Vorto,tr,Ofc), atom_chars(Vorto,[k,u|_]).' %}
 
-Aŭ tiel se vi preferas. 
+Aŭ tiel se vi preferas:
 
 {% include pl-demando.html n=99 query=
   'r(Vorto,tr,Ofc), atom_concat(ku,_,Vorto).' %}
 
-Se vi ŝatas iom ekzerci, aldonu predikaton
-por pli komforta serĉo en la programkampo (ekz-e sub la radikoj).
+*Tasko*: Se vi ŝatas iom ekzerci, aldonu en la programkampo predikaton
+por pli komforta serĉo (ekz-e sub la radikoj).
+
+## Analizi radikvortojn kun finaĵo
 
 Por analizi simplan vorton konsistantan el radiko kaj finaĵo,
-ni bezonas unue dividi ĝin kaj poste rigardi, ĉu la malantaŭa parto
+ni devas unue dividi ĝin en du partojn kaj poste rigardi, ĉu la malantaŭa parto
 estas finaĵo kaj la antaŭa parto troviĝas en la radikaro.
 
 Ĉar ni scias, ke la finaĵoj havas inter unu kaj tri literoj, ni

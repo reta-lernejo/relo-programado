@@ -1,24 +1,29 @@
 ---
 layout: laborfolio
-title: Vortanalizo 1 - sufiksoj
-next_ch: pro_vana_2
+title: 4.2 Vortanalizo - sufiksoj
+next_ch: pro_vana_03
 js:
+    - sekcio-0c
     - taupl.min
-    - taupl-util-0b
+    - taupl-util-0c
 css:
-    - tau-prolog
+    - tau-prolog-0c
 ---
+
 
 ## Sufiksoj
 
-Por krei esperantan vortanalizilon ni komencu per listo de finaĵoj kun iliaj vortspecoj.
+Post disanalizo de vortoj laŭ radikoj kaj finaĵoj, ni rigardu derivadon per sufiksoj.
 
 ```prolog
 % helpiloj por sencimigi
 :- op(950, fy, *). *(_).
+```
+{:.programo.kashita}
 
+Nian vortareton el la antaŭa leciono ni transprenas. (Malfaldu se vi volas revidi ĝin)
 
-% finaĵoj
+```prolog
 % f(Finaĵo,Vortspeco).
 f(ojn,subst).
 f(oj,subst).
@@ -38,16 +43,11 @@ f(u,verb).
 f(en,adv).
 f(e,adv).
 ```
-{:.programo.kashita}
+{:.programo.faldebla.faldita 
+  title="finaĵoj"}
 
-Ni aldonu radikareton. Kun
-la radikoj ni notu ankaŭ la vortspecon kaj la oficialecon.
-Ni traktos homojn kaj bestojn samspece, ĉar laŭ gramatika vidpunkto
-(aplikeblo de sufiksoj kiel 'ant', 'it', 'in' ktp. ili apenaŭ 
-diferencas).
 
 ```prolog
-% radikoj
 % r(Radiko,Vortspeco,Oficialeco)
 r('vi',pron,*).
 r('tiu',pron,*).
@@ -84,23 +84,31 @@ r('edz',best,*).
 r('doktor',best,*).
 r('bov',best,*).
 ```
-{:.programo.kashita}
+{:.programo.faldebla.faldita 
+  title="radikoj"}
+
+Ĉe la sufiksoj ni notu du gramatikajn specojn: en la dua argumento la rezultan vortspecon,
+same kiel ĉe la finaĵoj kaj radikoj, sed aldone, en la tria argumento, la vortspecon, al kiu
+ĝi estas aplikebla. Ekzemple '-it' estas aplikebla al transitivaj verboj kaj rezultas en ulo
+(homo aŭ besto), ekzemple el transitiva send/ fariĝas send/it/, kuriero aŭ kolombo ktp.:
+`s(it,best,tr).` Se estas pluraj eblecoj ni donas tion en plura faktoj, ekzemple -ig, iĝ, -ul.
+
+Iuj sufiksoj universale aplikiĝas konservante la specon: tie ni uzas variablon por tion esprimi:
+`s(eg,Spc,Spc).`, ekzmeple grand/eg, manĝ/eg, tur/eg. Se la speco estas entute ne difinita ni uzas 
+la ĵokeran variablon `_`, ekzemple -um estas universale aplikebla kaj la rezulta speco varias:
+kol/um/ estas substantiva, sed ĝarden/um/ verba. La sufiksoj -ist, -ism estas universale applikeblaj
+al verboj, substantivoj ktp. sed rezultas en difinita vortspeco: `s(ism,subst,_). s(ist,best,_).`
+
 
 ```prolog
 %! s(?Sufikso,?AlSpeco,?DeSpeco).
-%
-% Sufiksoj
-% @arg Sufikso sufikso, ekz. ul
-% @arg AlSpeco rezulto de derivado, ekz. best
-% @arg DeSpeco radikspeco, al kiu ĝi estas aplikebla, ekz. adj
-
 s(ant,best,verb).
 s(int,best,verb).
 s(ont,best,verb).
 s(at,best,tr).
 s(it,best,tr).
 s(ot,best,tr).
-s('aĉ',_,_).
+s('aĉ',Spc,Spc).
 s(ad,subst,verb). % substantivigo
 s(ad,_,verb). % ripetadi
 s('aĵ',subst,adj).
@@ -111,7 +119,7 @@ s(ar,subst,subst).
 s(ebl,adj,tr).
 s(ec,subst,adj).   % grandeco...
 s(ec,subst,subst). % membreco, kaoseco k.a.
-s(eg,_,_).
+s(eg,Spc,Spc).
 s(ej,subst,verb). % lernejo
 s(ej,subst,subst). % vinejo
 s(ej,subst,adj). % densejo, malsekejo
@@ -120,7 +128,7 @@ s(em,adj,adj). % dolĉema, purema
 s(end,adj,tr).
 s(er,subst,subst).
 s(estr,best,subst).
-s(et,_,_).
+s(et,Spc,Spc).
 s(id,best,best).
 s(ig,tr,subst).
 s(ig,tr,adj).
@@ -145,7 +153,10 @@ s(ul,best,subst). % X-hava ulo: mamulo, vertebrulo
 s(ul,best,verb). % X-anta ulo: drinkulo, rampulo
 s(um,_,_).
 s(um,tr,_). % plenumi, brakumi, krucumi, lavumi ktp.
+```
+{:.programo}
 
+```prolog
 sub(X,X).
 % sub(X,Z) :- sub(X,Y), sub(Y,Z).
 sub(best,subst).
@@ -232,13 +243,17 @@ Provu ni, ĉu jam funkcias:
   'vorto(Regul,Spc,satigantaj,Ana), term_atom(Ana,Rezulto).' %}
 
 <script>
-    const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
-    preparu_programojn();
-    preparu_demandojn(() => {
-        let programo = '';
-        document.querySelectorAll('.programo code').forEach((c) => {
-            programo += c.innerText;
-        });
-        return programo;
-    }, limo);
+  window.onload = () => {
+    Faldajho.aranĝo("pl_kodo");
+  }
+
+  const limo = 100000;  // evitu eternan kuron, ĉe la lasta (inversa demando)
+  preparu_programojn();
+  preparu_demandojn(() => {
+      let programo = '';
+      document.querySelectorAll('.programo code').forEach((c) => {
+          programo += c.innerText;
+      });
+      return programo;
+  }, limo);
 </script>
