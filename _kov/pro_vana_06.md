@@ -1,6 +1,6 @@
 ---
 layout: laborfolio
-title: Vortanalizo 6 - prefikssreguloj
+title: 4.6 Vortanalizo - prefiksreguloj
 next_ch: pro_vana_2
 js:
     - taupl.min
@@ -519,7 +519,7 @@ term_atom(F,A) :-
     preparu_demandojn(() => {
         let programo = '';
         document.querySelectorAll('.programo code').forEach((c) => {
-            programo += c.innerText;
+            programo += c.textContent;
         });
         return programo;
     }, limo);

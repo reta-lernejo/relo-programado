@@ -70,10 +70,9 @@ kaj la kunmeton de radiko `r/3` kaj finaĵo `f/2`.
 regul_korpo(Kapo,Korpo,Vorto,Vorto,Korpo) :-
   Korpo = v(Vorto,_,_).
 
-% kunmetaĵo el radiko kaj finaĵo
-regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
-  % la regulesprimo estas kunmeto laŭ la skemo Ref1 / Ref2
-  Korpo =.. ['/',Ref1,Ref2],
+% kunmeto laŭ la skemo Ref1 / Ref2
+regul_korpo(Kapo,/(Ref1,Ref2),Vorto,Analizo,KorpoTradukita) :-
+  % provizore ni traktos nur kunmetaĵon el radiko kaj finaĵo 
   Analizo =.. ['/',Radiko,Fino], 
 
   % referencoj al subkuŝajn reguloj, ĉi-akze
