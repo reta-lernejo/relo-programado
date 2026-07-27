@@ -1,32 +1,44 @@
 ---
 layout: laborfolio
 title: 4.6 Vortanalizo - prefiksreguloj
-next_ch: pro_vana_2
 js:
+    - sekcio-0c
     - taupl.min
-    - taupl-util-0b
+    - taupl-util-0c
 css:
-    - tau-prolog
+    - tau-prolog-0c
 ---
 
-## Operatoroj kaj termtransormo
+## Derivado per prefiksoj
 
-<style>
-  div.programo {
-    max-height: 60ex;
-    overflow: scroll;
-  }
-</style>
-
-
+<!--
 ```prolog
 % helpilo por sencimigi
 :- op(950, fy, *). *(_).
 ```
 {:.programo.kashita}
+-->
 
 Prefiksoj aplikiĝas en la antaŭa flanko de la radiko. Plej ofte ili
-aplikiĝas laŭlogike antaŭ la sufiksoj. Ni do volos aldoni regulojn tiajn:
+aplikiĝas laŭlogike antaŭ la sufiksoj: ekzemple (mal/san)/ul/ej/o,
+(dis/fend)/il/o, (kontraŭ/tus)/il/o, (pra/lingv)/ar/o.
+
+Derivado per prefiksoj cetere estas pli varia ol derivado per sufiksoj.
+Ordinaraj prefiskoj ne ŝanĝas la vortspecon: mal- aplikiĝas al ĉiuj specoj,
+konservante tiujn, bo- aplikiĝas al parencoj kaj rezultas en parenco-speco ktp.
+
+Sed ja kiel prefikso ankaŭ servas preopozicioj (al-, ekster-, ĝis-, sub-, ktp.),
+adverboj (mem-, plu-, for- k.a.), tabelvortoj (ĉio-, tia-, neniu- ...).
+
+Prepozicioj kaj adverboj prefikse aplikataj al verboj ŝanĝas la vortspecon:
+aliri, alveni, antaŭvidi k.a. transitivigas la verbon. Ĉe mem/skrib/a
+el verbo fariĝas adjektivo.
+
+Ankaŭ ĉe *kunderivado* per prepozicio aŭ adverbo ŝanĝiĝas la vortspeco:
+sen+dom/a, sur+strat/a, ambaŭ+man/e.
+
+Ni do devos difini specifajn regulojn kaj por specokonservaj prefiksoj `p/2` kaj
+por specoŝanĝaj prefiksoj `p/3`:
 
 ```prolog
 % simplaj mal-vortoj (malfor, malantaŭ, maltro...)
@@ -34,25 +46,40 @@ vorto(pv,Spc)
   <= p(mal,_) / v(_,Spc,_) 
   ~> (Spc='adv'; Spc='prep').
 
-% derivado per propra prefikso
+% derivado de radiko per propra prefikso p/2
 rv_sen_suf(pr,Spc) 
   <= p(_,De) / r(_,Spc,_) 
   ~> subspc(Spc,De).
+
+% derivado de jam derivita radikvorto per prefikso p/2
 rv_sen_suf(pD,Spc) 
   <= p(_,De) / &rv_sen_suf(_,Spc) 
   ~> subspc(Spc,De).
 
-% derivado per prepozicioj uzataj prefikse ĉe verboj
+% derivado de radiko per prepozicioj uzataj prefikse ĉe verboj
 rv_sen_suf(pr,Al) 
   <= p(_,Al,De) / r(_,Spc,_) 
   ~> subspc(Spc,De), subspc(De,verb).
+
+% derivado de jam derivita radikvorto 
+% per prepozicioj uzataj prefikse ĉe verboj
 rv_sen_suf(pD,Al) 
   <= p(_,Al,De) / &rv_sen_suf(_,Spc) 
   ~> subspc(Spc,De), subspc(De,verb).
+
+% kunderivado de adjektivaj kaj adverboj 
+% per prepozicioj (ekz. sur+strat/a, ambaŭ+man/e)
+kdrv(pD,adj) 
+  <= p(_,adj,De) + &rv_sen_fin(_,Spc) 
+  ~> subspc(Spc,De).
+
+kdrv(pD,adv) 
+  <= p(_,adv,De) + &rv_sen_fin(_,Spc) 
+  ~> subspc(Spc,De).
 ```
 {:.ignoru}
 
-Ni do ankaŭ devos aldoni plian regulon por pluderivado de `rv_sen_suf`:
+PLue ni devos aldoni regulon por pluderivado de `rv_sen_suf` per sufikso aŭ finaĵo:
 
 ```prolog
 rv_sen_fin('D',Spc) <= &rv_sen_suf(_,Spc).
@@ -70,11 +97,8 @@ Ni kunmetu ĉion ĝisnunan kaj la aldonajn regulojn.
 
 term_expansion(
   <=(Kapo, Korpo),ReguloTradukita) :-
-    write('>>>>>>>>>>>>>>>'),
     regul_kapo(Kapo,Vorto,Analizo,KapoTradukita),
-    write(kap(KapoTradukita)),
     regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita),
-    write(korp(KorpoTradukita)),
     ReguloTradukita = (KapoTradukita :- KorpoTradukita).
 
 regul_kapo(Kapo,Vorto,Analizo,KapoTradukita) :-
@@ -86,8 +110,6 @@ regul_kapo(Kapo,Vorto,Analizo,KapoTradukita) :-
 % regulo kun postkondiĉo
 regul_korpo(Kapo,~>(Regulo,PostKond),
   Vorto,Analizo,KorpoTradukita) :-
-
-  write(kond(PostKond)),
 
   % kreo de la unua parto
   regul_korpo(Kapo,Regulo,Vorto,Analizo,PartoUnua),
@@ -104,9 +126,6 @@ regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
 
   regul_referenco(Ref1,Vrt1,Ana1,Ref1Tradukita),
   regul_referenco(Ref2,Vrt2,Ana2,Ref2Tradukita),
-
-  write(r1t(Ref1Tradukita)),
-  write(r2t(Ref2Tradukita)),
 
   % kreu splitilon por la Vorto en Vrt1 kaj Reston
   Kapo =.. [_,Regulskemo|_],  
@@ -126,13 +145,11 @@ regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
 
 regul_referenco(&Regulreferenco,Vorto,Analizo,Regulvoko) :- !,
   Regulreferenco =.. [Regulnomo|Regulargumentoj],
-  write(ref(Regulnomo)),
   append(Regulargumentoj,[Vorto,Analizo],Argumentoj),
   Regulvoko =.. [Regulnomo|Argumentoj].
 
 regul_referenco(Sercho,Vorto,Vorto,Sercho) :-
   Sercho =.. [Predikato,Vorto|_],
-  write(srf(Predikato)),
   member(Predikato,[v,r,p,s,f]),!.
 
 ```
@@ -142,7 +159,6 @@ regul_referenco(Sercho,Vorto,Vorto,Sercho) :-
 ni havu duan spegulan splitilon.
 
 ```prolog
-
 splitilo(Regulskemo,Vorto,Vrt1,Resto,Splitilo) :-
   member(Regulskemo,['pv','pr','pD']),!,
   % prefikso pli mallonga ol la resto...
@@ -170,52 +186,9 @@ splitilo(Regulskemo,Vorto,Vrt1,Resto,Splitilo) :-
 ```
 {:.programo}
 
-Nia vortaro:
+La listo de propraj prefiksoj kaj aliaj prefikse uzataj vortoj
 
 ```prolog
-v('vi',pron,*).
-v('se',subj,*).
-v('sed',konj,*).
-v('sen',prep,*).
-v('sep',nombr,*).
-v('sur',prep,*).
-v('al',prep,*).
-
-r('vi',pron,*).
-r('tiu',pron,*).
-r('supr',adv,*).
-r('subit',adv,*).
-r('si',pron,*).
-r('sat',adj,*).
-r('sankt',adj,*).
-r('san',adj,*).
-r('sam',adj,*).
-r('sagac',adj,*).
-r('saĝ',adj,*).
-r('precip',adv,*).
-r('oft',adv,*).
-r('mi',pron,*).
-r('kverel',ntr,'4').
-r('kver',ntr,+).
-r('kuŝ',ntr,*).
-r('kuraĝ',tr,*).
-r('kurac',tr,*).
-r('kur',ntr,*).
-r('kupl',tr,+).
-r('kultur',tr,'1').
-r('kult',tr,'1').
-r('kulp',tr,*).
-r('kuir',tr,*).
-r('kudr',tr,*).
-r('krev',ntr,*).
-r('kresk',ntr,*).
-r('kamel',best,*). 
-r('fru',adv,*).
-r('fianĉ',best,*).
-r('edz',best,*).
-r('doktor',best,*).
-r('bov',best,*).
-
 
 %! p(?Prefikso,?DeSpeco).
 %
@@ -334,7 +307,6 @@ p(pri,adj,subst).
 
 p(per,adv,subst).
 p(sen,adj,_).
-%p(sen,adj,subst).
 
 p(sub,adj,subst). 
 p(super,adj,adj).
@@ -352,7 +324,57 @@ p('ĉia',adj,subst). % de ĉia speco -> ĉiaspeca
 p('tia',adj,subst). % de tia speco -> tiaspeca
 p('kia',adj,subst). % de kia speco -> kiaspeca
 p('nenia',adj,subst). % de nenia speco -> neniaspeca
+```
+{:.programo}
 
+
+Nia cetera vortareto:
+
+```prolog
+v('vi',pron,*).
+v('se',subj,*).
+v('sed',konj,*).
+v('sen',prep,*).
+v('sep',nombr,*).
+v('sur',prep,*).
+v('al',prep,*).
+
+r('vi',pron,*).
+r('tiu',pron,*).
+r('supr',adv,*).
+r('subit',adv,*).
+r('si',pron,*).
+r('sat',adj,*).
+r('sankt',adj,*).
+r('san',adj,*).
+r('sam',adj,*).
+r('sagac',adj,*).
+r('saĝ',adj,*).
+r('precip',adv,*).
+r('oft',adv,*).
+r('mi',pron,*).
+r('kverel',ntr,'4').
+r('kver',ntr,+).
+r('kuŝ',ntr,*).
+r('kuraĝ',tr,*).
+r('kurac',tr,*).
+r('kur',ntr,*).
+r('kupl',tr,+).
+r('kultur',tr,'1').
+r('kult',tr,'1').
+r('kulp',tr,*).
+r('kuir',tr,*).
+r('kudr',tr,*).
+r('krev',ntr,*).
+r('kresk',ntr,*).
+r('kamel',best,*). 
+r('fru',adv,*).
+r('fianĉ',best,*).
+r('edz',best,*).
+r('doktor',best,*).
+r('bov',best,*).
+
+%! s(?Sufikso,?AlSpeco,?DeSpeco).
 s(ant,best,verb).
 s(int,best,verb).
 s(ont,best,verb).
@@ -423,7 +445,8 @@ f(u,verb).
 f(en,adv).
 f(e,adv).
 ```
-{:.programo}
+{:.programo.faldebla.faldita
+  title="vortareto"}
 
 Nia gramatiko:
 
@@ -434,8 +457,7 @@ vorto(v,Spc)
 % simplaj mal-vortoj (malfor, malantaŭ, maltro...)
 vorto(pv,Spc) 
   <= p(mal,_) / v(_,Spc,_) 
-  ~> write(mal),
-  (Spc='adv'; Spc='prep').
+  ~> (Spc='adv'; Spc='prep').
 
 vorto('Df',Spc) 
   <= &rv_sen_fin(_,Vs) / f(_,Fs)
@@ -512,15 +534,20 @@ term_atom(F,A) :-
   'vorto(Regul,Spc,prakulturo,Ana),
    term_atom(Ana,Rezulto).' %}
 
+<!-- pluiri, senkuraĝa,... ankaŭ ne jam funkcias! -->
 
 <script>
-    const limo = 1000000;  // evitu eternan kuron
-    preparu_programojn();
-    preparu_demandojn(() => {
-        let programo = '';
-        document.querySelectorAll('.programo code').forEach((c) => {
-            programo += c.textContent;
-        });
-        return programo;
-    }, limo);
+  window.onload = () => {
+    Faldajho.aranĝo("pl_kodo");
+  }
+
+  const limo = 1000000;  // evitu eternan kuron
+  preparu_programojn();
+  preparu_demandojn(() => {
+      let programo = '';
+      document.querySelectorAll('.programo code').forEach((c) => {
+          programo += c.textContent;
+      });
+      return programo;
+  }, limo);
 </script>
