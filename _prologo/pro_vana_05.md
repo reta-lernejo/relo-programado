@@ -9,7 +9,6 @@ js:
 css:
     - tau-prolog-0c
 ---
----
 
 ## Tri operatoroj por nia gramatiko
 
@@ -121,6 +120,7 @@ regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
 ```
 {:.programo}
 
+## Regulreferencoj
 
 Plue ni devas difini kiel traduki regul-referencon al
 predikato kaj kiel krei konvenan splitilon.
@@ -285,6 +285,7 @@ f(e,adv).
 {:.programo.faldebla.faldita 
   title="finaĵoj"}
 
+## Vortfara gramatiko kun sufiksregulo
 
 Kaj fine nia vortfara gramatiko:
 
