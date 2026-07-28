@@ -542,6 +542,8 @@ analizo(Vorto,Spc,Rezulto) :-
     en,niaj,malsanulejoj,kuracistoj,'ambaŭmane',senlace,laboregas]),
    analizo(Vorto,Spc,Rezulto)." %}
 
+Plena vortfara gramatiko cetere troviĝas en la projekto [voko-akrido](https://github.com/revuloj/voko-akrido/tree/master/pro/gra).
+
 
 <script>
   window.onload = () => {

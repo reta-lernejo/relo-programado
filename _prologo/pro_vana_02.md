@@ -10,8 +10,6 @@ css:
     - tau-prolog-0c
 ---
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-
 ## Difino de sufiksoj
 
 Post disanalizo de vortoj laŭ radikoj kaj finaĵoj, ni rigardu derivadon per sufiksoj.
@@ -111,16 +109,21 @@ same kiel ĉe la finaĵoj kaj radikoj, sed aldone, en la tria argumento, la vort
 (homo aŭ besto), ekzemple el transitiva send/ fariĝas send/it/, kuriero aŭ kolombo ktp.:
 `s(it,best,tr).` Se estas pluraj eblecoj ni donas tion en plura faktoj, ekzemple -ig, iĝ, -ul.
 
+<!--
+graphviz:
 
-<div class="mermaid">
-  graph TD;
-    sat("`**r:sat**`") --o spc([adj])
-    ig("`**s:ig**`") --o spc
-    ig --o al1([tr])
-    ant("`**s:ant**`") --o spc2([verb])
-    spc2 -- subspc --> al1
-    ant --o al2([best])
-</div>
+digraph structs {
+    rankdir=RL
+    node [shape=Mrecord];
+    sat [label="SAT|<s_sat>adj"];
+    ig [label="IG|<s_ig>tr|<a_ig>adj"];
+    ant [label="ANT|<s_ant>best|<a_ant>verb"];
+    ig:a_ig -> sat:s_sat [dir=both,arrowhead=dot,arrowtail=dot]
+    ant:a_ant -> ig:s_ig [label=subspc,dir=both,arrowhead=dot,arrowtail=dot]
+}
+-->
+
+![apliko de sufiksoj](/relo-programado/assets/bld/satigant.svg)
 
 
 Iuj sufiksoj universale aplikiĝas konservante la specon: por tion esprimi, ni uzas samnoman variablon:
@@ -191,7 +194,7 @@ s(um,tr,_). % plenumi, brakumi, krucumi, lavumi ktp.
 Se ni volas certigi, ke sufikso aplikiĝu al la ĝusta vortspeco, ni devos konsideri, ke ekzemple, 
 sufikso aplikebla al verboj, pli konkrete estas ankaŭ aplikebla al transitivaj kaj netransitivaj verboj.
 Sufikso aplikebla al substantivoj ankaŭ estas aplikebla al bestoj kaj parencoj. Ni realigos tion per 
-predikato `sub/2`. Ĉar estass tre malmultaj kazoj, ni rezignos pri transitiva difino.
+predikato `sub/2`. Ĉar ekzistas tre malmultaj kazoj, ni rezignos pri transitiva difino.
 
 ```prolog
 sub(X,X). % ĉiu speco estas subspeco de si mem.

@@ -1,0 +1,9 @@
+digraph structs {
+    rankdir=RL
+    node [shape=Mrecord];
+    sat [label="SAT|<s_sat>adj|*"];
+    ig [label="IG|<s_ig>tr|<a_ig>adj"];
+    ant [label="ANT|<s_ant>best|<a_ant>verb"];
+    ig:a_ig -> sat:s_sat [dir=both,arrowhead=dot,arrowtail=dot]
+    ant:a_ant -> ig:s_ig [label=subspc,dir=both,arrowhead=dot,arrowtail=dot]
+}
