@@ -37,4 +37,3 @@ kiu analizas esperantajn vortojn derivitaj per afiksoj kaj finaĵoj.
 {% endunless %}
 {% endfor %}
 
-(daŭrigota)
