@@ -69,22 +69,24 @@ rv_sen_suf(pD,Al)
 
 % kunderivado de adjektivaj kaj adverboj 
 % per prepozicioj (ekz. sur+strat/a, ambaŭ+man/e)
-kdrv(pD,adj) 
-  <= p(_,adj,De) + &rv_sen_fin(_,Spc) 
+rv_sen_suf(pD,adj) 
+  <= p(_,adj,De) / &rv_sen_fin(_,Spc) 
   ~> subspc(Spc,De).
 
-kdrv(pD,adv) 
-  <= p(_,adv,De) + &rv_sen_fin(_,Spc) 
+rv_sen_suf(pD,adv) 
+  <= p(_,adv,De) / &rv_sen_fin(_,Spc) 
   ~> subspc(Spc,De).
 ```
 {:.ignoru}
 
-PLue ni devos aldoni regulon por pluderivado de `rv_sen_suf` per sufikso aŭ finaĵo:
+Plue ni devos aldoni regulon por pluderivado de `rv_sen_suf` per sufikso aŭ finaĵo:
 
 ```prolog
 rv_sen_fin('D',Spc) <= &rv_sen_suf(_,Spc).
 ```
 {:.ignoru}
+
+## Transformreguloj
 
 Ni kunmetu ĉion ĝisnunan kaj la aldonajn regulojn.
 
@@ -118,7 +120,7 @@ regul_korpo(Kapo,~>(Regulo,PostKond),
   % post la unua parto
   KorpoTradukita =.. [',',PartoUnua,PostKond].
 
-
+% regulo por kunmeto laŭ la skemo Ref1 / Ref2
 regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
   % la regulesprimo estas kunmeto laŭ la skemo R1 / R2
   Korpo =.. ['/',Ref1,Ref2],
@@ -138,16 +140,17 @@ regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
   ).  
 
 
-% dekstra regulparto unuparta, simpla, ekz. vortarserĉo
-% memreferenco aŭ referenco al subordigita regulo
+% (mem)referenco al subordigita regulo
 regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
   regul_referenco(Korpo,Vorto,Analizo,KorpoTradukita).  
 
+% regulreferenco per operatoro &
 regul_referenco(&Regulreferenco,Vorto,Analizo,Regulvoko) :- !,
   Regulreferenco =.. [Regulnomo|Regulargumentoj],
   append(Regulargumentoj,[Vorto,Analizo],Argumentoj),
   Regulvoko =.. [Regulnomo|Argumentoj].
 
+% serĉo en la vortaro (kun aldonita 'p')
 regul_referenco(Sercho,Vorto,Vorto,Sercho) :-
   Sercho =.. [Predikato,Vorto|_],
   member(Predikato,[v,r,p,s,f]),!.
@@ -156,7 +159,7 @@ regul_referenco(Sercho,Vorto,Vorto,Sercho) :-
 {:.programo}
 
 Ĉar prefiksoj aplikiĝas anataŭe kaj estas kutime mallongaj kompare kun la radiko,
-ni havu duan spegulan splitilon.
+ni havu duan spegulan splitilon por prefiksoj.
 
 ```prolog
 splitilo(Regulskemo,Vorto,Vrt1,Resto,Splitilo) :-
@@ -182,24 +185,16 @@ splitilo(Regulskemo,Vorto,Vrt1,Resto,Splitilo) :-
     sub_atom(Vorto,L1,L2,0,Resto), 
     sub_atom(Vorto,0,L1,L2,Vrt1)
   ).
-
 ```
 {:.programo}
 
-La listo de propraj prefiksoj kaj aliaj prefikse uzataj vortoj
+## Prefiksofaktoj
+
+Niu aldonu la diversspecajn prefiksojn, komencante kun la propraj prefiksoj,
+prepozicioj kaj adverboj uzataj kiel prefiksoj sen ŝanĝi la vortspecon.
 
 ```prolog
-
 %! p(?Prefikso,?DeSpeco).
-%
-% Prefiksoj
-% @arg Prefikso prefikso, ekz. bo
-% @arg DeSpeco radikspeco, al kiu ĝi estas aplikebla, ekz. parc
-%     (ordinaraj prefiskoj ne shanghas la vortspecon)
-% puraj prefiksoj,
-% prepozicioj kiel prefiksoj,
-% adverboj kiel prefiksoj
-
 p(bo,parc).
 p('ĉef',subst).
 p(dis,verb).
@@ -214,8 +209,6 @@ p('pseŭdo',_).
 p(re,verb).
 
 % prepozicioj kiel prefiksoj
-% pri transitivigaj, prefikse uzataj prepozicioj vd. malsupre
-
 p(de,verb).
 p(ekster,adj). % eksterordinara
 p(ekster,subst). % eksterlando
@@ -224,27 +217,27 @@ p(sub,subst).
 p(super,subst).
 
 % adverboj kiel prefiksoj
-
 p('ĉi',adj).
 p('ĉiam',adj). % ekz. ĉiamverda
 p(pli,adj).
 p(ne,adj).
 p(ne,subst).
-p(tiel,adj). %???
-
+p(tiel,adj). 
 p(nun,subst).
 p(mem,verb).
 p('kvazaŭ',_). % simile al pseŭdo
-p(tro,adj). % troabundeco
+p(tro,adj). % ekz. troabundeco
+```
+{:.programo}
 
+Nun ni aldonu la prefikse uzatajn prepoziciojn kaj adverbojn,
+kiuj, simile al sufiksoj, ŝanĝas la vortspecon.
 
+```prolog
 %! p(?Prefikso,?AlSpeco,?DeSpeco)
 %
-% Prefikse uzataj prepozicioj kaj adverboj. 
-% * prepozicioj uzataj prefikse kun verboj,
-% * adverboj uzataj prefikse kun verboj
-%
-
+% prepozicioj uzataj prefikse kun verboj,
+% adverboj uzataj prefikse kun verboj
 p(al,tr,verb). % ekz. aliri, alveni
 p('antaŭ',tr,verb). % antaŭvidi
 p(pri,tr,verb). % ekz. priskribi
@@ -271,18 +264,15 @@ p(tra,tr,verb). % trakuri
 p(trans,tr,verb). % transpagi 
 
 % adverboj uzataj prefikse kun verboj
-
 p(mem,adj,verb).
 p(plu,tr,verb).
 p(for,tr,verb).
+```
+{:.programo}
 
-/**************
- * la sekvaj fakte ne estas prefiksoj,
- * sed uzataj en kunderivado (ekz. sen-dom-a, sed ne
- * sen-dom-o; internacia, internacieco, sed ne internacio
- * ...)  do eble forigu tie ĉi....
- * prepozicioj kaj pronomoj... 
-**************/
+Kaj fine listigu ni prepoziciojn, adverbojn kaj tabelvortojn uzataj en kunderivado.
+
+```prolog
 p('ambaŭ',adj,subst). % per ambaŭ manoj -> ambaŭmane
 p('ambaŭ',adj,verb). % tranĉi ambaŭ -> ambaŭtranĉe
 
@@ -293,33 +283,25 @@ p('antaŭ',adj,subst).
 p(apud,adj,subst).
 p('ĉe',adj,subst).
 p('ĉirkaŭ',adj,subst).
-
 p(dum,adj,subst).
 p(dum,adv,verb).
-
 p('kontraŭ',adj,subst).
-
 p('laŭ',adj,adv).
 p('laŭ',adj,adj).
 p('laŭ',adj,subst).
-
 p(pri,adj,subst).
-
 p(per,adv,subst).
 p(sen,adj,_).
-
 p(sub,adj,subst). 
 p(super,adj,adj).
 p(super,adj,adv).
 p(sur,adj,subst). 
-
 p(trans,adj,subst).
 
 p('ĉiu',adj,subst). % de ĉiu jaro -> ĉiujara
 p('tiu',adj,subst). % de tiu jaro -> tiujara
 p('kiu',adj,subst). % de kiu jaro -> kiujara
 p('neniu',adj,subst). % de neniu jaro -> neniujara
-
 p('ĉia',adj,subst). % de ĉia speco -> ĉiaspeca
 p('tia',adj,subst). % de tia speco -> tiaspeca
 p('kia',adj,subst). % de kia speco -> kiaspeca
@@ -327,8 +309,7 @@ p('nenia',adj,subst). % de nenia speco -> neniaspeca
 ```
 {:.programo}
 
-
-Nia cetera vortareto:
+Nian ceteran vortareton ni prenas el la antaŭa lecionoj.
 
 ```prolog
 v('vi',pron,*).
@@ -338,6 +319,7 @@ v('sen',prep,*).
 v('sep',nombr,*).
 v('sur',prep,*).
 v('al',prep,*).
+v('en',prep,*).
 
 r('vi',pron,*).
 r('tiu',pron,*).
@@ -353,6 +335,7 @@ r('saĝ',adj,*).
 r('precip',adv,*).
 r('oft',adv,*).
 r('mi',pron,*).
+r('ni',pron,*).
 r('kverel',ntr,'4').
 r('kver',ntr,+).
 r('kuŝ',ntr,*).
@@ -368,6 +351,9 @@ r('kudr',tr,*).
 r('krev',ntr,*).
 r('kresk',ntr,*).
 r('kamel',best,*). 
+r('labor',ntr,*). 
+r('lac',adj,*). 
+r('man',subst,*). 
 r('fru',adv,*).
 r('fianĉ',best,*).
 r('edz',best,*).
@@ -448,9 +434,13 @@ f(e,adv).
 {:.programo.faldebla.faldita
   title="vortareto"}
 
-Nia gramatiko:
+
+## Vortfara gramatiko
+
+Nia gramatiko nun havas la aldonajn prefiksregulojn.
 
 ```prolog
+% baza vorto
 vorto(v,Spc) 
   <= v(_,Spc,_).
 
@@ -459,6 +449,7 @@ vorto(pv,Spc)
   <= p(mal,_) / v(_,Spc,_) 
   ~> (Spc='adv'; Spc='prep').
 
+% vorto kun finaĵo
 vorto('Df',Spc) 
   <= &rv_sen_fin(_,Vs) / f(_,Fs)
   ~> (subspc(Vs,Fs),  % subspeco konserviĝas ...
@@ -476,7 +467,7 @@ rv_sen_fin('Ds',Spc)
 % radiko kun prefikso(j), ekz-e mal/san, mal/san/ul
 rv_sen_fin('D',Spc) <= &rv_sen_suf(_,Spc).
 
-
+% kondiĉoj por sufiksderivado
 drv_per_suf(Suf,Spc,Speco) :-
   s(Suf,Speco,De),
   subspc(Spc,De).
@@ -494,13 +485,24 @@ rv_sen_suf(pD,Spc)
 rv_sen_suf(pr,Al) 
   <= p(_,Al,De) / r(_,Spc,_) 
   ~> subspc(Spc,De), subspc(De,verb).
+
 rv_sen_suf(pD,Al) 
   <= p(_,Al,De) / &rv_sen_suf(_,Spc) 
   ~> subspc(Spc,De), subspc(De,verb).  
 
+% kunderivado de adjektivaj kaj adverboj 
+% per prepozicioj (ekz. sur+strat/a, ambaŭ+man/e)
+rv_sen_suf(pD,adj) 
+  <= p(_,adj,De) / &rv_sen_fin(_,Spc) 
+  ~> subspc(Spc,De).
 
+rv_sen_suf(pD,adv) 
+  <= p(_,adv,De) / &rv_sen_fin(_,Spc) 
+  ~> subspc(Spc,De).  
+
+% hieraĥieto de vortspecoj
 sub(X,X).
-% sub(X,Z) :- sub(X,Y), sub(Y,Z).
+
 sub(best,subst).
 sub(pers,best).
 sub(pers,subst).
@@ -516,12 +518,17 @@ sub(perspron,pron).
 subspc(S1,S2) :-
   sub(S1,S2), !.  
 
+% plibeligilo
 term_atom(A,A) :- atomic(A).
 term_atom(F,A) :- 
   F =.. [Op,T1,T2],
   term_atom(T1,A1),
   term_atom(T2,A2),
   atomic_list_concat([A1,Op,A2],A).  
+
+analizo(Vorto,Spc,Rezulto) :-
+  vorto(Regul,Spc,Vorto,Ana),!,
+  term_atom(Ana,Rezulto).
 
 ```
 {:.programo}
@@ -530,18 +537,18 @@ term_atom(F,A) :-
   'vorto(Regul,Spc,malsanulejo,Ana),
    term_atom(Ana,Rezulto).' %}
 
-{% include pl-demando.html query=
-  'vorto(Regul,Spc,prakulturo,Ana),
-   term_atom(Ana,Rezulto).' %}
+{% include pl-demando.html n="9" query=
+  "member(Vorto,[
+    en,niaj,malsanulejoj,kuracistoj,'ambaŭmane',senlace,laboregas]),
+   analizo(Vorto,Spc,Rezulto)." %}
 
-<!-- pluiri, senkuraĝa,... ankaŭ ne jam funkcias! -->
 
 <script>
   window.onload = () => {
     Faldajho.aranĝo("pl_kodo");
   }
 
-  const limo = 1000000;  // evitu eternan kuron
+  const limo = 1500000;  // evitu eternan kuron
   preparu_programojn();
   preparu_demandojn(() => {
       let programo = '';
