@@ -10,6 +10,7 @@ css:
     - tau-prolog-0c
 ---
 
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 
 ## Difino de sufiksoj
 
@@ -89,14 +90,41 @@ r('bov',best,*).
 {:.programo.faldebla.faldita 
   title="radikoj"}
 
-Ĉe la sufiksoj ni notu du gramatikajn specojn: en la dua argumento la rezultan vortspecon,
+Sufiksoj ne estas arbitre aplikeblaj: ili ofte limigas, al kiu vortspeco ili estas aplikeblaj
+kaj ilia rezulto ankaŭ implicite ricevas vortspecon, ordinare alian. Tiel -an aplikiĝas al 
+substantivoj (inkluzivante homojn) kaj ilia rezulto estas homo aŭ besto, ekzemple: grup/an.
+Sufiksoj -on, -obl estas aplikeblaj nur la nombrovortoj kaj rezultas en substantivo.
+
+Estas konsilinde do kontroli ĉe vortanalizo, al kiu vortspeco ni provas apliki sufikson kaj
+atribui la rezultan vortspecon por la plua analizo. Tio ofte malhelpas
+misanalizon en vortoj kiel afrikato, aksono, altaro, anatemo, anemono, antilopo, ciklopo, envelopo, 
+elektrono, fonemo, haremo, kvadrigo, putino, sinkopo k.m.p.
+
+En iuj vortoj tio tamen ne malhelpus misanalizon: bulgara, lineara, ekstrema, elfaro. Tial estas
+konsilinde konvene ordigi la regulojn de la gramatiko kaj vortaro: ordigu la longajn radikojn 
+antaŭ la mallongaj (plej simple per inversa alfabeta ordo), faru la analizon de prefiksoj
+antaŭ la analizo de sufiksoj (el/far/o do ne analiziĝus kiel elf/ar/o).
+
+Ĉe la sufiksoj ni do notu du gramatikajn specojn: en la dua argumento la rezultan vortspecon,
 same kiel ĉe la finaĵoj kaj radikoj, sed aldone, en la tria argumento, la vortspecon, al kiu
 ĝi estas aplikebla. Ekzemple '-it' estas aplikebla al transitivaj verboj kaj rezultas en ulo
 (homo aŭ besto), ekzemple el transitiva send/ fariĝas send/it/, kuriero aŭ kolombo ktp.:
 `s(it,best,tr).` Se estas pluraj eblecoj ni donas tion en plura faktoj, ekzemple -ig, iĝ, -ul.
 
-Iuj sufiksoj universale aplikiĝas konservante la specon: tie ni uzas variablon por tion esprimi:
-`s(eg,Spc,Spc).`, ekzmeple grand/eg, manĝ/eg, tur/eg. Se la speco estas entute ne difinita ni uzas 
+
+<div class="mermaid">
+  graph TD;
+    sat("`**r:sat**`") --o spc([adj])
+    ig("`**s:ig**`") --o spc
+    ig --o al1([tr])
+    ant("`**s:ant**`") --o spc2([verb])
+    spc2 -- subspc --> al1
+    ant --o al2([best])
+</div>
+
+
+Iuj sufiksoj universale aplikiĝas konservante la specon: por tion esprimi, ni uzas samnoman variablon:
+`s(eg,Spc,Spc).`, ekzmeple grand/eg, manĝ/eg, tur/eg. Se la speco estas entute ne difinita, ni uzas 
 la ĵokeran variablon `_`, ekzemple -um estas universale aplikebla kaj la rezulta speco varias:
 kol/um/ estas substantiva, sed ĝarden/um/ verba. La sufiksoj -ist, -ism estas universale applikeblaj
 al verboj, substantivoj ktp. sed rezultas en difinita vortspeco: `s(ism,subst,_). s(ist,best,_).`
