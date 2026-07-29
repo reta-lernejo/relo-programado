@@ -19,11 +19,12 @@ css:
 {:.programo.kashita}
 -->
 
-Prefiksoj aplikiĝas en la antaŭa flanko de la radiko. Plej ofte ili
-aplikiĝas laŭlogike antaŭ la sufiksoj: ekzemple (mal/san)/ul/ej/o,
-(dis/fend)/il/o, (kontraŭ/tus)/il/o, (pra/lingv)/ar/o.
+Prefiksoj aplikiĝas en la antaŭa flanko de la radiko. Ordinare
+ili aplikiĝas laŭlogike antaŭ la sufiksoj: ekzemple (mal/san)/ul/ej/o,
+(dis/fend)/il/o, (kontraŭ/tus)/il/o, (pra/lingv)/ar/o. Ĉe kunderivado
+ili aplikiĝas post apliko de sufiksoj: (en+(lern/ej))/a, (apud+(vend/ej))/e.
 
-Derivado per prefiksoj cetere estas pli varia ol derivado per sufiksoj.
+Derivado per prefiksoj evidente estas pli varia ol derivado per sufiksoj.
 Ordinaraj prefiskoj ne ŝanĝas la vortspecon: mal- aplikiĝas al ĉiuj specoj,
 konservante tiujn, bo- aplikiĝas al parencoj kaj rezultas en parenco-speco ktp.
 
@@ -38,7 +39,7 @@ Ankaŭ ĉe *kunderivado* per prepozicio aŭ adverbo ŝanĝiĝas la vortspeco:
 sen+dom/a, sur+strat/a, ambaŭ+man/e.
 
 Ni do devos difini specifajn regulojn kaj por specokonservaj prefiksoj `p/2` kaj
-por specoŝanĝaj prefiksoj `p/3`:
+por specoŝanĝaj prefiksoj `p/3`, kunderivado.
 
 ```prolog
 % simplaj mal-vortoj (malfor, malantaŭ, maltro...)
@@ -472,11 +473,11 @@ drv_per_suf(Suf,Spc,Speco) :-
   s(Suf,Speco,De),
   subspc(Spc,De).
 
-
 % derivado per propra prefikso
 rv_sen_suf(pr,Spc) 
   <= p(_,De) / r(_,Spc,_) 
   ~> subspc(Spc,De).
+
 rv_sen_suf(pD,Spc) 
   <= p(_,De) / &rv_sen_suf(_,Spc) 
   ~> subspc(Spc,De).
