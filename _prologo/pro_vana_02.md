@@ -106,7 +106,7 @@ antaŭ la analizo de sufiksoj (el/far/o do ne analiziĝus kiel elf/ar/o).
 Ĉe la sufiksoj ni do notu du gramatikajn specojn: en la dua argumento la rezultan vortspecon,
 same kiel ĉe la finaĵoj kaj radikoj, sed aldone, en la tria argumento, la vortspecon, al kiu
 ĝi estas aplikebla. Ekzemple '-it' estas aplikebla al transitivaj verboj kaj rezultas en ulo
-(homo aŭ besto), ekzemple el transitiva send/ fariĝas send/it/, kuriero aŭ kolombo ktp.:
+(homo aŭ besto), el transitiva send/ fariĝas send/it/, kuriero aŭ kolombo ktp.:
 `s(it,best,tr).` Se estas pluraj eblecoj ni donas tion en plura faktoj, ekzemple -ig, iĝ, -ul.
 
 <!--

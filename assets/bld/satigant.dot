@@ -1,5 +1,6 @@
 digraph structs {
-    rankdir=RL
+    rankdir=BT
+    bgcolor=transparent
     node [shape=Mrecord];
     sat [label="SAT|<s_sat>adj|*"];
     ig [label="IG|<s_ig>tr|<a_ig>adj"];
