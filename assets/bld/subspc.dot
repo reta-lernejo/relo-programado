@@ -1,0 +1,12 @@
+
+digraph structs {
+    rankdir=BT
+    bgcolor=transparent
+
+    best -> subst
+    parc -> best
+    parc -> subst
+    ntr -> verb
+    tr -> verb
+    perspron -> pron
+}

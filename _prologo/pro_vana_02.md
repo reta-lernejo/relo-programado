@@ -196,6 +196,8 @@ sufikso aplikebla al verboj, pli konkrete estas ankaŭ aplikebla al transitivaj 
 Sufikso aplikebla al substantivoj ankaŭ estas aplikebla al bestoj kaj parencoj. Ni realigos tion per 
 predikato `sub/2`. Ĉar ekzistas tre malmultaj kazoj, ni rezignos pri transitiva difino.
 
+![subspecoj](/relo-programado/assets/bld/subspc.svg)
+
 ```prolog
 sub(X,X). % ĉiu speco estas subspeco de si mem.
 sub(best,subst).

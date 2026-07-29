@@ -505,10 +505,7 @@ rv_sen_suf(pD,adv)
 sub(X,X).
 
 sub(best,subst).
-sub(pers,best).
-sub(pers,subst).
 
-sub(parc,pers).
 sub(parc,best).
 sub(parc,subst).
 
