@@ -38,14 +38,46 @@ kompleks(-(A,B), k(Re, Im)) :-
   Re is ReA - ReB,
   Im is ImA - ImB.
 
-term_atom(k(Re,Im),A) :-
-  atomic_list_concat([Re,+,Im,i],A).
+% multipliko
+kompleks(*(A,B), k(Re, Im)) :-
+  kompleks(A, k(ReA, ImA)),
+  kompleks(B, k(ReB, ImB)),
+  Re is ReA * ReB - ImA * ImB,
+  Im is ReA * ImB + ImA * ReB.
+
+% divido
+kompleks(/(A,B), k(Re, Im)) :-
+  kompleks(A, k(ReA, ImA)),
+  kompleks(B, k(ReB, ImB)),
+  Denom is ReB * ReB + ImB * ImB,
+  Denom \= 0, % ne dividu je 0!
+  Re is (ReA * ReB + ImA * ImB)/Denom,
+  Im is (ImA * ReB - ReA * ImB)/Denom.
+
+atom_number(A,N) :-
+  number_chars(N,C),
+  atom_chars(A,C).
+
+kompleks_im(Im,AI) :-
+  once((
+    Im = 1, AI = '+i';
+    Im = -1, AI = '-i';
+    Im > 0, atom_number(A,Im), atomic_list_concat([+,A,i],AI);
+    Im < 0, atom_number(A,Im), atomic_list_concat([-,A,i],AI)
+  )).
+
+kompleks_atom(k(Re,Im),A) :-
+  once((
+    Im = 0, atom_number(A,Re);
+    kompleks_im(Im,AI), atom_number(AR,Re), atom_concat(AR,AI,A)
+  )).
+
 
 ```
 {:.programo}
 
 {% include pl-demando.html query=
-  'kompleks((3+5i)+(1-2i),K), term_atom(K,A).' %}
+  'kompleks((3+5i)+(1-2i),K), kompleks_atom(K,A).' %}
 
 
 <script>
