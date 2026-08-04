@@ -274,7 +274,7 @@ rv_sen_fin(rs, Spc, Vorto, Ana/Suf) :-
   'rv_sen_fin(Regul, Spc, satig, Ana).' %}
 
 Do, la analizo principe funkcias, sed estas iom malbele legebla. Ni difinu predikaton, kiu
-metos la operatoron `/` inter la argumentojn anstataŭ `/(a,b)`. La prologa operatoro
+metos la operaciilon `/` inter la argumentojn anstataŭ `/(a,b)`. La prologa operaciilo
 `=..` helpas en tio transformante termon kiel `/(a,b)` al listo `[/,a,b]`, poste ni
 povas kunskribi ĉion en la dezirata ordo al atomo (signaro). La oficialecon ni alpendigas
 al la radiko per `^` - kvazaŭ eksponenton.

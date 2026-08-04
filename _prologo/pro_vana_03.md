@@ -10,7 +10,7 @@ css:
     - tau-prolog-0c
 ---
 
-## Operatoroj
+## Operaciiloj
 
 <!--
 ```prolog
@@ -25,7 +25,7 @@ finaĵoj. Sed la reguloj estas iom malfacile legeblaj kaj oni rapide perdus la s
 kreskanta gramatiko. Ni serĉas do rimedon koncize noti vortfarajn regulojn.
 
 La ideo estas formulado de reguloj, kiuj same kiel ordinaraj prologaj reguloj konsistas el kapo kaj korpo,
-apartigitaj per speciala operatorsigno (ni uzos `<=`), sed kiuj kaŝas la ripetajn komplikaĵojn: 
+apartigitaj per speciala operacisigno (ni uzos `<=`), sed kiuj kaŝas la ripetajn komplikaĵojn: 
 ĉiu regulo havas la du argumentojn: analizenda vorto kaj
 analizrezulto. Do ni povas forlasi ilin en la formulo. Sama la splitado de la vorto por analizi la
 partojn estas komuna, ni forabstraktu tion en la regulkorpo: ĝi montru simple la sintezon de la
@@ -56,26 +56,26 @@ rv_sen_fin('Ds',Spc) <=
 ```
 {:.ignoru}
 
-Ni bezonos tri apartajn signojn (*operatorojn*) por tio ĉi:
+Ni bezonos tri apartajn signojn (*operaciilojn*) por tio ĉi:
 
 | `<=` | = konstituiĝas el, ĝi apartigas regulkapon de regulkorpo |
 | `&`  | referencas alian regulon |
 | `~>` | enkondukas post la ĉefa parto de la regulo aldonajn kondiĉojn en normala sintakso de Prologo |
 
 Ni unue rigardu la simplan regulon `rv_sen_fin(r,Spc) <= r(_,Spc,_)`, antaŭ pluiri al la komplikaĵoj.
-Operatorojn en Prologo oni povas difini per `op/3`, kies lasta argumento estas la koncerna signo (`<=`).
+Operaciilojn en Prologo oni povas difini per `op/3`, kies lasta argumento estas la koncerna signo (`<=`).
 
 La unua estas la prioritato, kiu por `<=` estu inter tiu de `:-` (1200) kaj `;` (1100) - ĉar ni ja volas miksi
 konvene nian vortfaran sintakson kun ordinara Prologo.
 
-La dua argumento esprimas kiel la operatoro `f` situu kompare kun siaj unu (fx) aŭ du (xfx) argumentoj.
+La dua argumento esprimas kiel la operaciilo `f` situu kompare kun siaj unu (fx) aŭ du (xfx) argumentoj.
 
 ```prolog
 :- op( 1120, xfx, '<=' ).
 ```
 {:.programo}
 
-Tiel Prologo rekonos la novan signon `<=` kiel operatoron inter du aliaj termoj, sed interne tradukos tion al la norma
+Tiel Prologo rekonos la novan signon `<=` kiel operaciilon inter du aliaj termoj, sed interne tradukos tion al la norma
 formo `<=(Arg1,Arg2)`. Ĉe tio ĝi atentas la difinitan prioritaton: Se aperas `;` en la antaŭa aŭ posta termparto, ĝi apartenos
 al la koncerna argumento, ĉar ĝi havas pli altan prioritaton (malpli altan rangon). Se aperos `:-` ĝi estos ekster la termo
 pro pli alta rango.

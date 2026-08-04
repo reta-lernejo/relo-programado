@@ -40,7 +40,7 @@ vorto('rf',Spc) <=
 
 En la regulkapo de regulo kiel `vorto(r,Speco) <= r(_,Speco,_)` ni aldonos du argmuentojn: la analizendan vorton
 kaj la analizrezulton. Tiucele ni apartigas la nomon de la regulo `vorto` de la listo de argumentoj per la
-prologa operatoro `=..`, poste ni alpendigas al la argumentlisto la du pliajn argumentojn kaj rekunmetas (denove uzante `=..`
+prologa operaciilo `=..`, poste ni alpendigas al la argumentlisto la du pliajn argumentojn kaj rekunmetas (denove uzante `=..`
 en la kontraŭa direkto) al `vorto(r,Speco,Vorto,Analizo)`.
 
 ```prolog

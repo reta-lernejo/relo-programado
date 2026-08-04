@@ -145,7 +145,7 @@ regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
 regul_korpo(Kapo,Korpo,Vorto,Analizo,KorpoTradukita) :-
   regul_referenco(Korpo,Vorto,Analizo,KorpoTradukita).  
 
-% regulreferenco per operatoro &
+% regulreferenco per operaciilo &
 regul_referenco(&Regulreferenco,Vorto,Analizo,Regulvoko) :- !,
   Regulreferenco =.. [Regulnomo|Regulargumentoj],
   append(Regulargumentoj,[Vorto,Analizo],Argumentoj),

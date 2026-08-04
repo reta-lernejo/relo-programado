@@ -10,7 +10,7 @@ css:
     - tau-prolog    
 ---
 
-### Termoj, kombinoj kaj operatoroj
+### Termoj, kombinoj kaj operaciiloj
 
 Antaŭ trakti romajn nombrojn, t.e. kunmetitajn el ciferoj, per Prologo, ni devas iom profundigi nian scion pri *termo*j.
 Ni jam vidis kiel uzi termojn (datumtipojn) *nombro* kaj *atomo*. Oni povas ilin kombini en esprimoj kiel `k(e,5)`. 
@@ -23,13 +23,13 @@ Tion oni kosekvence nomas *kombino*:
 Kombinoj aspektas iom kiel funkcioj aŭ esprimoj en aliaj programlingvoj, sed ili ne aŭtomete kalkuliĝas. 
 Uzataj kiel datumtipo, ili simple reprezentas sin mem - kvazaŭ formulo.
 
-Kelkajn specialajn kombinojn oni povas skribi alternative per operatoro kiel en aritmetiko. Interne ili transformiĝas al
-sia kombina formo. Ni elprovu tion per operatoro `+` kaj `=`:
+Kelkajn specialajn kombinojn oni povas skribi alternative per operaciilo kiel en aritmetiko. Interne ili transformiĝas al
+sia kombina formo. Ni elprovu tion per operaciilo `+` kaj `=`:
 
 {% include pl-demando.html query=
  "Kombino = +(1,2), Kombino = A+B." %}
 
-Do, la egalsigno ne servas por aritmetika kalkulo, sed nur por egaligi du esprimojn. Sed ja ekzistas ankaŭ operatoro por aritmetiko:`is`:
+Do, la egalsigno ne servas por aritmetika kalkulo, sed nur por egaligi du esprimojn. Sed ja ekzistas ankaŭ operaciilo por aritmetiko:`is`:
 
 {% include pl-demando.html query=
  "Sumo is +(1,2), Kombino = 1+2, 

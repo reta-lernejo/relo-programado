@@ -10,7 +10,7 @@ css:
     - tau-prolog-0c
 ---
 
-## Tri operatoroj por nia gramatiko
+## Tri operaciiloj por nia gramatiko
 
 <!--
 ```prolog
@@ -21,7 +21,7 @@ css:
 -->
 
 Ni nun aldonos regulon por derivado per sufiksoj al nia malgranda vortforma gramatiko.
-Ĉe tio ni bezonas la du pliajn operatorojn, jam skizitajn en leciono 3: 
+Ĉe tio ni bezonas la du pliajn operaciilojn, jam skizitajn en leciono 3: 
 Per `&` ni referencas alian regulon (tie ĉi por memreferenco, 
 ĉar oni povas plurfoje apliki sufikson, sed ĝenerale ĝi povas referenci ankaŭ al alia regulo).
 La regulon ni nomas 'radik(hav)a vorto sen finaĵo', do `rv_sen_fin`.
@@ -59,7 +59,7 @@ vorto('Df',Spc)
 Ni devas certigi, ke `~>` ricevas pli malaltan rangon ol `<=`,
 sed ambaŭ havu prioritaton inter la aprioraj `:-` (1200) kaj `;` (1100) - ĉar ni ja volas miksi
 konvene nian vortforman sintakson kun ordinara Prologo. `&` havu tre altan prioritaton, t.e.
-aplikiĝu senpere al la posta termo, sed ja iom pli malaltan ol la list-operatoro `.` (100).
+aplikiĝu senpere al la posta termo, sed ja iom pli malaltan ol la list-operaciilo `.` (100).
 Ĝi havas nur unu post-argumenton, do la skemo estas `fx`.
 
 ```prolog
@@ -69,7 +69,7 @@ aplikiĝu senpere al la posta termo, sed ja iom pli malaltan ol la list-operator
 ```
 {:.programo}
 
-Nun ni devos ankoraŭ etendi niajn transformregulojn por la du novaj operatoroj.
+Nun ni devos ankoraŭ etendi niajn transformregulojn por la du novaj operaciiloj.
 
 ```prolog
 :- use_module(library(lists)).
@@ -132,7 +132,7 @@ Tiun ni simple anstataŭigas per si mem.
 
 
 ```prolog
-% regulreferenco per operatoro &
+% regulreferenco per operaciilo &
 regul_referenco(&Regulreferenco,Vorto,Analizo,Regulvoko) :- !,
   Regulreferenco =.. [Regulnomo|Regulargumentoj],
   append(Regulargumentoj,[Vorto,Analizo],Argumentoj),
